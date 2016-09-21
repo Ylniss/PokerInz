@@ -1,4 +1,4 @@
-﻿using PokerAPI;
+﻿using PokerAPI.Cards;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace PokerTest
     {
         static void Main(string[] args)
         {
-            IDeck deck = new Deck();
+            Deck deck = new StandardDeck();
 
             foreach (var card in deck)
             {

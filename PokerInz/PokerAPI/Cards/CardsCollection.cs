@@ -1,35 +1,15 @@
-﻿using PokerAPI.Enums;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PokerAPI
+namespace PokerAPI.Cards
 {
-    public class Deck : IDeck
+    public abstract class CardsCollection : IList<ICard>
     {
-        public IShuffler<ICard> Shuffler { get; set; }
-
-        private readonly IList<ICard> cards = new List<ICard>();
-
-        public Deck()
-        {
-            Shuffler = new ShufflerFisherYates();
-            cards = getFiftyTwoCardsStandardDeck();
-        }
-
-        public Deck(IShuffler<ICard> shuffler)
-        {
-            Shuffler = shuffler;
-            cards = getFiftyTwoCardsStandardDeck();
-        }
-
-        public void Shuffle()
-        {
-            Shuffler.Shuffle(cards);
-        }
+        protected IList<ICard> cards = new List<ICard>();
 
         public ICard this[int index]
         {
@@ -108,21 +88,6 @@ namespace PokerAPI
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
-        }
-
-        private IList<ICard> getFiftyTwoCardsStandardDeck()
-        {
-            IList<ICard> cards = new List<ICard>();
-
-            foreach (CardSuit suit in Enum.GetValues(typeof(CardSuit)))
-            {
-                foreach (CardRank rank in Enum.GetValues(typeof(CardRank)))
-                {
-                    cards.Add(new Card(suit, rank));
-                }
-            }
-
-            return cards;
         }
     }
 }

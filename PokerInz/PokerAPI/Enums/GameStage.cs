@@ -1,13 +1,16 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PokerAPI
+namespace PokerAPI.Enums
 {
-    public interface IDeck : IList<ICard>, IShuffable<ICard>
+    public enum GameStage
     {
+        Preflop = 0,
+        Flop = 1,
+        Turn = 2,
+        River = 3,
     }
 }

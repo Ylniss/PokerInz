@@ -50,9 +50,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PokerAPI\PokerAPI.csproj">
+    <ProjectReference Include="..\PokerAPI\Poker.API.csproj">
       <Project>{f9e3b580-736d-4951-99ab-4455cdc76de0}</Project>
-      <Name>PokerAPI</Name>
+      <Name>Poker.API</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
