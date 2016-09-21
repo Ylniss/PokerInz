@@ -1,5 +1,4 @@
 ﻿using PokerAPI.Enums;
-using PokerAPI.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,19 +9,19 @@ namespace PokerAPI
 {
     public class Card : ICard
     {
-        public CardColor Color { get; }
-
         public CardSuit Suit { get; }
 
-        public Card(CardColor color, CardSuit rank)
+        public CardRank Rank { get; }
+
+        public Card(CardSuit suit, CardRank rank)
         {
-            Color = color;
-            Suit = rank;
+            Suit = suit;
+            Rank = rank;
         }
 
         public override string ToString()
         {
-            return $"{Suit} {Color}";
+            return $"{Rank} {Suit}";
         }
     }
 }

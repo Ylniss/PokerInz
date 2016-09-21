@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PokerAPI.Enums
 {
-    public enum CardColor
+    public enum CardSuit
     {
         Hearts = 0,
         Diamonds = 1,

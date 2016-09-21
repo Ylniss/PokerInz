@@ -1,5 +1,4 @@
-﻿using PokerAPI.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PokerAPI
 {
-    public class ShufflerFisherYates : IShuffler
+    public class ShufflerFisherYates : IShuffler<ICard>
     {
         private static Random random = new Random();
 

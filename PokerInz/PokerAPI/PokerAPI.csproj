@@ -42,7 +42,7 @@
   <ItemGroup>
     <Compile Include="Card.cs" />
     <Compile Include="Deck.cs" />
-    <Compile Include="Enums\CardColor.cs" />
+    <Compile Include="Enums\CardSuit.cs" />
     <Compile Include="Enums\CardRank.cs" />
     <Compile Include="Interfaces\ICard.cs" />
     <Compile Include="Interfaces\IDeck.cs" />

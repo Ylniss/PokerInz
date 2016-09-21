@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PokerAPI.Interfaces
+namespace PokerAPI
 {
-    public interface IDeck : IList<ICard>, IShuffable
+    public interface IDeck : IList<ICard>, IShuffable<ICard>
     {
     }
 }

@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PokerAPI.Interfaces
+namespace PokerAPI
 {
     public interface ICard
     {
-        CardColor Color { get; }
-
         CardSuit Suit { get; }
+
+        CardRank Rank { get; }
     }
 }

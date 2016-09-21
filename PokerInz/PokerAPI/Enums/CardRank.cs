@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PokerAPI.Enums
 {
-    public enum CardSuit
+    public enum CardRank
     {
         Ace = 0,
         One = 1,
