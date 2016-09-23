@@ -1,4 +1,6 @@
 ﻿using PokerAPI.Cards;
+using PokerAPI.Game;
+using PokerAPI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +28,8 @@ namespace PokerTest
             {
                 Console.WriteLine(card.ToString());
             }
+
+            ITable table = new Table();
 
             Console.ReadKey();
         }

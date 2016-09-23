@@ -11,7 +11,7 @@ namespace PokerAPI
         /// <summary>
         /// Shuffling algorithm used in shuffle operation.
         /// </summary>
-        IShuffler<ICard> Shuffler { get; set; }
+        IShuffler<T> Shuffler { get; set; }
 
         void Shuffle();
     }

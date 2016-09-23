@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PokerAPI.Shufflers
+namespace PokerAPI.Cards
 {
     public class ShufflerFisherYates<T> : IShuffler<T>
     {

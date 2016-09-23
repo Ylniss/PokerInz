@@ -10,6 +10,8 @@ namespace PokerAPI.Enums
     {
         Fold = 0,
         Check = 1,
-        Bet = 2,
+        Call = 2,
+        Bet = 3,
+        Raise = 4,
     }
 }
