@@ -16,7 +16,5 @@ namespace PokerAPI.Game
         public IDictionary<string, int> PlayerBets { get; set; }
 
         public int Pot { get; set; }
-
-
     }
 }

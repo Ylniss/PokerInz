@@ -37,7 +37,7 @@ namespace PokerAPI
         /// <summary>
         /// Pair of cards on players hand.
         /// </summary>
-        Tuple<ICard> HoleCards { get; set; }
+        Tuple<ICard, ICard> HoleCards { get; set; }
 
         /// <summary>
         /// Indicates if player has folded.

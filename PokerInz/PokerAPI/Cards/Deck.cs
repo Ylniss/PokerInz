@@ -21,6 +21,9 @@ namespace PokerAPI.Cards
             Shuffler = shuffler;
         }
 
+        /// <summary>
+        /// Shuffles cards in a way implemented by Shuffler.
+        /// </summary>
         public void Shuffle()
         {
             Shuffler.Shuffle(cards);

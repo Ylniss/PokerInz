@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PokerAPI.Game
 {
-    class GameActionBet : IGameAction
+    public class GameActionBet : IGameAction
     {
         public int CurrentPlayerPosition { get; }
 

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PokerAPI.Enums;
 
 namespace PokerTest
 {
@@ -29,7 +30,16 @@ namespace PokerTest
                 Console.WriteLine(card.ToString());
             }
 
-            ITable table = new Table();
+            Game game = new TexasHoldem(new List<IPlayer> {
+                new Player("p1", 0, 1000),
+                new Player("p2", 1, 1000),
+                new Player("p3", 2, 1000),
+                new Player("p4", 3, 1000),
+            }, BettingRule.NoLimit);
+
+            game.StartDeal();
+
+
 
             Console.ReadKey();
         }

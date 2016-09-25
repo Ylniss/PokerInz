@@ -13,6 +13,9 @@ namespace PokerAPI
         /// </summary>
         IShuffler<T> Shuffler { get; set; }
 
+        /// <summary>
+        /// Shuffles collection in a way implemented by Shuffler.
+        /// </summary>
         void Shuffle();
     }
 }

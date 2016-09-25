@@ -7,7 +7,7 @@ using PokerAPI.Enums;
 
 namespace PokerAPI.Game
 {
-    class Player : IPlayer
+    public class Player : IPlayer
     {
         public string Name { get; }
 
@@ -17,7 +17,7 @@ namespace PokerAPI.Game
 
         public int Chips { get; set; }
 
-        public Tuple<ICard> HoleCards { get; set; }
+        public Tuple<ICard, ICard> HoleCards { get; set; }
 
         public bool IsActive { get; set; }
 
@@ -29,6 +29,10 @@ namespace PokerAPI.Game
             TablePosition = tablePosition;
             Chips = chips;
             IsActive = true;
+        }
+
+        public Player()
+        {
         }
 
         public IGameAction TakeAction(ActionType actionType, IDictionary<string, int> bets, int? bet = null)
