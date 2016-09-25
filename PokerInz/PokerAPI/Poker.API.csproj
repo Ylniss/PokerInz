@@ -59,6 +59,7 @@
     <Compile Include="Game\GameActionFold.cs" />
     <Compile Include="Game\Player.cs" />
     <Compile Include="Game\Table.cs" />
+    <Compile Include="Game\TexasHoldem.cs" />
     <Compile Include="Interfaces\ICard.cs" />
     <Compile Include="Cards\Deck.cs" />
     <Compile Include="Interfaces\IEvaluableRanking.cs" />
