@@ -21,6 +21,11 @@ namespace PokerAPI
         IList<IPlayer> Players { get; }
 
         /// <summary>
+        /// Information about table state.
+        /// </summary>
+        ITable Table { get; }
+
+        /// <summary>
         /// Rule determining how betting can be done.
         /// </summary>
         BettingRule BettingRule { get; }
@@ -29,5 +34,10 @@ namespace PokerAPI
         /// Deck of playing cards used in game.
         /// </summary>
         Deck PlayingCards { get; }
+
+        /// <summary>
+        /// Returns true if conditions to end a game are met.
+        /// </summary>
+        bool IsGameOver { get; }
     }
 }

@@ -1,5 +1,4 @@
-﻿using PokerAPI.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +18,19 @@ namespace PokerAPI.Game
 
         public Deck PlayingCards { get; }
 
+        public ITable Table { get; private set; }
+
+        public virtual bool IsGameOver
+        {
+            get
+            {
+                if(Players != null)
+                    return Players.Where(x => x.Chips <= 0).Count() >= Players.Count - 1;
+                else
+                    throw new NullReferenceException("No players in Game.");
+            }
+        }
+
         public Game(IList<IPlayer> players, BettingRule bettingRule) : this(players, bettingRule, new StandardDeck())
         {
         }
@@ -31,14 +43,7 @@ namespace PokerAPI.Game
             Players = players;
             BettingRule = bettingRule;
             PlayingCards = playingCards;
-        }
-
-        public ITable GetTable()
-        {
-            if (GameActions.Last() != null)
-                return GameActions.Last().Table;
-            else
-                throw new NullReferenceException("No elements in GameActions.");
+            Table = new Table(0);
         }
 
         public abstract void StartDeal();

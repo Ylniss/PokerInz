@@ -14,31 +14,27 @@ namespace PokerTest
     {
         static void Main(string[] args)
         {
-            Deck deck = new StandardDeck();
-
-            foreach (var card in deck)
-            {
-                Console.WriteLine(card.ToString());
-            }
-
-            deck.Shuffle();
-
-            Console.WriteLine();
-
-            foreach (var card in deck)
-            {
-                Console.WriteLine(card.ToString());
-            }
-
             Game game = new TexasHoldem(new List<IPlayer> {
-                new Player("p1", 0, 1000),
-                new Player("p2", 1, 1000),
-                new Player("p3", 2, 1000),
-                new Player("p4", 3, 1000),
+                new HumanConsolePlayer("p1", 0, 1000),
+                new HumanConsolePlayer("p2", 1, 1000),
+                new HumanConsolePlayer("p3", 2, 1000),
+                new HumanConsolePlayer("p4", 3, 1000),
             }, BettingRule.NoLimit);
 
-            game.StartDeal();
+            Random random = new Random();
 
+            while (!game.IsGameOver)
+            { 
+                game.StartDeal();
+
+                game.Players[0].Chips -= random.Next(0, 200);
+                game.Players[1].Chips -= random.Next(0, 200);
+                game.Players[2].Chips -= random.Next(0, 200);
+                game.Players[3].Chips -= random.Next(0, 200);
+
+                foreach (IPlayer player in game.Players)
+                    Console.WriteLine($"{player.Name} \n {player.HoleCards[0].ToString()}, {player.HoleCards[1].ToString()}\n {player.Chips} \n\n");
+            }
 
 
             Console.ReadKey();

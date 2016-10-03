@@ -1,4 +1,5 @@
 ﻿using PokerAPI.Cards;
+using PokerAPI.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,19 @@ namespace PokerAPI
 {
     public interface ITable
     {
-
         int Pot { get; set; }
 
         int DealerPosition { get; set; }
 
-        IDictionary<string, int> PlayerBets { get; }
+        /// <summary>
+        /// Current stage of betting round.
+        /// </summary>
+        GameStage GameStage { get; }
+
+        /// <summary>
+        /// Bets made by all players during a game.
+        /// </summary>
+        IDictionary<int, int> PlayerBets { get; }
 
         /// <summary>
         /// Cards that are shown on the table during a game.

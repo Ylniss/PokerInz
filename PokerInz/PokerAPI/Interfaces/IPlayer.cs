@@ -37,7 +37,7 @@ namespace PokerAPI
         /// <summary>
         /// Pair of cards on players hand.
         /// </summary>
-        Tuple<ICard, ICard> HoleCards { get; set; }
+        IList<ICard> HoleCards { get; set; }
 
         /// <summary>
         /// Indicates if player has folded.
@@ -47,6 +47,6 @@ namespace PokerAPI
         /// <summary>
         /// 
         /// </summary>
-        IGameAction TakeAction(ActionType actionType, IDictionary<string, int> bets, int? bet = null);
+        IGameAction TakeAction(ITable table);
     }
 }

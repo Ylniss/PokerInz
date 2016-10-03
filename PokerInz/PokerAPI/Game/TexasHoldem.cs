@@ -23,6 +23,13 @@ namespace PokerAPI.Game
             PlayingCards.Shuffle();
 
             handOutCardsToPlayersAndSetBlinds();
+
+            //return players hole cards to deck
+            foreach (IPlayer player in Players)
+            {
+                PlayingCards.Add(player.HoleCards[0]);
+                PlayingCards.Add(player.HoleCards[1]);
+            }
         }
 
         private void handOutCardsToPlayersAndSetBlinds()
@@ -31,13 +38,19 @@ namespace PokerAPI.Game
             {
                 player.Blind = Blind.None;
 
-                player.HoleCards = new Tuple<ICard, ICard>(PlayingCards[0], PlayingCards[1]);
-                PlayingCards.Remove(PlayingCards[0]);
-                PlayingCards.Remove(PlayingCards[1]);
+                player.HoleCards = new List<ICard>() { PlayingCards[0], PlayingCards[1] };
+                PlayingCards.Remove(PlayingCards.First());
+                PlayingCards.Remove(PlayingCards.First());
             }
 
-            Players[0].Blind = Blind.Small;
-            Players[1].Blind = Blind.Big;
+            Players[Table.DealerPosition + 1].Blind = Blind.Small;
+            Players[Table.DealerPosition + 2].Blind = Blind.Big;
         }
+
+        private void licitation()
+        {
+
+        }
+
     }
 }

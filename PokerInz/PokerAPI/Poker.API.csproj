@@ -57,6 +57,7 @@
     <Compile Include="Game\GameActionBet.cs" />
     <Compile Include="Game\GameActionCheck.cs" />
     <Compile Include="Game\GameActionFold.cs" />
+    <Compile Include="Game\HumanConsolePlayer.cs" />
     <Compile Include="Game\Player.cs" />
     <Compile Include="Game\Table.cs" />
     <Compile Include="Game\TexasHoldem.cs" />
