@@ -46,6 +46,16 @@ namespace PokerAPI.Game
             Table = new Table(0);
         }
 
+        public IPlayer GetNextPlayer(IPlayer player)
+        {
+            int currentTablePosition = Players.Where(x => x.TablePosition == player.TablePosition).Select(x => x.TablePosition).First();
+
+            if (currentTablePosition == Players.Count - 1)
+                return Players.First();
+
+            return Players[currentTablePosition + 1];
+        }
+
         public abstract void StartDeal();
     }
 }

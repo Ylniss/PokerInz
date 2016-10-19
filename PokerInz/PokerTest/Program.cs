@@ -27,10 +27,8 @@ namespace PokerTest
             { 
                 game.StartDeal();
 
-                game.Players[0].Chips -= random.Next(0, 200);
-                game.Players[1].Chips -= random.Next(0, 200);
-                game.Players[2].Chips -= random.Next(0, 200);
-                game.Players[3].Chips -= random.Next(0, 200);
+                foreach (IPlayer player in game.Players)
+                    player.Chips -= random.Next(0, 200);
 
                 foreach (IPlayer player in game.Players)
                     Console.WriteLine($"{player.Name} \n {player.HoleCards[0].ToString()}, {player.HoleCards[1].ToString()}\n {player.Chips} \n\n");

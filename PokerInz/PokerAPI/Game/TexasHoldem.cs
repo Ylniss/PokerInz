@@ -43,8 +43,9 @@ namespace PokerAPI.Game
                 PlayingCards.Remove(PlayingCards.First());
             }
 
-            Players[Table.DealerPosition + 1].Blind = Blind.Small;
-            Players[Table.DealerPosition + 2].Blind = Blind.Big;
+            IPlayer nextPlayer = GetNextPlayer(Players[Table.DealerPosition]);
+            nextPlayer.Blind = Blind.Small;
+            GetNextPlayer(nextPlayer).Blind = Blind.Big;
         }
 
         private void licitation()
