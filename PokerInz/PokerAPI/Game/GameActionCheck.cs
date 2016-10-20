@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace PokerAPI.Game
 {
-    public class GameActionCheck : IGameAction
+    public class GameActionCheck : GameAction
     {
-        public int Pot { get; set; }
-
-        public ITable Table { get; }
-
-        public int CurrentPlayerPosition { get; }
+        public GameActionCheck(IPlayer currentPlayer, ITable table) : base(table)
+        {
+            if(currentPlayer.Bet < Table.PlayerBets.Values.Max())
+                throw new ArgumentOutOfRangeException("Check is not possible, there is bet to call/raise/fold.");
+        }
     }
 }

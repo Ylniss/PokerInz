@@ -11,15 +11,13 @@ namespace PokerAPI.Cards
     {
         public HandRanking HandRanking { get; }
 
-        public IList<ICard> ArrangedCards { get; }
-
         public IRankingEvaluator RankingEvaluator { get; set; }
 
         public int HandRankingValue { get; set; }
 
-        public EvaluableCards()
+        public EvaluableCards(IRankingEvaluator rankingEvaluator)
         {
-            ArrangedCards = new List<ICard>();
+            RankingEvaluator = rankingEvaluator;
             EvaluateRanking();
         }
 

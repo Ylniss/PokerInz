@@ -36,6 +36,16 @@ namespace PokerAPI
         Deck PlayingCards { get; }
 
         /// <summary>
+        /// Cost of big blind
+        /// </summary>
+        int BigBlind { get; }
+
+        /// <summary>
+        /// Cost of small blind
+        /// </summary>
+        int SmallBlind { get; }
+
+        /// <summary>
         /// Returns true if conditions to end a game are met.
         /// </summary>
         bool IsGameOver { get; }

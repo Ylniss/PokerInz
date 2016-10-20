@@ -21,7 +21,7 @@ namespace PokerAPI.Cards
 
         public override string ToString()
         {
-            return $"{Rank} {Suit}";
+            return $"{Rank.ToFriendlyString()}{Suit.ToFriendlyString()}";
         }
     }
 }

@@ -6,20 +6,14 @@ using System.Threading.Tasks;
 
 namespace PokerAPI.Game
 {
-    public class GameActionFold : IGameAction
+    public class GameActionFold : GameAction
     {
-        public int Pot { get; set; }
-
-        public int CurrentPlayerPosition { get; }
-
-        public ITable Table { get; }
-
-        public GameActionFold(IPlayer currentPlayer)
+        public GameActionFold(IPlayer currentPlayer, ITable table) : base(table)
         {
             currentPlayer.IsActive = false;
 
             currentPlayer.Chips -= currentPlayer.Bet;
-            Pot += currentPlayer.Bet;
+            Table.Pot += currentPlayer.Bet;
 
             currentPlayer.Bet = 0;
         }

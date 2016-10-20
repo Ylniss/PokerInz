@@ -8,6 +8,10 @@ namespace PokerAPI.Cards
 {
     public class CommunityCards : EvaluableCards
     {
+        public CommunityCards(IRankingEvaluator rankingEvaluator) : base(rankingEvaluator)
+        {
+        }
+
         public IList<ICard> GetFlop()
         {
             if (cards.Count < 3)

@@ -22,7 +22,7 @@ namespace PokerAPI
         /// <summary>
         /// Bets made by all players during a game.
         /// </summary>
-        IDictionary<int, int> PlayerBets { get; }
+        IDictionary<string, int> PlayerBets { get; set; }
 
         /// <summary>
         /// Cards that are shown on the table during a game.

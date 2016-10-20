@@ -10,9 +10,26 @@ namespace PokerAPI.Game
 {
     public class Table : ITable
     {
-        public EvaluableCards CommunityCards { get; set; }
+        private int playersCount;
 
-        public int DealerPosition { get; set; }
+        private int dealerPosition;
+
+        public EvaluableCards CommunityCards { get; set; } = new CommunityCards(new MyRankingEvaluator());
+
+        public int DealerPosition
+        {
+            get
+            {
+                return dealerPosition;
+            }
+            set
+            {
+                if (value < playersCount)
+                    dealerPosition = value;
+                else
+                    dealerPosition = 0;
+            }
+        }
 
         public GameStage GameStage
         {
@@ -34,13 +51,14 @@ namespace PokerAPI.Game
             }
         }
 
-        public IDictionary<int, int> PlayerBets { get; set; }
+        public IDictionary<string, int> PlayerBets { get; set; } = new Dictionary<string, int>();
 
         public int Pot { get; set; }
 
-        public Table(int dealerPosition)
+        public Table(int dealerPosition, int playersCount)
         {
-            DealerPosition = dealerPosition;
+            this.dealerPosition = dealerPosition;
+            this.playersCount = playersCount;
         }
     }
 }

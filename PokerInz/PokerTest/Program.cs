@@ -15,27 +15,62 @@ namespace PokerTest
         static void Main(string[] args)
         {
             Game game = new TexasHoldem(new List<IPlayer> {
-                new HumanConsolePlayer("p1", 0, 1000),
-                new HumanConsolePlayer("p2", 1, 1000),
-                new HumanConsolePlayer("p3", 2, 1000),
-                new HumanConsolePlayer("p4", 3, 1000),
-            }, BettingRule.NoLimit);
+                new HumanConsolePlayer("bagn0", 0, 1000),
+                new HumanConsolePlayer("sdfsdf1", 1, 1000),
+                new HumanConsolePlayer("zrd2", 2, 1000),
+                new HumanConsolePlayer("pepe3", 3, 1000),
+            }, BettingRule.NoLimit, 10, 20);
+
+            game.GameEvent += new Game.GameHandler(UpdateGui);
 
             Random random = new Random();
 
             while (!game.IsGameOver)
-            { 
-                game.StartDeal();
+            {
+                game.PlayingCards.Shuffle();
 
-                foreach (IPlayer player in game.Players)
-                    player.Chips -= random.Next(0, 200);
+                game.HandOutCardsToPlayers();
 
-                foreach (IPlayer player in game.Players)
-                    Console.WriteLine($"{player.Name} \n {player.HoleCards[0].ToString()}, {player.HoleCards[1].ToString()}\n {player.Chips} \n\n");
+                game.SetBlinds();
+
+                game.Licitation();
+
+                game.ReturnCardsToDeck();
+
+                game.OnDealFinish();
             }
 
-
             Console.ReadKey();
+        }
+
+        public static void UpdateGui(object subject)
+        {
+            if (subject is Game)
+            {
+                Game game = subject as Game;
+                string communityCardsMessage = "Community cards: ";
+                foreach (ICard card in game.Table.CommunityCards)
+                    communityCardsMessage += $"{card.ToString()}, ";
+
+                if(communityCardsMessage.Length > 2) //remove last comma
+                    communityCardsMessage = communityCardsMessage.Remove(communityCardsMessage.Length - 2);
+
+                Console.WriteLine($"{communityCardsMessage}\n");
+                Console.WriteLine("Bets:");
+                foreach(IPlayer player in game.Players)
+                {
+                    string betsMessage = $"{player.Name} chips: {player.Chips} \t bet:{player.Bet}";
+                    if (player.IsActive)
+                        betsMessage += " [ACTIVE]";
+                    else
+                        betsMessage += " [FOLDED]";
+
+                    Console.WriteLine(betsMessage);
+                }
+
+                Console.WriteLine($"Pot: {game.Table.Pot}");
+            
+            }
         }
     }
 }

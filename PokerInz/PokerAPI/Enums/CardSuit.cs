@@ -13,4 +13,25 @@ namespace PokerAPI.Enums
         Clubs = 2,
         Spades = 3,
     }
+
+    public static class CardSuitExtensions
+    {
+        public static string ToFriendlyString(this CardSuit cardSuit)
+        {
+            switch (cardSuit)
+            {
+                case CardSuit.Hearts:
+                    return "\u2665";
+                case CardSuit.Diamonds:
+                    return "\u2666";
+                case CardSuit.Clubs:
+                    return "\u2663";
+                case CardSuit.Spades:
+                    return "\u2660";
+                default:
+                    return "";
+            }
+        }
+    }
+
 }

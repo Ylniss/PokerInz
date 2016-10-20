@@ -54,6 +54,7 @@
     <Compile Include="Enums\GameStage.cs" />
     <Compile Include="Enums\HandRanking.cs" />
     <Compile Include="Game\Game.cs" />
+    <Compile Include="Game\GameAction.cs" />
     <Compile Include="Game\GameActionBet.cs" />
     <Compile Include="Game\GameActionCheck.cs" />
     <Compile Include="Game\GameActionFold.cs" />
