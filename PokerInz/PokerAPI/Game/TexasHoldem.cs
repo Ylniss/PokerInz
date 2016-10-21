@@ -80,7 +80,7 @@ namespace PokerAPI.Game
 
                 for (int i = 0; i < Players.Count; ++i)
                 {
-                    //if(player.IsActive && Players.Where(x => x.IsActive).Count() > 1)
+                    if(Players.Where(x => x.PlayerState != PlayerState.Folded).Count() > 1)
                         while (!takeAction(player)) ;
 
                     player = GetNextActivePlayer(player);
@@ -94,7 +94,7 @@ namespace PokerAPI.Game
 
         public override void OnDealFinish()
         {
-            foreach (IPlayer player in Players.Where(x => x.IsActive))
+            foreach (IPlayer player in Players.Where(x => x.PlayerState != PlayerState.Folded))
             {
                 Table.Pot += player.Bet;
                 player.Bet = 0;
@@ -102,14 +102,18 @@ namespace PokerAPI.Game
 
             ++Table.DealerPosition;
 
-            if (Players.Where(x => x.IsActive).Count() == 1) //everyone except one player folded
-                Players.Where(x => x.IsActive).First().Chips += Table.Pot;
+            IPlayer winningPlayer;
+
+            if (Players.Where(x => x.PlayerState == PlayerState.Folded).Count() == Players.Count - 1) //everyone except one player folded
+            {
+                winningPlayer = Players.Where(x => x.PlayerState != PlayerState.Folded).First();
+            }   
             else //there are more active players, so hand ranking tells who win
             {
                 EvaluableCards evaluableCards = new CommunityCards(new MyRankingEvaluator());
                 IDictionary<IPlayer, int> playerHandRankings = new Dictionary<IPlayer, int>();
 
-                foreach(IPlayer player in Players.Where(x => x.IsActive))
+                foreach(IPlayer player in Players.Where(x => x.PlayerState != PlayerState.Folded))
                 {
                     foreach (ICard card in Table.CommunityCards)
                         evaluableCards.Add(card);
@@ -122,14 +126,14 @@ namespace PokerAPI.Game
                     playerHandRankings[player] = evaluableCards.HandRankingValue;
                 }
 
-                IPlayer winningPlayer = playerHandRankings.OrderBy(x => x.Value).Last().Key;
-                winningPlayer.Chips += Table.Pot;
+                winningPlayer = playerHandRankings.OrderBy(x => x.Value).Last().Key;
             }
 
+            winningPlayer.Chips += Table.Pot;
             Table.Pot = 0;
 
             foreach (IPlayer player in Players)
-                player.IsActive = true;
+                player.PlayerState = PlayerState.Active;
         }
 
         /// <summary>

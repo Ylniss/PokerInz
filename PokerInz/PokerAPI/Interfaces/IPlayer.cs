@@ -40,9 +40,9 @@ namespace PokerAPI
         IList<ICard> HoleCards { get; set; }
 
         /// <summary>
-        /// Indicates if player has folded.
+        /// Indicates player's state (active, fold, all-in).
         /// </summary>
-        bool IsActive { get; set; }
+        PlayerState PlayerState { get; set; }
 
         /// <summary>
         /// 

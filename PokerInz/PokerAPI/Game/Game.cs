@@ -67,7 +67,7 @@ namespace PokerAPI.Game
 
         public IPlayer GetNextActivePlayer(IPlayer player)
         {
-            if (!Players.Where(x => x.IsActive).Any())
+            if (!Players.Where(x => x.PlayerState == PlayerState.Active).Any())
                 throw new InvalidOperationException("There are no active players.");
 
             IPlayer nextPlayer;
@@ -79,7 +79,7 @@ namespace PokerAPI.Game
             else
                 nextPlayer =  Players[currentTablePosition + 1];
 
-            if (!nextPlayer.IsActive)
+            if (nextPlayer.PlayerState == PlayerState.Folded)
                 nextPlayer = GetNextActivePlayer(nextPlayer);
 
             return nextPlayer;

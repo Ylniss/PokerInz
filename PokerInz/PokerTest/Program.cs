@@ -59,11 +59,14 @@ namespace PokerTest
                 Console.WriteLine("Bets:");
                 foreach(IPlayer player in game.Players)
                 {
-                    string betsMessage = $"{player.Name} chips: {player.Chips} \t bet:{player.Bet}";
-                    if (player.IsActive)
+                    string betsMessage = $"{player.Name} chips: {player.Chips}  \t bet:{player.Bet}";
+
+                    if (player.PlayerState == PlayerState.Active)
                         betsMessage += " [ACTIVE]";
-                    else
+                    else if (player.PlayerState == PlayerState.Folded)
                         betsMessage += " [FOLDED]";
+                    else
+                        betsMessage += " [ALL-IN]";
 
                     Console.WriteLine(betsMessage);
                 }

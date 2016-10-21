@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PokerAPI.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace PokerAPI.Game
     {
         public GameActionFold(IPlayer currentPlayer, ITable table) : base(table)
         {
-            currentPlayer.IsActive = false;
+            currentPlayer.PlayerState = PlayerState.Folded;
 
             currentPlayer.Chips -= currentPlayer.Bet;
             Table.Pot += currentPlayer.Bet;

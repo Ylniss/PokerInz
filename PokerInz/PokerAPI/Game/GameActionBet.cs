@@ -15,9 +15,7 @@ namespace PokerAPI.Game
             if (bet < currentPlayer.Bet || bet > currentPlayer.Chips + currentPlayer.Bet || bet < Table.PlayerBets.Values.Max())
                 throw new ArgumentOutOfRangeException("Bet is less or greater than expected.");
 
-            currentPlayer.Chips += currentPlayer.Bet;
             table.PlayerBets[currentPlayer.Name] = currentPlayer.Bet = Bet = bet;
-            currentPlayer.Chips -= bet;
         }
 
     }

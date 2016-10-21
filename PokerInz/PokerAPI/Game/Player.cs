@@ -11,7 +11,19 @@ namespace PokerAPI.Game
     {
         public virtual string Name { get; }
 
-        public int Bet { get; set; }
+        private int bet;
+
+        private PlayerState playerState;
+
+        public int Bet
+        {
+            get { return bet; }
+            set
+            {
+                Chips -= value - bet;
+                bet = value;               
+            }
+        }
 
         public Blind Blind { get; set; }
 
@@ -19,7 +31,17 @@ namespace PokerAPI.Game
 
         public IList<ICard> HoleCards { get; set; }
 
-        public bool IsActive { get; set; }
+        public PlayerState PlayerState
+        {
+            get
+            {
+                if (Chips == 0)
+                    return PlayerState.AllIn;
+                return playerState;
+            }
+
+            set { playerState = value; }
+        }
 
         public int TablePosition { get; }
 
@@ -28,7 +50,7 @@ namespace PokerAPI.Game
             Name = name;
             TablePosition = tablePosition;
             Chips = chips;
-            IsActive = true;
+            playerState = PlayerState.Active;
         }
 
         public abstract IGameAction TakeAction(ITable table);
