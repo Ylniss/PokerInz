@@ -60,5 +60,14 @@ namespace PokerAPI.Game
             this.dealerPosition = dealerPosition;
             this.playersCount = playersCount;
         }
+
+        public void UpdateBet(object subject)
+        {
+            if (subject is Player)
+            {
+                var player = subject as Player;
+                PlayerBets[player.Name] = player.Bet;
+            }
+        }
     }
 }

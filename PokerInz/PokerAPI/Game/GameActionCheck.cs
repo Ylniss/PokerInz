@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PokerAPI.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,8 @@ namespace PokerAPI.Game
         {
             if(currentPlayer.Bet < Table.PlayerBets.Values.Max())
                 throw new ArgumentOutOfRangeException("Check is not possible, there is bet to call/raise/fold.");
+
+            currentPlayer.PlayerState = PlayerState.Checked;
         }
     }
 }

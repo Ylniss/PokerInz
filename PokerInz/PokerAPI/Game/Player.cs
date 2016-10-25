@@ -11,7 +11,14 @@ namespace PokerAPI.Game
     {
         public virtual string Name { get; }
 
+        public delegate void BetHandler(object sender);
+        public event BetHandler OnBetChange;
+
         private int bet;
+
+        private int chips;
+
+        private bool tookAction;
 
         private PlayerState playerState;
 
@@ -20,14 +27,24 @@ namespace PokerAPI.Game
             get { return bet; }
             set
             {
-                Chips -= value - bet;
-                bet = value;               
+                if (value != 0)
+                {
+                    tookAction = true;
+                    chips -= value - bet;
+                }
+                bet = value;
+                if (OnBetChange != null)
+                    OnBetChange(this);
             }
         }
 
         public Blind Blind { get; set; }
 
-        public int Chips { get; set; }
+        public int Chips
+        {
+            get { return chips; }
+            set { chips = value; }
+        }
 
         public IList<ICard> HoleCards { get; set; }
 
@@ -35,22 +52,48 @@ namespace PokerAPI.Game
         {
             get
             {
-                if (Chips == 0)
+                if (chips == 0)
                     return PlayerState.AllIn;
                 return playerState;
             }
 
-            set { playerState = value; }
+            set
+            {
+                playerState = value;
+                if (value != PlayerState.Active)
+                {
+                    tookAction = true;
+                    if (value == PlayerState.Folded)
+                        chips -= bet;
+                }
+                else
+                {
+                    tookAction = false;
+                }
+            }
         }
 
-        public int TablePosition { get; }
+        public int TablePosition { get; set; }
+
+        public bool CanTakeAction
+        {
+            get
+            {
+                if (PlayerState == PlayerState.Active || PlayerState == PlayerState.Checked)
+                    return true;
+                else
+                    return false;
+            }
+        }
+
+        public bool TookAction { get { return tookAction; } }
 
         public Player(string name, int tablePosition, int chips)
         {
             Name = name;
             TablePosition = tablePosition;
-            Chips = chips;
-            playerState = PlayerState.Active;
+            this.chips = chips;
+            PlayerState = PlayerState.Active;
         }
 
         public abstract IGameAction TakeAction(ITable table);

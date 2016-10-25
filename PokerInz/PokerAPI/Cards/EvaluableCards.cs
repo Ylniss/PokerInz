@@ -9,11 +9,13 @@ namespace PokerAPI.Cards
 {
     public abstract class EvaluableCards : CardsCollection, IEvaluableRanking
     {
+        private int handRankingValue;
+
         public HandRanking HandRanking { get; }
 
         public IRankingEvaluator RankingEvaluator { get; set; }
 
-        public int HandRankingValue { get; set; }
+        public int HandRankingValue { get { return handRankingValue; } }
 
         public EvaluableCards(IRankingEvaluator rankingEvaluator)
         {
@@ -23,7 +25,7 @@ namespace PokerAPI.Cards
 
         public void EvaluateRanking()
         {
-            HandRankingValue = RankingEvaluator.EvaluateRanking(cards);
+            handRankingValue = RankingEvaluator.EvaluateRanking(cards);
         }
     }
 }

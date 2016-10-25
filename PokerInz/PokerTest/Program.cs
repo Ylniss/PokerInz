@@ -15,10 +15,10 @@ namespace PokerTest
         static void Main(string[] args)
         {
             Game game = new TexasHoldem(new List<IPlayer> {
-                new HumanConsolePlayer("bagn0", 0, 1000),
-                new HumanConsolePlayer("sdfsdf1", 1, 1000),
-                new HumanConsolePlayer("zrd2", 2, 1000),
-                new HumanConsolePlayer("pepe3", 3, 1000),
+                new HumanConsolePlayer("bagn000", 0, 1000),
+                new HumanConsolePlayer("sdfsdf111", 1, 1000),
+                new HumanConsolePlayer("zrd222", 2, 1000),
+                new HumanConsolePlayer("pepe333", 3, 1000),
             }, BettingRule.NoLimit, 10, 20);
 
             game.GameEvent += new Game.GameHandler(UpdateGui);
@@ -35,9 +35,9 @@ namespace PokerTest
 
                 game.Licitation();
 
-                game.ReturnCardsToDeck();
-
                 game.OnDealFinish();
+
+                game.ReturnCardsToDeck(); 
             }
 
             Console.ReadKey();
@@ -48,7 +48,7 @@ namespace PokerTest
             if (subject is Game)
             {
                 Game game = subject as Game;
-                string communityCardsMessage = "Community cards: ";
+                string communityCardsMessage = "Community cards:  ";
                 foreach (ICard card in game.Table.CommunityCards)
                     communityCardsMessage += $"{card.ToString()}, ";
 
@@ -59,12 +59,14 @@ namespace PokerTest
                 Console.WriteLine("Bets:");
                 foreach(IPlayer player in game.Players)
                 {
-                    string betsMessage = $"{player.Name} chips: {player.Chips}  \t bet:{player.Bet}";
+                    string betsMessage = $"{player.Name}  \t chips:\t {player.Chips}\t bet:{player.Bet}";
 
                     if (player.PlayerState == PlayerState.Active)
                         betsMessage += " [ACTIVE]";
                     else if (player.PlayerState == PlayerState.Folded)
                         betsMessage += " [FOLDED]";
+                    else if (player.PlayerState == PlayerState.Checked)
+                        betsMessage += " [CHECKED]";
                     else
                         betsMessage += " [ALL-IN]";
 

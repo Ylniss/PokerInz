@@ -10,6 +10,7 @@ namespace PokerAPI.Enums
     {
         Active = 0,
         Folded = 1,
-        AllIn = 2,
+        Checked = 2,
+        AllIn = 3,
     }
 }

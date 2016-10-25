@@ -17,7 +17,7 @@ namespace PokerAPI
         /// <summary>
         /// Position on the game table.
         /// </summary>
-        int TablePosition { get; }
+        int TablePosition { get; set; }
 
         /// <summary>
         /// Current chips in game.
@@ -28,6 +28,13 @@ namespace PokerAPI
         /// Cash that is currently bet.
         /// </summary>
         int Bet { get; set; }
+
+        /// <summary>
+        /// Indicates that in current state it is possible to take action.
+        /// </summary>
+        bool CanTakeAction { get; }
+
+        bool TookAction { get; }
 
         /// <summary>
         /// Type of blind that player has (Big, Small or None).

@@ -10,7 +10,7 @@ namespace PokerAPI.Cards
     {
         public int EvaluateRanking(IList<ICard> cards)
         {
-            return 0;
+            return cards.Sum(x => (int)x.Rank);
         }
     }
 }

@@ -28,5 +28,7 @@ namespace PokerAPI
         /// Cards that are shown on the table during a game.
         /// </summary>
         EvaluableCards CommunityCards { get; set; }
+
+        void UpdateBet(object subject);
     }
 }

@@ -13,9 +13,7 @@ namespace PokerAPI.Game
         {
             currentPlayer.PlayerState = PlayerState.Folded;
 
-            currentPlayer.Chips -= currentPlayer.Bet;
             Table.Pot += currentPlayer.Bet;
-
             currentPlayer.Bet = 0;
         }
     }

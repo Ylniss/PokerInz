@@ -53,6 +53,9 @@ namespace PokerAPI.Game
             BigBlind = bigBlind;
             PlayingCards = playingCards;
             Table = new Table(0, players.Count);
+
+            foreach(Player player in Players)
+                player.OnBetChange += new Player.BetHandler(Table.UpdateBet);
         }
 
         public IPlayer GetNextPlayer(IPlayer player)
@@ -67,8 +70,8 @@ namespace PokerAPI.Game
 
         public IPlayer GetNextActivePlayer(IPlayer player)
         {
-            if (!Players.Where(x => x.PlayerState == PlayerState.Active).Any())
-                throw new InvalidOperationException("There are no active players.");
+            if (!Players.Where(x => x.CanTakeAction).Any())
+                return null;//throw new InvalidOperationException("There are no active players.");
 
             IPlayer nextPlayer;
 
@@ -79,7 +82,7 @@ namespace PokerAPI.Game
             else
                 nextPlayer =  Players[currentTablePosition + 1];
 
-            if (nextPlayer.PlayerState == PlayerState.Folded)
+            if (!nextPlayer.CanTakeAction)
                 nextPlayer = GetNextActivePlayer(nextPlayer);
 
             return nextPlayer;
@@ -99,6 +102,80 @@ namespace PokerAPI.Game
         {
             if (GameEvent != null)
                 GameEvent(this);
+        }
+
+        protected int evaluatePlayerHand(IPlayer player)
+        {
+            foreach (ICard card in player.HoleCards)
+                Table.CommunityCards.Add(card);
+
+            Table.CommunityCards.EvaluateRanking();
+
+            foreach (ICard card in player.HoleCards)
+                Table.CommunityCards.Remove(card);
+
+            return Table.CommunityCards.HandRankingValue;
+        }
+
+        /// <summary>
+        /// Takes action of given player and if successful returns true.
+        /// In case of error/exception returns false.
+        /// </summary>
+        protected bool takeAction(IPlayer player)
+        {
+            IGameAction gameAction;
+
+            try
+            {
+                gameAction = player.TakeAction(Table);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            if (gameAction == null)
+                return false;
+
+            return true;
+        }
+
+        protected void removeLostPlayers()
+        {
+            var lostPlayers = Players.Where(x => x.Chips <= 0);
+
+            for (int i = 0; i < lostPlayers.Count(); ++i)
+                Players.Remove(lostPlayers.First());
+
+            for (int i = 0; i < Players.Count; ++i)
+                Players[i].TablePosition = i;
+        }
+
+        protected bool allPlayersTookAction()
+        {
+            return Players.Where(x => x.TookAction).Count() == Players.Count;
+        }
+
+        protected bool lastPlayerCalled()
+        {
+            var activePlayersBets = Players.Where(x => x.CanTakeAction).Select(x => x.Bet);
+
+            bool same = activePlayersBets.Distinct().Count() == 1;
+
+            return same && activePlayersBets.First() != 0 && activePlayersBets.Count() > 1;
+        }
+
+        protected bool allActivePlayersChecked()
+        {
+            int activePlayersCount = Players.Where(x => x.PlayerState != PlayerState.Folded).Count();
+            int checkedPlayersCount = Players.Where(x => x.PlayerState == PlayerState.Checked).Count();
+
+            return activePlayersCount == checkedPlayersCount;
+        }
+
+        protected bool isOnePlayerActiveLeft()
+        {
+            return Players.Where(x => x.PlayerState == PlayerState.Folded).Count() == Players.Count - 1;
         }
     }
 }

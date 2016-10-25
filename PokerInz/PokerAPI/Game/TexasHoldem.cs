@@ -32,14 +32,20 @@ namespace PokerAPI.Game
         {
             foreach (IPlayer player in Players)
             {
-                PlayingCards.Add(player.HoleCards[0]);
-                PlayingCards.Add(player.HoleCards[1]);
+                foreach (ICard card in player.HoleCards)
+                {
+                    PlayingCards.Add(card);
+                }
+
+                player.HoleCards.Clear();
             }
 
             foreach (ICard card in Table.CommunityCards)
             {
                 PlayingCards.Add(card);
             }
+
+            Table.CommunityCards.Clear();
         }
 
         public override void SetBlinds()
@@ -49,11 +55,11 @@ namespace PokerAPI.Game
 
             IPlayer nextPlayer = GetNextPlayer(Players[Table.DealerPosition]);
             nextPlayer.Blind = Blind.Small;
-            Table.PlayerBets[nextPlayer.Name] = nextPlayer.Bet = SmallBlind;
+            nextPlayer.Bet = SmallBlind;
 
             nextPlayer = GetNextPlayer(nextPlayer);
             nextPlayer.Blind = Blind.Big;
-            Table.PlayerBets[nextPlayer.Name] = nextPlayer.Bet = BigBlind;
+            nextPlayer.Bet = BigBlind;
         }
 
         public override void Licitation()
@@ -76,30 +82,31 @@ namespace PokerAPI.Game
 
                 notify();
 
-                IPlayer player = GetNextActivePlayer(Players.Where(x => x.Blind == Blind.Big).First());
+                IPlayer nextPlayer = GetNextActivePlayer(Players.Where(x => x.Blind == Blind.Big).First());
 
-                for (int i = 0; i < Players.Count; ++i)
+                while (nextPlayer != null && (!allPlayersTookAction() || !lastPlayerCalled()))// && !allActivePlayersChecked() && !isOnePlayerActiveLeft())
                 {
-                    if(Players.Where(x => x.PlayerState != PlayerState.Folded).Count() > 1)
-                        while (!takeAction(player)) ;
+                    if(nextPlayer != null && nextPlayer.CanTakeAction)
+                        while (!takeAction(nextPlayer));
 
-                    player = GetNextActivePlayer(player);
+                    nextPlayer = GetNextActivePlayer(nextPlayer);             
                 }
 
                 notify();
 
-                Table.PlayerBets = Table.PlayerBets.ToDictionary(x => x.Key, x => 0);  
+                foreach (IPlayer activePlayer in Players.Where(x => x.PlayerState != PlayerState.Folded))
+                {
+                    Table.Pot += activePlayer.Bet;
+                    activePlayer.Bet = 0;
+
+                    if (activePlayer.PlayerState == PlayerState.Checked)
+                        activePlayer.PlayerState = PlayerState.Active;
+                }
             }
         }
 
         public override void OnDealFinish()
         {
-            foreach (IPlayer player in Players.Where(x => x.PlayerState != PlayerState.Folded))
-            {
-                Table.Pot += player.Bet;
-                player.Bet = 0;
-            }
-
             ++Table.DealerPosition;
 
             IPlayer winningPlayer;
@@ -110,20 +117,11 @@ namespace PokerAPI.Game
             }   
             else //there are more active players, so hand ranking tells who win
             {
-                EvaluableCards evaluableCards = new CommunityCards(new MyRankingEvaluator());
                 IDictionary<IPlayer, int> playerHandRankings = new Dictionary<IPlayer, int>();
 
                 foreach(IPlayer player in Players.Where(x => x.PlayerState != PlayerState.Folded))
                 {
-                    foreach (ICard card in Table.CommunityCards)
-                        evaluableCards.Add(card);
-
-                    foreach (ICard card in player.HoleCards)
-                        Table.CommunityCards.Add(card);
-
-                    evaluableCards.EvaluateRanking();
-
-                    playerHandRankings[player] = evaluableCards.HandRankingValue;
+                    playerHandRankings[player] = evaluatePlayerHand(player);
                 }
 
                 winningPlayer = playerHandRankings.OrderBy(x => x.Value).Last().Key;
@@ -132,40 +130,10 @@ namespace PokerAPI.Game
             winningPlayer.Chips += Table.Pot;
             Table.Pot = 0;
 
+            removeLostPlayers();
+
             foreach (IPlayer player in Players)
                 player.PlayerState = PlayerState.Active;
-        }
-
-        /// <summary>
-        /// Takes action of given player and if successful returns true.
-        /// In case of error/exception returns false.
-        /// </summary>
-        private bool takeAction(IPlayer player)
-        {
-            IGameAction gameAction;
-
-            try
-            {
-                gameAction = player.TakeAction(Table);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-
-            if (gameAction == null)
-                return false;
-
-            if (gameAction is GameActionBet)
-            {
-                var gameActionBet = gameAction as GameActionBet;
-
-                Table.PlayerBets[player.Name] = gameActionBet.Bet;
-            }
-
-            player = GetNextActivePlayer(player);
-
-            return true;
         }
     }
 }
