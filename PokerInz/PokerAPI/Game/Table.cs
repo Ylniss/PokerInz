@@ -55,9 +55,9 @@ namespace PokerAPI.Game
 
         public int Pot { get; set; }
 
-        public Table(int dealerPosition, int playersCount)
+        public Table(int playersCount)
         {
-            this.dealerPosition = dealerPosition;
+            dealerPosition = playersCount;
             this.playersCount = playersCount;
         }
 
@@ -68,6 +68,15 @@ namespace PokerAPI.Game
                 var player = subject as Player;
                 PlayerBets[player.Name] = player.Bet;
             }
+        }
+
+        public void UpdatePlayersCount(object subject)
+        {
+            if (subject is Game)
+            {
+                var game = subject as Game;
+                playersCount = game.Players.Count;
+            }             
         }
     }
 }

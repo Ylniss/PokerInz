@@ -55,5 +55,10 @@ namespace PokerAPI
         /// 
         /// </summary>
         IGameAction TakeAction(ITable table);
+
+        /// <summary>
+        /// Sets bet for big blind and small blind.
+        /// </summary>
+        void SetBlindBet(int blind);
     }
 }

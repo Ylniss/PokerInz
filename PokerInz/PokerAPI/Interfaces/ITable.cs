@@ -30,5 +30,7 @@ namespace PokerAPI
         EvaluableCards CommunityCards { get; set; }
 
         void UpdateBet(object subject);
+
+        void UpdatePlayersCount(object subject);
     }
 }

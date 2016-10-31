@@ -12,7 +12,7 @@ namespace PokerAPI.Game
 
         public GameActionBet(IPlayer currentPlayer, ITable table, int bet) : base(table)
         {
-            if (bet < currentPlayer.Bet || bet > currentPlayer.Chips + currentPlayer.Bet || bet < Table.PlayerBets.Values.Max())
+            if (bet < currentPlayer.Bet || bet > currentPlayer.Chips + currentPlayer.Bet || (bet < Table.PlayerBets.Values.Max() && bet < currentPlayer.Chips + currentPlayer.Bet))
                 throw new ArgumentOutOfRangeException("Bet is less or greater than expected.");
 
             currentPlayer.Bet = Bet = bet;

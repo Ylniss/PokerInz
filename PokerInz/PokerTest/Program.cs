@@ -35,11 +35,13 @@ namespace PokerTest
 
                 game.Licitation();
 
-                game.OnDealFinish();
+                game.ReturnCardsToDeck();
 
-                game.ReturnCardsToDeck(); 
+                game.RemoveLostPlayers();
             }
 
+            Console.WriteLine("\n-------- GAME OVER --------\n");
+            Console.WriteLine($"{game.Players.First().Name} wins.");
             Console.ReadKey();
         }
 

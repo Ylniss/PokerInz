@@ -50,19 +50,26 @@ namespace PokerAPI.Game
 
         public override void SetBlinds()
         {
+            ++Table.DealerPosition;
+
             foreach (IPlayer player in Players)
                 player.Blind = Blind.None;
 
             IPlayer nextPlayer = GetNextPlayer(Players[Table.DealerPosition]);
             nextPlayer.Blind = Blind.Small;
-            nextPlayer.Bet = SmallBlind;
+            nextPlayer.SetBlindBet(SmallBlind);
 
             nextPlayer = GetNextPlayer(nextPlayer);
             nextPlayer.Blind = Blind.Big;
-            nextPlayer.Bet = BigBlind;
+            nextPlayer.SetBlindBet(BigBlind);
         }
 
-        public override void Licitation()
+        protected override void onDealStart()
+        {
+
+        }
+
+        protected override void onLicitation()
         {
             foreach (GameStage gameStage in Enum.GetValues(typeof(GameStage)))
             {
@@ -84,15 +91,13 @@ namespace PokerAPI.Game
 
                 IPlayer nextPlayer = GetNextActivePlayer(Players.Where(x => x.Blind == Blind.Big).First());
 
-                while (nextPlayer != null && (!allPlayersTookAction() || !lastPlayerCalled()))// && !allActivePlayersChecked() && !isOnePlayerActiveLeft())
+                while (nextPlayer != null && (!allPlayersTookAction() || !lastPlayerCalled()) && (!allPlayersTookAction() || !isOnePlayerActiveLeft()) && !allActivePlayersChecked() && !allButOnePlayerFolded())
                 {
                     if(nextPlayer != null && nextPlayer.CanTakeAction)
                         while (!takeAction(nextPlayer));
 
                     nextPlayer = GetNextActivePlayer(nextPlayer);             
                 }
-
-                notify();
 
                 foreach (IPlayer activePlayer in Players.Where(x => x.PlayerState != PlayerState.Folded))
                 {
@@ -103,12 +108,11 @@ namespace PokerAPI.Game
                         activePlayer.PlayerState = PlayerState.Active;
                 }
             }
+
         }
 
-        public override void OnDealFinish()
+        protected override void onDealFinish()
         {
-            ++Table.DealerPosition;
-
             IPlayer winningPlayer;
 
             if (Players.Where(x => x.PlayerState == PlayerState.Folded).Count() == Players.Count - 1) //everyone except one player folded
@@ -129,8 +133,6 @@ namespace PokerAPI.Game
 
             winningPlayer.Chips += Table.Pot;
             Table.Pot = 0;
-
-            removeLostPlayers();
 
             foreach (IPlayer player in Players)
                 player.PlayerState = PlayerState.Active;

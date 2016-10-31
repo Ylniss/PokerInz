@@ -53,7 +53,7 @@ namespace PokerAPI.Game
             get
             {
                 if (chips == 0)
-                    return PlayerState.AllIn;
+                    playerState = PlayerState.AllIn;
                 return playerState;
             }
 
@@ -61,15 +61,9 @@ namespace PokerAPI.Game
             {
                 playerState = value;
                 if (value != PlayerState.Active)
-                {
                     tookAction = true;
-                    if (value == PlayerState.Folded)
-                        chips -= bet;
-                }
                 else
-                {
                     tookAction = false;
-                }
             }
         }
 
@@ -94,6 +88,12 @@ namespace PokerAPI.Game
             TablePosition = tablePosition;
             this.chips = chips;
             PlayerState = PlayerState.Active;
+        }
+
+        public void SetBlindBet(int blind)
+        {
+            Bet = blind;
+            tookAction = false;
         }
 
         public abstract IGameAction TakeAction(ITable table);

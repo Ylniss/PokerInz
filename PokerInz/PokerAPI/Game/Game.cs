@@ -12,6 +12,7 @@ namespace PokerAPI.Game
     {
         public delegate void GameHandler(object sender);
         public event GameHandler GameEvent;
+        public event GameHandler TableUpdateEvent;
 
         public BettingRule BettingRule { get; }
 
@@ -52,7 +53,9 @@ namespace PokerAPI.Game
             SmallBlind = smallBlind;
             BigBlind = bigBlind;
             PlayingCards = playingCards;
-            Table = new Table(0, players.Count);
+            Table = new Table(players.Count);
+
+            TableUpdateEvent += new GameHandler(Table.UpdatePlayersCount);
 
             foreach(Player player in Players)
                 player.OnBetChange += new Player.BetHandler(Table.UpdateBet);
@@ -71,7 +74,7 @@ namespace PokerAPI.Game
         public IPlayer GetNextActivePlayer(IPlayer player)
         {
             if (!Players.Where(x => x.CanTakeAction).Any())
-                return null;//throw new InvalidOperationException("There are no active players.");
+                return null;
 
             IPlayer nextPlayer;
 
@@ -88,15 +91,38 @@ namespace PokerAPI.Game
             return nextPlayer;
         }
 
+        public void RemoveLostPlayers()
+        {
+            var lostPlayers = Players.Where(x => x.Chips <= 0).ToArray();
+
+            for (int i = 0; i < lostPlayers.Count(); ++i)
+                Players.Remove(lostPlayers.ElementAt(i));
+
+            for (int i = 0; i < Players.Count; ++i)
+                Players[i].TablePosition = i;
+
+            if (TableUpdateEvent != null)
+                TableUpdateEvent(this);
+        }
+
         public abstract void HandOutCardsToPlayers();
 
         public abstract void ReturnCardsToDeck();
 
         public abstract void SetBlinds();
 
-        public abstract void Licitation();
+        public void Licitation()
+        {
+            onDealStart();
+            onLicitation();
+            onDealFinish();
+        }
 
-        public abstract void OnDealFinish();
+        protected abstract void onDealStart();
+
+        protected abstract void onLicitation();
+
+        protected abstract void onDealFinish();
 
         protected virtual void notify()
         {
@@ -140,17 +166,6 @@ namespace PokerAPI.Game
             return true;
         }
 
-        protected void removeLostPlayers()
-        {
-            var lostPlayers = Players.Where(x => x.Chips <= 0);
-
-            for (int i = 0; i < lostPlayers.Count(); ++i)
-                Players.Remove(lostPlayers.First());
-
-            for (int i = 0; i < Players.Count; ++i)
-                Players[i].TablePosition = i;
-        }
-
         protected bool allPlayersTookAction()
         {
             return Players.Where(x => x.TookAction).Count() == Players.Count;
@@ -162,7 +177,7 @@ namespace PokerAPI.Game
 
             bool same = activePlayersBets.Distinct().Count() == 1;
 
-            return same && activePlayersBets.First() != 0 && activePlayersBets.Count() > 1;
+            return same && activePlayersBets.First() != 0 && activePlayersBets.Count() + Players.Where(x => x.PlayerState == PlayerState.AllIn).Count() > 1;
         }
 
         protected bool allActivePlayersChecked()
@@ -174,6 +189,12 @@ namespace PokerAPI.Game
         }
 
         protected bool isOnePlayerActiveLeft()
+        {
+            //return Players.Where(x => x.PlayerState == PlayerState.Folded).Count() == Players.Count - 1;
+            return Players.Where(x => x.CanTakeAction).Count() == 1;
+        }
+
+        protected bool allButOnePlayerFolded()
         {
             return Players.Where(x => x.PlayerState == PlayerState.Folded).Count() == Players.Count - 1;
         }
