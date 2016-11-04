@@ -27,17 +27,7 @@ namespace PokerTest
 
             while (!game.IsGameOver)
             {
-                game.PlayingCards.Shuffle();
-
-                game.HandOutCardsToPlayers();
-
-                game.SetBlinds();
-
                 game.Licitation();
-
-                game.ReturnCardsToDeck();
-
-                game.RemoveLostPlayers();
             }
 
             Console.WriteLine("\n-------- GAME OVER --------\n");

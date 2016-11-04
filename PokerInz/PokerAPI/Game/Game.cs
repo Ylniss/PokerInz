@@ -91,7 +91,14 @@ namespace PokerAPI.Game
             return nextPlayer;
         }
 
-        public void RemoveLostPlayers()
+        public void Licitation()
+        {
+            onDealStart();
+            onLicitation();
+            onDealFinish();
+        }
+
+        protected void removeLostPlayers()
         {
             var lostPlayers = Players.Where(x => x.Chips <= 0).ToArray();
 
@@ -105,18 +112,11 @@ namespace PokerAPI.Game
                 TableUpdateEvent(this);
         }
 
-        public abstract void HandOutCardsToPlayers();
+        protected abstract void handOutCardsToPlayers();
 
-        public abstract void ReturnCardsToDeck();
+        protected abstract void returnCardsToDeck();
 
-        public abstract void SetBlinds();
-
-        public void Licitation()
-        {
-            onDealStart();
-            onLicitation();
-            onDealFinish();
-        }
+        protected abstract void setBlinds();
 
         protected abstract void onDealStart();
 
