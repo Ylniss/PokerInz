@@ -68,6 +68,8 @@ namespace PokerAPI.Game
         {
             PlayingCards.Shuffle();
 
+            PlayerHandScores.Clear();
+
             handOutCardsToPlayers();
 
             setBlinds();
@@ -140,14 +142,12 @@ namespace PokerAPI.Game
             }
             else //there are more active players, so hand ranking tells who win
             {
-                IDictionary<IPlayer, int> playerHandRankings = new Dictionary<IPlayer, int>();
-
                 foreach (IPlayer player in Players.Where(x => x.PlayerState != PlayerState.Folded))
                 {
-                    playerHandRankings[player] = evaluatePlayerHand(player);
+                    evaluatePlayerHand(player);
                 }
 
-                winningPlayer = playerHandRankings.OrderBy(x => x.Value).Last().Key;
+                winningPlayer = PlayerHandScores.OrderBy(x => x.Value).First().Key;
             }
 
             return winningPlayer;

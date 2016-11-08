@@ -14,6 +14,20 @@ namespace PokerTest
     {
         static void Main(string[] args)
         {
+            //IRankingEvaluator eval = new MyRankingEvaluator();
+
+            //CardsCollection cards = new CommunityCards(eval);
+
+            //cards.Add(new Card(CardSuit.Hearts, CardRank.Six));
+            //cards.Add(new Card(CardSuit.Diamonds, CardRank.Seven));
+            //cards.Add(new Card(CardSuit.Diamonds, CardRank.Eight));
+            //cards.Add(new Card(CardSuit.Clubs, CardRank.Nine));
+            //cards.Add(new Card(CardSuit.Clubs, CardRank.Ten));
+
+            //int ranking = eval.EvaluateRanking(cards);
+
+            //Console.WriteLine($"Ranking: {ranking}");
+
             Game game = new TexasHoldem(new List<IPlayer> {
                 new HumanConsolePlayer("bagn000", 0, 1000),
                 new HumanConsolePlayer("sdfsdf111", 1, 1000),
@@ -23,11 +37,14 @@ namespace PokerTest
 
             game.GameEvent += new Game.GameHandler(UpdateGui);
 
-            Random random = new Random();
-
             while (!game.IsGameOver)
             {
                 game.Licitation();
+
+                foreach (var hand in game.PlayerHandScores)
+                {
+                    Console.WriteLine($"{hand.Key.Name}'s ranking: {hand.Value} ({game.GetHandRanking(hand.Value)})");
+                }
             }
 
             Console.WriteLine("\n-------- GAME OVER --------\n");

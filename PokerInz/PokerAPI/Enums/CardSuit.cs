@@ -8,9 +8,9 @@ namespace PokerAPI.Enums
 {
     public enum CardSuit
     {
-        Hearts = 0,
+        Clubs = 0,
         Diamonds = 1,
-        Clubs = 2,
+        Hearts = 2,   
         Spades = 3,
     }
 

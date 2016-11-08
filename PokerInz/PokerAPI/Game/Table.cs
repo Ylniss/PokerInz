@@ -14,7 +14,7 @@ namespace PokerAPI.Game
 
         private int dealerPosition;
 
-        public EvaluableCards CommunityCards { get; set; } = new CommunityCards(new MyRankingEvaluator());
+        public EvaluableCards CommunityCards { get; set; } = new CommunityCards(new CactusSneezeEvaluator());
 
         public int DealerPosition
         {

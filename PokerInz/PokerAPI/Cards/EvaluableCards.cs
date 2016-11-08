@@ -20,7 +20,6 @@ namespace PokerAPI.Cards
         public EvaluableCards(IRankingEvaluator rankingEvaluator)
         {
             RankingEvaluator = rankingEvaluator;
-            EvaluateRanking();
         }
 
         public void EvaluateRanking()

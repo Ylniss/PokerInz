@@ -24,6 +24,8 @@ namespace PokerAPI.Game
 
         public ITable Table { get; private set; }
 
+        public IDictionary<IPlayer, int> PlayerHandScores { get; } = new Dictionary<IPlayer, int>();
+
         public virtual bool IsGameOver
         {
             get
@@ -98,6 +100,42 @@ namespace PokerAPI.Game
             onDealFinish();
         }
 
+        /// <summary>
+        /// Gets hand ranking depending on given score.
+        /// Score has to be between 1 to 7462.
+        /// </summary>
+        public HandRanking GetHandRanking(int score)
+        {
+            if (score < 1 || score > 7462)
+                throw new ArgumentException("Score is outside of a range (1-7462).");
+
+            if (score >= 6186 && score <= 7462)
+                return HandRanking.HighCard;
+            else if (score >= 3326 && score <= 6185)
+                return HandRanking.Pair;
+            else if (score >= 2468 && score <= 3325)
+                return HandRanking.TwoPairs;
+            else if (score >= 1610 && score <= 2467)
+                return HandRanking.ThreeOfAKind;
+            else if (score >= 1600 && score <= 1609)
+                return HandRanking.Straight;
+            else if (score >= 323 && score <= 1599)
+                return HandRanking.Flush;
+            else if (score >= 167 && score <= 322)
+                return HandRanking.FullHouse;
+            else if (score >= 11 && score <= 166)
+                return HandRanking.FourOfAKind;
+            else if (score >= 2 && score <= 10)
+                return HandRanking.StraightFlush;
+
+            return HandRanking.RoyalFlush;
+        }
+
+        public HandRanking GetHandRanking(IPlayer player)
+        {
+            return GetHandRanking(PlayerHandScores[player]);
+        }
+
         protected void removeLostPlayers()
         {
             var lostPlayers = Players.Where(x => x.Chips <= 0).ToArray();
@@ -130,7 +168,10 @@ namespace PokerAPI.Game
                 GameEvent(this);
         }
 
-        protected int evaluatePlayerHand(IPlayer player)
+        /// <summary>
+        /// Evaluates player hand using Table evaluator. Sets ranking to a dictionary of player scores.
+        /// </summary>
+        protected void evaluatePlayerHand(IPlayer player)
         {
             foreach (ICard card in player.HoleCards)
                 Table.CommunityCards.Add(card);
@@ -140,7 +181,7 @@ namespace PokerAPI.Game
             foreach (ICard card in player.HoleCards)
                 Table.CommunityCards.Remove(card);
 
-            return Table.CommunityCards.HandRankingValue;
+            PlayerHandScores[player] = Table.CommunityCards.HandRankingValue;
         }
 
         /// <summary>
