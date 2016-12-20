@@ -53,7 +53,10 @@ namespace PokerAPI.Game
             ++Table.DealerPosition;
 
             foreach (IPlayer player in Players)
+            {
                 player.Blind = Blind.None;
+                player.Bet = 0;
+            }
 
             IPlayer nextPlayer = GetNextPlayer(Players[Table.DealerPosition]);
             nextPlayer.Blind = Blind.Small;

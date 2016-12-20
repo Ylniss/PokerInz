@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PokerAPI.Enums;
+using PokerAPI.Ai;
 
 namespace PokerTest
 {
@@ -14,25 +15,18 @@ namespace PokerTest
     {
         static void Main(string[] args)
         {
-            //IRankingEvaluator eval = new MyRankingEvaluator();
-
-            //CardsCollection cards = new CommunityCards(eval);
-
-            //cards.Add(new Card(CardSuit.Hearts, CardRank.Six));
-            //cards.Add(new Card(CardSuit.Diamonds, CardRank.Seven));
-            //cards.Add(new Card(CardSuit.Diamonds, CardRank.Eight));
-            //cards.Add(new Card(CardSuit.Clubs, CardRank.Nine));
-            //cards.Add(new Card(CardSuit.Clubs, CardRank.Ten));
-
-            //int ranking = eval.EvaluateRanking(cards);
-
-            //Console.WriteLine($"Ranking: {ranking}");
+            //Game game = new TexasHoldem(new List<IPlayer> {
+            //    new HumanConsolePlayer("bagn000", 0, 1000),
+            //    new HumanConsolePlayer("sdfsdf111", 1, 1000),
+            //    new HumanConsolePlayer("zrd222", 2, 1000),
+            //    new HumanConsolePlayer("pepe333", 3, 1000),
+            //}, BettingRule.NoLimit, 10, 20);
 
             Game game = new TexasHoldem(new List<IPlayer> {
                 new HumanConsolePlayer("bagn000", 0, 1000),
-                new HumanConsolePlayer("sdfsdf111", 1, 1000),
-                new HumanConsolePlayer("zrd222", 2, 1000),
-                new HumanConsolePlayer("pepe333", 3, 1000),
+                new RandomAi("sdfsdf111", 1, 1000),
+                new RandomAi("zrd222", 2, 1000),
+                new RandomAi("pepe333", 3, 1000),
             }, BettingRule.NoLimit, 10, 20);
 
             game.GameEvent += new Game.GameHandler(UpdateGui);

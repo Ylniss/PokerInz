@@ -196,7 +196,7 @@ namespace PokerAPI.Game
             {
                 gameAction = player.TakeAction(Table);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return false;
             }
