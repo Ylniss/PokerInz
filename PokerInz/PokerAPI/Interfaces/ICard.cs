@@ -12,5 +12,9 @@ namespace PokerAPI
         CardSuit Suit { get; }
 
         CardRank Rank { get; }
+
+        bool Equals(object obj);
+
+        int GetHashCode();
     }
 }

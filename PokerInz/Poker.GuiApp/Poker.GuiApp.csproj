@@ -54,6 +54,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>resources.resx</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -66,6 +71,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -78,6 +87,171 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PokerAPI\Poker.API.csproj">
+      <Project>{f9e3b580-736d-4951-99ab-4455cdc76de0}</Project>
+      <Name>Poker.API</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-00-00.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-00-01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-00-02.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-00-03.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-01-00.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-01-01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-01-02.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-01-03.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-02-00.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-02-01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-02-02.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-02-03.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-03-00.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-03-01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-03-02.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-03-03.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-04-00.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-04-01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-04-02.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-04-03.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-05-00.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-05-01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-05-02.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-05-03.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-06-00.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-06-01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-06-02.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-06-03.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-07-00.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-07-01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-07-02.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-07-03.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-08-00.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-08-01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-08-02.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-08-03.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-09-00.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-09-01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-09-02.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-09-03.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-10-00.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-10-01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-10-02.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-10-03.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-11-00.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-11-01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-11-02.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-11-03.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-12-00.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-12-01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-12-02.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-12-03.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards-back.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

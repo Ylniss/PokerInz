@@ -23,5 +23,18 @@ namespace PokerAPI.Cards
         {
             return $"{Rank.ToFriendlyString()}{Suit.ToFriendlyString()}";
         }
+
+        public override bool Equals(object obj)
+        {
+            ICard other = obj as ICard;
+            if (other == null)
+                return false;
+            return other.Suit.Equals(this.Suit) && other.Rank.Equals(this.Rank);
+        }
+
+        public override int GetHashCode()
+        {
+            return Suit.GetHashCode() + Rank.GetHashCode();
+        }
     }
 }
