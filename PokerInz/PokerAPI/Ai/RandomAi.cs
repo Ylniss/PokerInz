@@ -18,7 +18,7 @@ namespace PokerAPI.Ai
 
         public override IGameAction TakeAction(ITable table)
         {
-            IGameAction gameAction = new GameActionFold(this, table);
+            IGameAction gameAction = null;
 
             int myBet = table.PlayerBets[Name];
 
@@ -52,6 +52,10 @@ namespace PokerAPI.Ai
                     int raiseBet = biggestBet + random.Next(Chips / 2);
                     gameAction = new GameActionBet(this, table, raiseBet);
                 }
+                else if (choice == 2)
+                {
+                    gameAction = new GameActionFold(this, table);
+                }
             }
             else
             {
@@ -63,6 +67,10 @@ namespace PokerAPI.Ai
                 {
                     int raiseBet = biggestBet + random.Next(Chips / 2);
                     gameAction = new GameActionBet(this, table, raiseBet);
+                }
+                else if (choice == 2)
+                {
+                    gameAction = new GameActionFold(this, table);
                 }
             }
 

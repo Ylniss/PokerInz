@@ -20,6 +20,7 @@ namespace Poker.GuiApp
     {
         private Dictionary<ICard, Image> cardImages = new Dictionary<ICard, Image>();
         private List<IPlayer> players;
+        private ITable table;
 
         public Form1()
         {
@@ -40,13 +41,15 @@ namespace Poker.GuiApp
 
             Game game = new TexasHoldem(players, BettingRule.NoLimit, 10, 20);
 
+            table = game.Table;
+
             game.GameEvent += new Game.GameHandler(UpdateGui);
 
             while (!game.IsGameOver)
             {
                 game.Licitation();
 
-                
+
                 //foreach (var hand in game.PlayerHandScores)
                 //{
                 //    Console.WriteLine($"{hand.Key.Name}'s ranking: {hand.Value} ({game.GetHandRanking(hand.Value)})");
@@ -91,6 +94,7 @@ namespace Poker.GuiApp
                 //Console.WriteLine($"Pot: {game.Table.Pot}");
 
             }
+
         }
 
         private void setGuiInformations(List<IPlayer> players)
@@ -188,6 +192,22 @@ namespace Poker.GuiApp
                 card2P9.Image = cardImages[playersArray[9].HoleCards[1]];
                 betP9.Text = playersArray[9].Bet.ToString();
             }
+
+            if (table.CommunityCards.Any())
+            {
+                card1Flop.Image = cardImages[table.CommunityCards[0]];
+                card2Flop.Image = cardImages[table.CommunityCards[1]];
+                card3Flop.Image = cardImages[table.CommunityCards[2]];
+            }
+
+            if(table.CommunityCards.Count > 3)
+                cardTurn.Image = cardImages[table.CommunityCards[3]];
+
+            if (table.CommunityCards.Count > 4)
+                cardRiver.Image = cardImages[table.CommunityCards[4]];
+
+            pot.Text = table.Pot.ToString();
+
         }
 
         private void setAllCardBacks()
