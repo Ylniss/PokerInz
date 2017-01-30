@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBoxP0 = new System.Windows.Forms.GroupBox();
+            this.statusP0 = new System.Windows.Forms.Label();
             this.betP0 = new System.Windows.Forms.Label();
             this.labelBetP0 = new System.Windows.Forms.Label();
             this.card2P0 = new System.Windows.Forms.PictureBox();
@@ -38,6 +39,7 @@
             this.labelCashP0 = new System.Windows.Forms.Label();
             this.labelNameP0 = new System.Windows.Forms.Label();
             this.groupBoxP1 = new System.Windows.Forms.GroupBox();
+            this.statusP1 = new System.Windows.Forms.Label();
             this.betP1 = new System.Windows.Forms.Label();
             this.labelBetP1 = new System.Windows.Forms.Label();
             this.card2P1 = new System.Windows.Forms.PictureBox();
@@ -47,6 +49,7 @@
             this.labelCashP1 = new System.Windows.Forms.Label();
             this.labelNameP1 = new System.Windows.Forms.Label();
             this.groupBoxP2 = new System.Windows.Forms.GroupBox();
+            this.statusP2 = new System.Windows.Forms.Label();
             this.betP2 = new System.Windows.Forms.Label();
             this.labelBetP2 = new System.Windows.Forms.Label();
             this.card2P2 = new System.Windows.Forms.PictureBox();
@@ -56,6 +59,7 @@
             this.labelCashP2 = new System.Windows.Forms.Label();
             this.labelNameP2 = new System.Windows.Forms.Label();
             this.groupBoxP3 = new System.Windows.Forms.GroupBox();
+            this.statusP3 = new System.Windows.Forms.Label();
             this.betP3 = new System.Windows.Forms.Label();
             this.labelBetP3 = new System.Windows.Forms.Label();
             this.card2P3 = new System.Windows.Forms.PictureBox();
@@ -65,6 +69,7 @@
             this.labelCashP3 = new System.Windows.Forms.Label();
             this.labelNameP3 = new System.Windows.Forms.Label();
             this.groupBoxP4 = new System.Windows.Forms.GroupBox();
+            this.statusP4 = new System.Windows.Forms.Label();
             this.betP4 = new System.Windows.Forms.Label();
             this.labelBetP4 = new System.Windows.Forms.Label();
             this.card2P4 = new System.Windows.Forms.PictureBox();
@@ -74,6 +79,7 @@
             this.labelCashP4 = new System.Windows.Forms.Label();
             this.labelNameP4 = new System.Windows.Forms.Label();
             this.groupBoxP5 = new System.Windows.Forms.GroupBox();
+            this.statusP5 = new System.Windows.Forms.Label();
             this.betP5 = new System.Windows.Forms.Label();
             this.labelBetP5 = new System.Windows.Forms.Label();
             this.card2P5 = new System.Windows.Forms.PictureBox();
@@ -83,6 +89,7 @@
             this.labelCashP5 = new System.Windows.Forms.Label();
             this.labelNameP5 = new System.Windows.Forms.Label();
             this.groupBoxP6 = new System.Windows.Forms.GroupBox();
+            this.statusP6 = new System.Windows.Forms.Label();
             this.betP6 = new System.Windows.Forms.Label();
             this.labelBetP6 = new System.Windows.Forms.Label();
             this.card2P6 = new System.Windows.Forms.PictureBox();
@@ -92,6 +99,7 @@
             this.labelCashP6 = new System.Windows.Forms.Label();
             this.labelNameP6 = new System.Windows.Forms.Label();
             this.groupBoxP7 = new System.Windows.Forms.GroupBox();
+            this.statusP7 = new System.Windows.Forms.Label();
             this.betP7 = new System.Windows.Forms.Label();
             this.labelBetP7 = new System.Windows.Forms.Label();
             this.card2P7 = new System.Windows.Forms.PictureBox();
@@ -101,6 +109,7 @@
             this.labelCashP7 = new System.Windows.Forms.Label();
             this.labelNameP7 = new System.Windows.Forms.Label();
             this.groupBoxP8 = new System.Windows.Forms.GroupBox();
+            this.statusP8 = new System.Windows.Forms.Label();
             this.betP8 = new System.Windows.Forms.Label();
             this.labelBetP8 = new System.Windows.Forms.Label();
             this.card2P8 = new System.Windows.Forms.PictureBox();
@@ -110,6 +119,7 @@
             this.labelCashP8 = new System.Windows.Forms.Label();
             this.labelNameP8 = new System.Windows.Forms.Label();
             this.groupBoxP9 = new System.Windows.Forms.GroupBox();
+            this.statusP9 = new System.Windows.Forms.Label();
             this.betP9 = new System.Windows.Forms.Label();
             this.labelBetP9 = new System.Windows.Forms.Label();
             this.card2P9 = new System.Windows.Forms.PictureBox();
@@ -125,6 +135,9 @@
             this.cardRiver = new System.Windows.Forms.PictureBox();
             this.labelPot = new System.Windows.Forms.Label();
             this.pot = new System.Windows.Forms.Label();
+            this.buttonStart = new System.Windows.Forms.Button();
+            this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
+            this.labelLog = new System.Windows.Forms.Label();
             this.groupBoxP0.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.card2P0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.card1P0)).BeginInit();
@@ -164,6 +177,7 @@
             // 
             // groupBoxP0
             // 
+            this.groupBoxP0.Controls.Add(this.statusP0);
             this.groupBoxP0.Controls.Add(this.betP0);
             this.groupBoxP0.Controls.Add(this.labelBetP0);
             this.groupBoxP0.Controls.Add(this.card2P0);
@@ -178,6 +192,15 @@
             this.groupBoxP0.Size = new System.Drawing.Size(215, 120);
             this.groupBoxP0.TabIndex = 0;
             this.groupBoxP0.TabStop = false;
+            // 
+            // statusP0
+            // 
+            this.statusP0.AutoSize = true;
+            this.statusP0.Location = new System.Drawing.Point(154, 9);
+            this.statusP0.Name = "statusP0";
+            this.statusP0.Size = new System.Drawing.Size(54, 13);
+            this.statusP0.TabIndex = 8;
+            this.statusP0.Text = "[statusP0]";
             // 
             // betP0
             // 
@@ -253,6 +276,7 @@
             // 
             // groupBoxP1
             // 
+            this.groupBoxP1.Controls.Add(this.statusP1);
             this.groupBoxP1.Controls.Add(this.betP1);
             this.groupBoxP1.Controls.Add(this.labelBetP1);
             this.groupBoxP1.Controls.Add(this.card2P1);
@@ -267,6 +291,15 @@
             this.groupBoxP1.Size = new System.Drawing.Size(215, 120);
             this.groupBoxP1.TabIndex = 8;
             this.groupBoxP1.TabStop = false;
+            // 
+            // statusP1
+            // 
+            this.statusP1.AutoSize = true;
+            this.statusP1.Location = new System.Drawing.Point(154, 9);
+            this.statusP1.Name = "statusP1";
+            this.statusP1.Size = new System.Drawing.Size(54, 13);
+            this.statusP1.TabIndex = 9;
+            this.statusP1.Text = "[statusP1]";
             // 
             // betP1
             // 
@@ -342,6 +375,7 @@
             // 
             // groupBoxP2
             // 
+            this.groupBoxP2.Controls.Add(this.statusP2);
             this.groupBoxP2.Controls.Add(this.betP2);
             this.groupBoxP2.Controls.Add(this.labelBetP2);
             this.groupBoxP2.Controls.Add(this.card2P2);
@@ -356,6 +390,15 @@
             this.groupBoxP2.Size = new System.Drawing.Size(215, 120);
             this.groupBoxP2.TabIndex = 9;
             this.groupBoxP2.TabStop = false;
+            // 
+            // statusP2
+            // 
+            this.statusP2.AutoSize = true;
+            this.statusP2.Location = new System.Drawing.Point(154, 9);
+            this.statusP2.Name = "statusP2";
+            this.statusP2.Size = new System.Drawing.Size(54, 13);
+            this.statusP2.TabIndex = 9;
+            this.statusP2.Text = "[statusP2]";
             // 
             // betP2
             // 
@@ -431,6 +474,7 @@
             // 
             // groupBoxP3
             // 
+            this.groupBoxP3.Controls.Add(this.statusP3);
             this.groupBoxP3.Controls.Add(this.betP3);
             this.groupBoxP3.Controls.Add(this.labelBetP3);
             this.groupBoxP3.Controls.Add(this.card2P3);
@@ -445,6 +489,15 @@
             this.groupBoxP3.Size = new System.Drawing.Size(215, 120);
             this.groupBoxP3.TabIndex = 10;
             this.groupBoxP3.TabStop = false;
+            // 
+            // statusP3
+            // 
+            this.statusP3.AutoSize = true;
+            this.statusP3.Location = new System.Drawing.Point(154, 9);
+            this.statusP3.Name = "statusP3";
+            this.statusP3.Size = new System.Drawing.Size(54, 13);
+            this.statusP3.TabIndex = 10;
+            this.statusP3.Text = "[statusP3]";
             // 
             // betP3
             // 
@@ -520,6 +573,7 @@
             // 
             // groupBoxP4
             // 
+            this.groupBoxP4.Controls.Add(this.statusP4);
             this.groupBoxP4.Controls.Add(this.betP4);
             this.groupBoxP4.Controls.Add(this.labelBetP4);
             this.groupBoxP4.Controls.Add(this.card2P4);
@@ -534,6 +588,15 @@
             this.groupBoxP4.Size = new System.Drawing.Size(215, 120);
             this.groupBoxP4.TabIndex = 8;
             this.groupBoxP4.TabStop = false;
+            // 
+            // statusP4
+            // 
+            this.statusP4.AutoSize = true;
+            this.statusP4.Location = new System.Drawing.Point(154, 9);
+            this.statusP4.Name = "statusP4";
+            this.statusP4.Size = new System.Drawing.Size(54, 13);
+            this.statusP4.TabIndex = 11;
+            this.statusP4.Text = "[statusP4]";
             // 
             // betP4
             // 
@@ -609,6 +672,7 @@
             // 
             // groupBoxP5
             // 
+            this.groupBoxP5.Controls.Add(this.statusP5);
             this.groupBoxP5.Controls.Add(this.betP5);
             this.groupBoxP5.Controls.Add(this.labelBetP5);
             this.groupBoxP5.Controls.Add(this.card2P5);
@@ -623,6 +687,15 @@
             this.groupBoxP5.Size = new System.Drawing.Size(215, 120);
             this.groupBoxP5.TabIndex = 9;
             this.groupBoxP5.TabStop = false;
+            // 
+            // statusP5
+            // 
+            this.statusP5.AutoSize = true;
+            this.statusP5.Location = new System.Drawing.Point(154, 9);
+            this.statusP5.Name = "statusP5";
+            this.statusP5.Size = new System.Drawing.Size(54, 13);
+            this.statusP5.TabIndex = 16;
+            this.statusP5.Text = "[statusP5]";
             // 
             // betP5
             // 
@@ -698,6 +771,7 @@
             // 
             // groupBoxP6
             // 
+            this.groupBoxP6.Controls.Add(this.statusP6);
             this.groupBoxP6.Controls.Add(this.betP6);
             this.groupBoxP6.Controls.Add(this.labelBetP6);
             this.groupBoxP6.Controls.Add(this.card2P6);
@@ -712,6 +786,15 @@
             this.groupBoxP6.Size = new System.Drawing.Size(215, 120);
             this.groupBoxP6.TabIndex = 10;
             this.groupBoxP6.TabStop = false;
+            // 
+            // statusP6
+            // 
+            this.statusP6.AutoSize = true;
+            this.statusP6.Location = new System.Drawing.Point(154, 9);
+            this.statusP6.Name = "statusP6";
+            this.statusP6.Size = new System.Drawing.Size(54, 13);
+            this.statusP6.TabIndex = 15;
+            this.statusP6.Text = "[statusP6]";
             // 
             // betP6
             // 
@@ -787,6 +870,7 @@
             // 
             // groupBoxP7
             // 
+            this.groupBoxP7.Controls.Add(this.statusP7);
             this.groupBoxP7.Controls.Add(this.betP7);
             this.groupBoxP7.Controls.Add(this.labelBetP7);
             this.groupBoxP7.Controls.Add(this.card2P7);
@@ -801,6 +885,15 @@
             this.groupBoxP7.Size = new System.Drawing.Size(215, 120);
             this.groupBoxP7.TabIndex = 11;
             this.groupBoxP7.TabStop = false;
+            // 
+            // statusP7
+            // 
+            this.statusP7.AutoSize = true;
+            this.statusP7.Location = new System.Drawing.Point(154, 9);
+            this.statusP7.Name = "statusP7";
+            this.statusP7.Size = new System.Drawing.Size(54, 13);
+            this.statusP7.TabIndex = 14;
+            this.statusP7.Text = "[statusP7]";
             // 
             // betP7
             // 
@@ -876,6 +969,7 @@
             // 
             // groupBoxP8
             // 
+            this.groupBoxP8.Controls.Add(this.statusP8);
             this.groupBoxP8.Controls.Add(this.betP8);
             this.groupBoxP8.Controls.Add(this.labelBetP8);
             this.groupBoxP8.Controls.Add(this.card2P8);
@@ -890,6 +984,15 @@
             this.groupBoxP8.Size = new System.Drawing.Size(215, 120);
             this.groupBoxP8.TabIndex = 12;
             this.groupBoxP8.TabStop = false;
+            // 
+            // statusP8
+            // 
+            this.statusP8.AutoSize = true;
+            this.statusP8.Location = new System.Drawing.Point(154, 9);
+            this.statusP8.Name = "statusP8";
+            this.statusP8.Size = new System.Drawing.Size(54, 13);
+            this.statusP8.TabIndex = 13;
+            this.statusP8.Text = "[statusP8]";
             // 
             // betP8
             // 
@@ -965,6 +1068,7 @@
             // 
             // groupBoxP9
             // 
+            this.groupBoxP9.Controls.Add(this.statusP9);
             this.groupBoxP9.Controls.Add(this.betP9);
             this.groupBoxP9.Controls.Add(this.labelBetP9);
             this.groupBoxP9.Controls.Add(this.card2P9);
@@ -979,6 +1083,15 @@
             this.groupBoxP9.Size = new System.Drawing.Size(215, 120);
             this.groupBoxP9.TabIndex = 13;
             this.groupBoxP9.TabStop = false;
+            // 
+            // statusP9
+            // 
+            this.statusP9.AutoSize = true;
+            this.statusP9.Location = new System.Drawing.Point(154, 9);
+            this.statusP9.Name = "statusP9";
+            this.statusP9.Size = new System.Drawing.Size(54, 13);
+            this.statusP9.TabIndex = 12;
+            this.statusP9.Text = "[statusP9]";
             // 
             // betP9
             // 
@@ -1115,11 +1228,44 @@
             this.pot.TabIndex = 19;
             this.pot.Text = "[pot]";
             // 
+            // buttonStart
+            // 
+            this.buttonStart.Location = new System.Drawing.Point(13, 452);
+            this.buttonStart.Name = "buttonStart";
+            this.buttonStart.Size = new System.Drawing.Size(75, 23);
+            this.buttonStart.TabIndex = 20;
+            this.buttonStart.Text = "Start";
+            this.buttonStart.UseVisualStyleBackColor = true;
+            this.buttonStart.Click += new System.EventHandler(this.buttonStart_Click);
+            // 
+            // richTextBoxLog
+            // 
+            this.richTextBoxLog.BackColor = System.Drawing.SystemColors.Window;
+            this.richTextBoxLog.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.richTextBoxLog.Location = new System.Drawing.Point(896, 64);
+            this.richTextBoxLog.Name = "richTextBoxLog";
+            this.richTextBoxLog.Size = new System.Drawing.Size(240, 374);
+            this.richTextBoxLog.TabIndex = 21;
+            this.richTextBoxLog.Text = "";
+            // 
+            // labelLog
+            // 
+            this.labelLog.AutoSize = true;
+            this.labelLog.Location = new System.Drawing.Point(897, 46);
+            this.labelLog.Name = "labelLog";
+            this.labelLog.Size = new System.Drawing.Size(25, 13);
+            this.labelLog.TabIndex = 22;
+            this.labelLog.Text = "Log";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1054, 561);
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(1148, 561);
+            this.Controls.Add(this.labelLog);
+            this.Controls.Add(this.richTextBoxLog);
+            this.Controls.Add(this.buttonStart);
             this.Controls.Add(this.pot);
             this.Controls.Add(this.labelPot);
             this.Controls.Add(this.cardRiver);
@@ -1288,6 +1434,19 @@
         private System.Windows.Forms.PictureBox cardRiver;
         private System.Windows.Forms.Label labelPot;
         private System.Windows.Forms.Label pot;
+        private System.Windows.Forms.Button buttonStart;
+        private System.Windows.Forms.Label statusP0;
+        private System.Windows.Forms.Label statusP1;
+        private System.Windows.Forms.Label statusP2;
+        private System.Windows.Forms.Label statusP3;
+        private System.Windows.Forms.Label statusP4;
+        private System.Windows.Forms.Label statusP5;
+        private System.Windows.Forms.Label statusP6;
+        private System.Windows.Forms.Label statusP7;
+        private System.Windows.Forms.Label statusP8;
+        private System.Windows.Forms.Label statusP9;
+        private System.Windows.Forms.RichTextBox richTextBoxLog;
+        private System.Windows.Forms.Label labelLog;
     }
 }
 

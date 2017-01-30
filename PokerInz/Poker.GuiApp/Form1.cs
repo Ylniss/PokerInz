@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Poker.GuiApp.Properties;
+using System.Threading;
 
 namespace Poker.GuiApp
 {
@@ -22,9 +23,17 @@ namespace Poker.GuiApp
         private List<IPlayer> players;
         private ITable table;
 
+        private Game game;
+
+        private Dictionary<int, Control[]> playerControls = new Dictionary<int, Control[]>();
+
         public Form1()
         {
             InitializeComponent();
+
+            DoubleBuffered = true;
+
+            initializePlayerControls();
 
             setAllCardBacks();
             setCardsDictionary();
@@ -32,32 +41,36 @@ namespace Poker.GuiApp
             players = new List<IPlayer>
             {
                 new RandomAi("bagn000", 0, 1000),
-                new RandomAi("sdfsdf111", 1, 1000),
+                new RandomAi("sdff111", 1, 1000),
                 new RandomAi("zrd222", 2, 1000),
                 new RandomAi("pepe333", 3, 1000),
             };
 
             
 
-            Game game = new TexasHoldem(players, BettingRule.NoLimit, 10, 20);
+            game = new TexasHoldem(players, BettingRule.NoLimit, 10, 20);
 
             table = game.Table;
 
             game.GameEvent += new Game.GameHandler(UpdateGui);
 
+
+        }
+
+        private void buttonStart_Click(object sender, EventArgs e)
+        {
             while (!game.IsGameOver)
             {
                 game.Licitation();
 
-
-                //foreach (var hand in game.PlayerHandScores)
-                //{
-                //    Console.WriteLine($"{hand.Key.Name}'s ranking: {hand.Value} ({game.GetHandRanking(hand.Value)})");
-                //}
+                foreach (var hand in game.PlayerHandScores)
+                {
+                    richTextBoxLog.Text += $"{hand.Key.Name}'s ranking: {hand.Value} ({game.GetHandRanking(hand.Value)})\n";
+                }
+                Application.DoEvents();
             }
 
-            
-
+            UpdateGui(game);
         }
 
         public void UpdateGui(object subject)
@@ -65,37 +78,45 @@ namespace Poker.GuiApp
             if (subject is Game)
             {
                 setGuiInformations(players);
-                //Game game = subject as Game;
-                //string communityCardsMessage = "Community cards:  ";
-                //foreach (ICard card in game.Table.CommunityCards)
-                //    communityCardsMessage += $"{card.ToString()}, ";
 
-                //if (communityCardsMessage.Length > 2) //remove last comma
-                //    communityCardsMessage = communityCardsMessage.Remove(communityCardsMessage.Length - 2);
+                Game game = subject as Game;
+                string communityCardsMessage = "Community cards: ";
+                foreach (ICard card in game.Table.CommunityCards)
+                    communityCardsMessage += $"{card.ToString()}, ";
 
-                //Console.WriteLine($"{communityCardsMessage}\n");
-                //Console.WriteLine("Bets:");
-                //foreach (IPlayer player in game.Players)
+                if (communityCardsMessage.Length > 2) //remove last comma
+                    communityCardsMessage = communityCardsMessage.Remove(communityCardsMessage.Length - 2);
+
+                richTextBoxLog.Text += $"{communityCardsMessage}\n";
+                richTextBoxLog.Text += "Name\tChips\tBet\tState\n";
+                foreach (IPlayer player in game.Players)
+                {       
+                    string betsMessage = $"{player.Name}\t{player.Chips}\t{player.Bet}\t";
+
+                    if (player.PlayerState == PlayerState.Active)
+                        betsMessage += "[Active]";
+                    else if (player.PlayerState == PlayerState.Folded)
+                        betsMessage += "[Folded]";
+                    else if (player.PlayerState == PlayerState.Checked)
+                        betsMessage += "[Checked]";
+                    else
+                        betsMessage += "[All-in]";
+
+                    richTextBoxLog.Text += betsMessage + '\n';
+                }
+
+                richTextBoxLog.Text += $"Pot: {game.Table.Pot}\n";
+
+                //foreach (var hand in game.PlayerHandScores)
                 //{
-                //    string betsMessage = $"{player.Name}  \t chips:\t {player.Chips}\t bet:{player.Bet}";
-
-                //    if (player.PlayerState == PlayerState.Active)
-                //        betsMessage += " [ACTIVE]";
-                //    else if (player.PlayerState == PlayerState.Folded)
-                //        betsMessage += " [FOLDED]";
-                //    else if (player.PlayerState == PlayerState.Checked)
-                //        betsMessage += " [CHECKED]";
-                //    else
-                //        betsMessage += " [ALL-IN]";
-
-                //    Console.WriteLine(betsMessage);
+                //    richTextBoxLog.Text += $"{hand.Key.Name}'s ranking: {hand.Value} ({game.GetHandRanking(hand.Value)})\n";
                 //}
 
-                //Console.WriteLine($"Pot: {game.Table.Pot}");
-
             }
-
+            Application.DoEvents();
         }
+
+
 
         private void setGuiInformations(List<IPlayer> players)
         {
@@ -103,94 +124,30 @@ namespace Poker.GuiApp
 
             int count = players.Count;
 
-            if (count > 0)
+            foreach (var playerControl in playerControls)
             {
-                nameP0.Text = playersArray[0].Name;
-                cashP0.Text = playersArray[0].Chips.ToString();
-                card1P0.Image = cardImages[playersArray[0].HoleCards[0]];
-                card2P0.Image = cardImages[playersArray[0].HoleCards[1]];
-                betP0.Text = playersArray[0].Bet.ToString();
-            }
+                if (count > playerControl.Key)
+                {
+                    playerControl.Value[0].Text = playersArray[playerControl.Key].Name;
+                    playerControl.Value[1].Text = playersArray[playerControl.Key].Chips.ToString();
+                    if (playersArray[playerControl.Key].HoleCards.Any())
+                    {
+                        (playerControl.Value[2] as PictureBox).Image = cardImages[playersArray[playerControl.Key].HoleCards[0]];
+                        (playerControl.Value[3] as PictureBox).Image = cardImages[playersArray[playerControl.Key].HoleCards[1]];
+                    }
+                    playerControl.Value[4].Text = playersArray[playerControl.Key].Bet.ToString();
+                    playerControl.Value[5].Text = playersArray[playerControl.Key].PlayerState.ToString();
 
-            if (count > 1)
-            {
-                nameP1.Text = playersArray[1].Name;
-                cashP1.Text = playersArray[1].Chips.ToString();
-                card1P1.Image = cardImages[playersArray[1].HoleCards[0]];
-                card2P1.Image = cardImages[playersArray[1].HoleCards[1]];
-                betP1.Text = playersArray[1].Bet.ToString();
-            }
-
-            if (count > 2)
-            {
-                nameP2.Text = playersArray[2].Name;
-                cashP2.Text = playersArray[2].Chips.ToString();
-                card1P2.Image = cardImages[playersArray[2].HoleCards[0]];
-                card2P2.Image = cardImages[playersArray[2].HoleCards[1]];
-                betP2.Text = playersArray[2].Bet.ToString();
-            }
-
-            if (count > 3)
-            {
-                nameP3.Text = playersArray[3].Name;
-                cashP3.Text = playersArray[3].Chips.ToString();
-                card1P3.Image = cardImages[playersArray[3].HoleCards[0]];
-                card2P3.Image = cardImages[playersArray[3].HoleCards[1]];
-                betP3.Text = playersArray[3].Bet.ToString();
-            }
-
-            if (count > 4)
-            {
-                nameP4.Text = playersArray[4].Name;
-                cashP4.Text = playersArray[4].Chips.ToString();
-                card1P4.Image = cardImages[playersArray[4].HoleCards[0]];
-                card2P4.Image = cardImages[playersArray[4].HoleCards[1]];
-                betP4.Text = playersArray[4].Bet.ToString();
-            }
-
-            if (count > 5)
-            {
-                nameP5.Text = playersArray[5].Name;
-                cashP5.Text = playersArray[5].Chips.ToString();
-                card1P5.Image = cardImages[playersArray[5].HoleCards[0]];
-                card2P5.Image = cardImages[playersArray[5].HoleCards[1]];
-                betP5.Text = playersArray[5].Bet.ToString();
-            }
-
-            if (count > 6)
-            {
-                nameP6.Text = playersArray[6].Name;
-                cashP6.Text = playersArray[6].Chips.ToString();
-                card1P6.Image = cardImages[playersArray[6].HoleCards[0]];
-                card2P6.Image = cardImages[playersArray[6].HoleCards[1]];
-                betP6.Text = playersArray[6].Bet.ToString();
-            }
-
-            if (count > 7)
-            {
-                nameP7.Text = playersArray[7].Name;
-                cashP7.Text = playersArray[7].Chips.ToString();
-                card1P7.Image = cardImages[playersArray[7].HoleCards[0]];
-                card2P7.Image = cardImages[playersArray[7].HoleCards[1]];
-                betP7.Text = playersArray[7].Bet.ToString();
-            }
-
-            if (count > 8)
-            {
-                nameP8.Text = playersArray[8].Name;
-                cashP8.Text = playersArray[8].Chips.ToString();
-                card1P8.Image = cardImages[playersArray[8].HoleCards[0]];
-                card2P8.Image = cardImages[playersArray[8].HoleCards[1]];
-                betP8.Text = playersArray[8].Bet.ToString();
-            }
-
-            if (count > 9)
-            {
-                nameP9.Text = playersArray[9].Name;
-                cashP9.Text = playersArray[9].Chips.ToString();
-                card1P9.Image = cardImages[playersArray[9].HoleCards[0]];
-                card2P9.Image = cardImages[playersArray[9].HoleCards[1]];
-                betP9.Text = playersArray[9].Bet.ToString();
+                }
+                else
+                {
+                    playerControl.Value[0].Text = "";
+                    playerControl.Value[1].Text = "0";
+                    (playerControl.Value[2] as PictureBox).Image = resources.cards_back;
+                    (playerControl.Value[3] as PictureBox).Image = resources.cards_back;
+                    playerControl.Value[4].Text = "0";
+                    playerControl.Value[5].Text = "";
+                }
             }
 
             if (table.CommunityCards.Any())
@@ -199,15 +156,41 @@ namespace Poker.GuiApp
                 card2Flop.Image = cardImages[table.CommunityCards[1]];
                 card3Flop.Image = cardImages[table.CommunityCards[2]];
             }
+            else
+            {
+                card1Flop.Image = null;
+                card2Flop.Image = null;
+                card3Flop.Image = null;
+            }
 
-            if(table.CommunityCards.Count > 3)
+            if (table.CommunityCards.Count > 3)
                 cardTurn.Image = cardImages[table.CommunityCards[3]];
+            else
+                cardTurn.Image = null;
 
             if (table.CommunityCards.Count > 4)
                 cardRiver.Image = cardImages[table.CommunityCards[4]];
+            else
+                cardRiver.Image = null;
 
             pot.Text = table.Pot.ToString();
 
+            //Thread.Sleep(1000);
+
+        }
+
+        private void initializePlayerControls()
+        {
+            playerControls[0] = new Control[6] { nameP0, cashP0, card1P0, card2P0, betP0, statusP0 };
+            playerControls[1] = new Control[6] { nameP1, cashP1, card1P1, card2P1, betP1, statusP1 };
+            playerControls[2] = new Control[6] { nameP2, cashP2, card1P2, card2P2, betP2, statusP2 };
+            playerControls[3] = new Control[6] { nameP3, cashP3, card1P3, card2P3, betP3, statusP3 };
+            playerControls[4] = new Control[6] { nameP4, cashP4, card1P4, card2P4, betP4, statusP4 };
+            playerControls[5] = new Control[6] { nameP5, cashP5, card1P5, card2P5, betP5, statusP5 };
+            playerControls[6] = new Control[6] { nameP6, cashP6, card1P6, card2P6, betP6, statusP6 };
+            playerControls[7] = new Control[6] { nameP7, cashP7, card1P7, card2P7, betP7, statusP7 };
+            playerControls[8] = new Control[6] { nameP8, cashP8, card1P8, card2P8, betP8, statusP8 };
+            playerControls[9] = new Control[6] { nameP9, cashP9, card1P9, card2P9, betP9, statusP9 };
         }
 
         private void setAllCardBacks()
@@ -300,7 +283,6 @@ namespace Poker.GuiApp
             cardImages.Add(new Card(CardSuit.Spades, CardRank.King), resources.cards_12_01);
             cardImages.Add(new Card(CardSuit.Hearts, CardRank.King), resources.cards_12_02);
             cardImages.Add(new Card(CardSuit.Diamonds, CardRank.King), resources.cards_12_03);
-        } 
-
+        }
     }
 }

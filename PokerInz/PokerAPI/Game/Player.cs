@@ -92,8 +92,16 @@ namespace PokerAPI.Game
 
         public void SetBlindBet(int blind)
         {
-            Bet = blind;
-            tookAction = false;
+            if (blind > Chips)
+            {
+                Bet = Chips;
+                tookAction = true;
+            }
+            else
+            {
+                Bet = blind;
+                tookAction = false;
+            }
         }
 
         public abstract IGameAction TakeAction(ITable table);

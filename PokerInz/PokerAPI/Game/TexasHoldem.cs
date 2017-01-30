@@ -96,9 +96,9 @@ namespace PokerAPI.Game
                     PlayingCards.Remove(PlayingCards.First());
                 }
 
-                notify();
-
                 IPlayer nextPlayer = GetNextActivePlayer(Players.Where(x => x.Blind == Blind.Big).First());
+
+                notify();
 
                 while (nextPlayer != null && (!allPlayersTookAction() || !lastPlayerCalled()) && (!allPlayersTookAction() || !isOnePlayerActiveLeft()) && !allActivePlayersChecked() && !allButOnePlayerFolded())
                 {
@@ -108,6 +108,8 @@ namespace PokerAPI.Game
                     nextPlayer = GetNextActivePlayer(nextPlayer);             
                 }
 
+                notify();
+
                 foreach (IPlayer activePlayer in Players.Where(x => x.PlayerState != PlayerState.Folded))
                 {
                     Table.Pot += activePlayer.Bet;
@@ -115,6 +117,9 @@ namespace PokerAPI.Game
 
                     if (activePlayer.CanTakeAction && Players.Where(x => x.CanTakeAction).Count() > 1)
                         activePlayer.PlayerState = PlayerState.Active;
+
+                    if (Players.Where(x => x.PlayerState == PlayerState.Folded).Count() == Players.Count - 1)
+                        return; //if everyone folded except one, stop licitation round.
                 }
             }
 
