@@ -1247,6 +1247,7 @@
             this.richTextBoxLog.Size = new System.Drawing.Size(240, 374);
             this.richTextBoxLog.TabIndex = 21;
             this.richTextBoxLog.Text = "";
+            this.richTextBoxLog.TextChanged += new System.EventHandler(this.richTextBoxLog_TextChanged);
             // 
             // labelLog
             // 

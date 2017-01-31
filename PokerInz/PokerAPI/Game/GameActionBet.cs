@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PokerAPI.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,11 @@ namespace PokerAPI.Game
         {
             if (bet < currentPlayer.Bet || bet > currentPlayer.Chips + currentPlayer.Bet || (bet < Table.PlayerBets.Values.Max() && bet < currentPlayer.Chips + currentPlayer.Bet))
                 throw new ArgumentOutOfRangeException("Bet is less or greater than expected.");
+
+            if (bet > Table.PlayerBets.Values.Max())
+                currentPlayer.PlayerState = PlayerState.Raised;
+            else if (bet == Table.PlayerBets.Values.Max())
+                currentPlayer.PlayerState = PlayerState.Called;
 
             currentPlayer.Bet = Bet = bet;
         }

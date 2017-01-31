@@ -9,8 +9,10 @@ namespace PokerAPI.Enums
     public enum PlayerState
     {
         Active = 0,
-        Folded = 1,
-        Checked = 2,
-        AllIn = 3,
+        Called = 1,
+        Raised = 2,
+        Folded = 3,
+        Checked = 4,
+        AllIn = 5,
     }
 }

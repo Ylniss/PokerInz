@@ -21,7 +21,6 @@ namespace Poker.GuiApp
     {
         private Dictionary<ICard, Image> cardImages = new Dictionary<ICard, Image>();
         private List<IPlayer> players;
-        private ITable table;
 
         private Game game;
 
@@ -30,7 +29,6 @@ namespace Poker.GuiApp
         public Form1()
         {
             InitializeComponent();
-
             DoubleBuffered = true;
 
             initializePlayerControls();
@@ -46,15 +44,26 @@ namespace Poker.GuiApp
                 new RandomAi("pepe333", 3, 1000),
             };
 
-            
-
             game = new TexasHoldem(players, BettingRule.NoLimit, 10, 20);
 
-            table = game.Table;
+            game.GameEvent += new Game.GameHandler(UpdateGui);
+        }
+
+        public Form1(List<IPlayer> players, int smallBlind, int bigBlind)
+        {
+            InitializeComponent();
+            DoubleBuffered = true;
+
+            this.players = players;
+            
+            initializePlayerControls();
+
+            setAllCardBacks();
+            setCardsDictionary();
+
+            game = new TexasHoldem(players, BettingRule.NoLimit, smallBlind, bigBlind);
 
             game.GameEvent += new Game.GameHandler(UpdateGui);
-
-
         }
 
         private void buttonStart_Click(object sender, EventArgs e)
@@ -90,15 +99,25 @@ namespace Poker.GuiApp
                 richTextBoxLog.Text += $"{communityCardsMessage}\n";
                 richTextBoxLog.Text += "Name\tChips\tBet\tState\n";
                 foreach (IPlayer player in game.Players)
-                {       
-                    string betsMessage = $"{player.Name}\t{player.Chips}\t{player.Bet}\t";
+                {
+                    string betsMessage;
+
+                    if(player.Name.Length < 8)
+                        betsMessage = $"{player.Name}\t{player.Chips}\t{player.Bet}\t";
+                    else
+                        betsMessage = $"{player.Name.Substring(0, 7)}\t{player.Chips}\t{player.Bet}\t";
+
 
                     if (player.PlayerState == PlayerState.Active)
                         betsMessage += "[Active]";
+                    else if (player.PlayerState == PlayerState.Called)
+                        betsMessage += "[Call]";
+                    else if (player.PlayerState == PlayerState.Raised)
+                        betsMessage += "[Raise]";
                     else if (player.PlayerState == PlayerState.Folded)
-                        betsMessage += "[Folded]";
+                        betsMessage += "[Fold]";
                     else if (player.PlayerState == PlayerState.Checked)
-                        betsMessage += "[Checked]";
+                        betsMessage += "[Check]";
                     else
                         betsMessage += "[All-in]";
 
@@ -106,11 +125,6 @@ namespace Poker.GuiApp
                 }
 
                 richTextBoxLog.Text += $"Pot: {game.Table.Pot}\n";
-
-                //foreach (var hand in game.PlayerHandScores)
-                //{
-                //    richTextBoxLog.Text += $"{hand.Key.Name}'s ranking: {hand.Value} ({game.GetHandRanking(hand.Value)})\n";
-                //}
 
             }
             Application.DoEvents();
@@ -150,11 +164,11 @@ namespace Poker.GuiApp
                 }
             }
 
-            if (table.CommunityCards.Any())
+            if (game.Table.CommunityCards.Any())
             {
-                card1Flop.Image = cardImages[table.CommunityCards[0]];
-                card2Flop.Image = cardImages[table.CommunityCards[1]];
-                card3Flop.Image = cardImages[table.CommunityCards[2]];
+                card1Flop.Image = cardImages[game.Table.CommunityCards[0]];
+                card2Flop.Image = cardImages[game.Table.CommunityCards[1]];
+                card3Flop.Image = cardImages[game.Table.CommunityCards[2]];
             }
             else
             {
@@ -163,17 +177,17 @@ namespace Poker.GuiApp
                 card3Flop.Image = null;
             }
 
-            if (table.CommunityCards.Count > 3)
-                cardTurn.Image = cardImages[table.CommunityCards[3]];
+            if (game.Table.CommunityCards.Count > 3)
+                cardTurn.Image = cardImages[game.Table.CommunityCards[3]];
             else
                 cardTurn.Image = null;
 
-            if (table.CommunityCards.Count > 4)
-                cardRiver.Image = cardImages[table.CommunityCards[4]];
+            if (game.Table.CommunityCards.Count > 4)
+                cardRiver.Image = cardImages[game.Table.CommunityCards[4]];
             else
                 cardRiver.Image = null;
 
-            pot.Text = table.Pot.ToString();
+            pot.Text = game.Table.Pot.ToString();
 
             //Thread.Sleep(1000);
 
@@ -283,6 +297,13 @@ namespace Poker.GuiApp
             cardImages.Add(new Card(CardSuit.Spades, CardRank.King), resources.cards_12_01);
             cardImages.Add(new Card(CardSuit.Hearts, CardRank.King), resources.cards_12_02);
             cardImages.Add(new Card(CardSuit.Diamonds, CardRank.King), resources.cards_12_03);
+        }
+
+        private void richTextBoxLog_TextChanged(object sender, EventArgs e)
+        {
+            // auto scroll
+            richTextBoxLog.SelectionStart = richTextBoxLog.Text.Length;
+            richTextBoxLog.ScrollToCaret();
         }
     }
 }

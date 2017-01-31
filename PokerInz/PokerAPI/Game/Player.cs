@@ -53,7 +53,8 @@ namespace PokerAPI.Game
             get
             {
                 if (chips == 0)
-                    playerState = PlayerState.AllIn;
+                    PlayerState = PlayerState.AllIn;
+
                 return playerState;
             }
 
@@ -73,7 +74,7 @@ namespace PokerAPI.Game
         {
             get
             {
-                if (PlayerState == PlayerState.Active || PlayerState == PlayerState.Checked)
+                if (PlayerState != PlayerState.Folded && PlayerState != PlayerState.AllIn)
                     return true;
                 else
                     return false;

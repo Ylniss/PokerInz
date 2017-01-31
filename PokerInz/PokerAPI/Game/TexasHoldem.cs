@@ -105,10 +105,10 @@ namespace PokerAPI.Game
                     if(nextPlayer != null && nextPlayer.CanTakeAction)
                         while (!takeAction(nextPlayer));
 
+                    notify();
+
                     nextPlayer = GetNextActivePlayer(nextPlayer);             
                 }
-
-                notify();
 
                 foreach (IPlayer activePlayer in Players.Where(x => x.PlayerState != PlayerState.Folded))
                 {
