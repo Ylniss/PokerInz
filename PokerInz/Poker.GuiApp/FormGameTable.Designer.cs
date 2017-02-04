@@ -1,6 +1,6 @@
 ﻿namespace Poker.GuiApp
 {
-    partial class Form1
+    partial class FormGameTable
     {
         /// <summary>
         /// Required designer variable.

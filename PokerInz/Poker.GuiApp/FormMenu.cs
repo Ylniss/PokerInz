@@ -65,7 +65,7 @@ namespace Poker.GuiApp
                 players.Add(new RandomAi(nameTextBoxes[i].Text, i, (int)cashNumerics[i].Value));
             }
 
-            Form1 gameForm = new Form1(players, (int)numericUpDownSmallBlind.Value, (int)numericUpDownBigBlind.Value);
+            FormGameTable gameForm = new FormGameTable(players, (int)numericUpDownSmallBlind.Value, (int)numericUpDownBigBlind.Value);
             gameForm.Show();
         }
 

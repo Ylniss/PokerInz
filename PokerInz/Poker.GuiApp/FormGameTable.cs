@@ -17,7 +17,7 @@ using System.Threading;
 
 namespace Poker.GuiApp
 {
-    public partial class Form1 : Form
+    public partial class FormGameTable : Form
     {
         private Dictionary<ICard, Image> cardImages = new Dictionary<ICard, Image>();
         private List<IPlayer> players;
@@ -26,7 +26,7 @@ namespace Poker.GuiApp
 
         private Dictionary<int, Control[]> playerControls = new Dictionary<int, Control[]>();
 
-        public Form1()
+        public FormGameTable()
         {
             InitializeComponent();
             DoubleBuffered = true;
@@ -49,7 +49,7 @@ namespace Poker.GuiApp
             game.GameEvent += new Game.GameHandler(UpdateGui);
         }
 
-        public Form1(List<IPlayer> players, int smallBlind, int bigBlind)
+        public FormGameTable(List<IPlayer> players, int smallBlind, int bigBlind)
         {
             InitializeComponent();
             DoubleBuffered = true;
