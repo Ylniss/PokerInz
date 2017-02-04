@@ -14,6 +14,10 @@ namespace PokerAPI
 
         int DealerPosition { get; set; }
 
+        int SmallBlind { get; }
+
+        int BigBlind { get; }
+
         /// <summary>
         /// Current stage of betting round.
         /// </summary>

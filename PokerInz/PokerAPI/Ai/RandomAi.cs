@@ -22,15 +22,15 @@ namespace PokerAPI.Ai
 
             int myBet = table.PlayerBets[Name];
 
+            int minimalBet = 0;
+
             bool isBiggerBet = false;
 
-            //foreach (var bet in table.PlayerBets)
-            //{
-            //    if (bet.Key != Name && bet.Value > myBet)
-            //    {
-            //        isBiggerBet = true;
-            //    }
-            //}
+            if (table.GameStage == GameStage.Flop)
+                minimalBet = table.BigBlind;
+
+            if (table.GameStage == GameStage.Turn || table.GameStage == GameStage.River)
+                minimalBet = 2 * table.BigBlind;
 
             int biggestBet = table.PlayerBets.Values.Max();
 
@@ -49,7 +49,7 @@ namespace PokerAPI.Ai
                 }
                 else if (choice == 1) //raise
                 {
-                    int raiseBet = biggestBet + random.Next(Chips / 2);
+                    int raiseBet = biggestBet + minimalBet + random.Next(Chips / 2);
                     gameAction = new GameActionBet(this, table, raiseBet);
                 }
                 else if (choice == 2)
@@ -65,7 +65,11 @@ namespace PokerAPI.Ai
                 }
                 else if (choice == 1) //raise
                 {
-                    int raiseBet = biggestBet + random.Next(Chips / 2);
+                    int raiseBet = 0;
+                    if (biggestBet == 0)
+                        raiseBet = minimalBet + random.Next(Chips / 2);
+                    else
+                        raiseBet = biggestBet + minimalBet + random.Next(Chips / 2);
                     gameAction = new GameActionBet(this, table, raiseBet);
                 }
                 else if (choice == 2)

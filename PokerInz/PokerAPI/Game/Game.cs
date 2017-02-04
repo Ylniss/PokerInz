@@ -55,7 +55,7 @@ namespace PokerAPI.Game
             SmallBlind = smallBlind;
             BigBlind = bigBlind;
             PlayingCards = playingCards;
-            Table = new Table(players.Count);
+            Table = new Table(players.Count, smallBlind, bigBlind);
 
             TableUpdateEvent += new GameHandler(Table.UpdatePlayersCount);
 

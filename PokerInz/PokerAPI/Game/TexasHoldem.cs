@@ -82,6 +82,8 @@ namespace PokerAPI.Game
         {
             foreach (GameStage gameStage in Enum.GetValues(typeof(GameStage)))
             {
+                IPlayer nextPlayer = null;
+
                 if (gameStage == GameStage.Flop)
                 {
                     for (int i = 0; i < 3; ++i)
@@ -96,7 +98,10 @@ namespace PokerAPI.Game
                     PlayingCards.Remove(PlayingCards.First());
                 }
 
-                IPlayer nextPlayer = GetNextActivePlayer(Players.Where(x => x.Blind == Blind.Big).First());
+                if (gameStage == GameStage.Preflop)
+                    nextPlayer = GetNextActivePlayer(Players.Where(x => x.Blind == Blind.Big).First());
+                else
+                    nextPlayer = Players.Where(x => x.Blind == Blind.Small).First();
 
                 notify();
 

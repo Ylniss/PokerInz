@@ -1,10 +1,12 @@
-﻿using System;
+﻿using PokerAPI;
+using PokerAPI.Game;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PokerAPI.Game
+namespace PokerTest
 {
     public class HumanConsolePlayer : Player
     {

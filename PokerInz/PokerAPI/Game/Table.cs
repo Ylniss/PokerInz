@@ -14,6 +14,10 @@ namespace PokerAPI.Game
 
         private int dealerPosition;
 
+        private int smallBlind;
+
+        private int bigBlind;
+
         public EvaluableCards CommunityCards { get; set; } = new CommunityCards(new CactusSneezeEvaluator());
 
         public int DealerPosition
@@ -55,10 +59,28 @@ namespace PokerAPI.Game
 
         public int Pot { get; set; }
 
-        public Table(int playersCount)
+        public int SmallBlind
+        {
+            get
+            {
+                return smallBlind;
+            }
+        }
+
+        public int BigBlind
+        {
+            get
+            {
+                return bigBlind;
+            }
+        }
+
+        public Table(int playersCount, int smallBlind, int bigBlind)
         {
             dealerPosition = playersCount;
             this.playersCount = playersCount;
+            this.smallBlind = smallBlind;
+            this.bigBlind = bigBlind;
         }
 
         public void UpdateBet(object subject)

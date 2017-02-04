@@ -96,30 +96,36 @@ namespace Poker.GuiApp
                 if (communityCardsMessage.Length > 2) //remove last comma
                     communityCardsMessage = communityCardsMessage.Remove(communityCardsMessage.Length - 2);
 
-                richTextBoxLog.Text += $"{communityCardsMessage}\n";
-                richTextBoxLog.Text += "Name\tChips\tBet\tState\n";
+                richTextBoxLog.Text += communityCardsMessage + '\n';
+                richTextBoxLog.Text += "Name\tHand\tChips\tBet\tState\n";
                 foreach (IPlayer player in game.Players)
                 {
                     string betsMessage;
+                    string playerName;
+                    string holeCards = "";
 
-                    if(player.Name.Length < 8)
-                        betsMessage = $"{player.Name}\t{player.Chips}\t{player.Bet}\t";
-                    else
-                        betsMessage = $"{player.Name.Substring(0, 7)}\t{player.Chips}\t{player.Bet}\t";
+                    if (player.HoleCards.Any())
+                        holeCards = $"{player.HoleCards[0].ToString()} {player.HoleCards[1].ToString()}";
 
+                    if (player.Name.Length < 8)
+                        playerName = player.Name;
+                    else //it takes too much space in log, so it is shortened
+                        playerName = player.Name.Substring(0, 7);
+
+                    betsMessage = $"{playerName}\t{holeCards}\t{player.Chips}\t{player.Bet}\t";
 
                     if (player.PlayerState == PlayerState.Active)
-                        betsMessage += "[Active]";
+                        betsMessage += "Active";
                     else if (player.PlayerState == PlayerState.Called)
-                        betsMessage += "[Call]";
+                        betsMessage += "Call";
                     else if (player.PlayerState == PlayerState.Raised)
-                        betsMessage += "[Raise]";
+                        betsMessage += "Raise";
                     else if (player.PlayerState == PlayerState.Folded)
-                        betsMessage += "[Fold]";
+                        betsMessage += "Fold";
                     else if (player.PlayerState == PlayerState.Checked)
-                        betsMessage += "[Check]";
+                        betsMessage += "Check";
                     else
-                        betsMessage += "[All-in]";
+                        betsMessage += "All-in";
 
                     richTextBoxLog.Text += betsMessage + '\n';
                 }
@@ -301,7 +307,7 @@ namespace Poker.GuiApp
 
         private void richTextBoxLog_TextChanged(object sender, EventArgs e)
         {
-            // auto scroll
+            // auto scroll when new data is appended
             richTextBoxLog.SelectionStart = richTextBoxLog.Text.Length;
             richTextBoxLog.ScrollToCaret();
         }
