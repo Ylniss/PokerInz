@@ -1,5 +1,6 @@
 ﻿using PokerAPI;
 using PokerAPI.Ai;
+using PokerAPI.Game;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -62,11 +63,40 @@ namespace Poker.GuiApp
 
             for (int i = 0; i < playersCount; ++i)
             {
-                players.Add(new RandomAi(nameTextBoxes[i].Text, i, (int)cashNumerics[i].Value));
+                //TEST
+                float min = 0;
+                float max = 0;
+
+                if (i == 0) { min = 0.01f; max = 0.90f; }
+                if (i == 1) { min = 0.01f; max = 0.75f; }
+                if (i == 2) { min = 0.01f; max = 0.50f; }
+                if (i == 3) { min = 0.01f; max = 0.30f; }
+                if (i == 4) { min = 0.05f; max = 0.90f; }
+                if (i == 5) { min = 0.10f; max = 0.90f; }
+                if (i == 6) { min = 0.15f; max = 0.90f; }
+                if (i == 7) { min = 0.05f; max = 0.75f; }
+                if (i == 8) { min = 0.10f; max = 0.75f; }
+                if (i == 9) { min = 0.15f; max = 0.75f; }
+                //TEST
+
+                players.Add(new RandomAi(nameTextBoxes[i].Text, i, (int)cashNumerics[i].Value, min, max));
             }
 
-            FormGameTable gameForm = new FormGameTable(players, (int)numericUpDownSmallBlind.Value, (int)numericUpDownBigBlind.Value);
-            gameForm.Show();
+            IDictionary<IPlayer, int> startingCash = new Dictionary<IPlayer, int>();
+
+            foreach (var player in players)
+                startingCash[player] = player.Chips;
+
+            int numOfGames = (int)numericNumOfGames.Value;
+
+            if (!checkBoxPerformance.Checked)
+                numOfGames = 1;
+
+            FormGameTable gameForm = new FormGameTable(players, new GameSettings(startingCash, 
+                (int)numericUpDownSmallBlind.Value, 
+                (int)numericUpDownBigBlind.Value, 
+                checkBoxPerformance.Checked,
+                numOfGames));
         }
 
         private void addRowToPanel(TableLayoutPanel panel, int row)
@@ -107,6 +137,14 @@ namespace Poker.GuiApp
             typeComboBoxes.RemoveAt(row);
             nameTextBoxes.RemoveAt(row);
             cashNumerics.RemoveAt(row);
+        }
+
+        private void checkBoxPerformance_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxPerformance.Checked)
+                numericNumOfGames.Enabled = true;
+            else
+                numericNumOfGames.Enabled = false;
         }
     }
 }

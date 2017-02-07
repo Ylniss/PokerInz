@@ -16,10 +16,10 @@ namespace PokerAPI.Game
             if (bet < currentPlayer.Bet || bet > currentPlayer.Chips + currentPlayer.Bet || (bet < Table.PlayerBets.Values.Max() && bet < currentPlayer.Chips + currentPlayer.Bet))
                 throw new ArgumentOutOfRangeException("Bet is less or greater than expected.");
 
-            if(table.GameStage == GameStage.Flop && bet < table.BigBlind)
+            if(table.GameStage == GameStage.Flop && bet < table.BigBlind && bet != currentPlayer.Chips)
                 throw new ArgumentOutOfRangeException("Bet should be greater or equal than big blind during Flop.");
 
-            if ((table.GameStage == GameStage.Turn || table.GameStage == GameStage.River) && bet < 2*table.BigBlind)
+            if ((table.GameStage == GameStage.Turn || table.GameStage == GameStage.River) && bet < 2*table.BigBlind && bet != currentPlayer.Chips)
                 throw new ArgumentOutOfRangeException("Bet should be greater or equal than two times big blind during Turn and River.");
 
             if (bet > Table.PlayerBets.Values.Max())

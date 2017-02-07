@@ -39,19 +39,22 @@
             this.buttonAddPlayer = new System.Windows.Forms.Button();
             this.buttonStart = new System.Windows.Forms.Button();
             this.buttonRemovePlayer = new System.Windows.Forms.Button();
+            this.checkBoxPerformance = new System.Windows.Forms.CheckBox();
+            this.numericNumOfGames = new System.Windows.Forms.NumericUpDown();
+            this.labelNumOfGames = new System.Windows.Forms.Label();
             this.tableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSmallBlind)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBigBlind)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericNumOfGames)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel
             // 
-            this.tableLayoutPanel.ColumnCount = 5;
-            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 8.941843F));
-            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 24.22647F));
-            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 24.22647F));
-            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 24.22647F));
-            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 18.37876F));
+            this.tableLayoutPanel.ColumnCount = 4;
+            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10.95529F));
+            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 29.68157F));
+            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 29.68157F));
+            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 29.68157F));
             this.tableLayoutPanel.Controls.Add(this.labelCash, 3, 0);
             this.tableLayoutPanel.Controls.Add(this.labelName, 2, 0);
             this.tableLayoutPanel.Controls.Add(this.labelType, 1, 0);
@@ -69,14 +72,14 @@
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.090909F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.090909F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.090909F));
-            this.tableLayoutPanel.Size = new System.Drawing.Size(387, 345);
+            this.tableLayoutPanel.Size = new System.Drawing.Size(306, 344);
             this.tableLayoutPanel.TabIndex = 3;
             // 
             // labelCash
             // 
             this.labelCash.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.labelCash.AutoSize = true;
-            this.labelCash.Location = new System.Drawing.Point(251, 9);
+            this.labelCash.Location = new System.Drawing.Point(244, 9);
             this.labelCash.Name = "labelCash";
             this.labelCash.Size = new System.Drawing.Size(31, 13);
             this.labelCash.TabIndex = 2;
@@ -86,7 +89,7 @@
             // 
             this.labelName.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.labelName.AutoSize = true;
-            this.labelName.Location = new System.Drawing.Point(156, 9);
+            this.labelName.Location = new System.Drawing.Point(150, 9);
             this.labelName.Name = "labelName";
             this.labelName.Size = new System.Drawing.Size(35, 13);
             this.labelName.TabIndex = 1;
@@ -96,7 +99,7 @@
             // 
             this.labelType.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.labelType.AutoSize = true;
-            this.labelType.Location = new System.Drawing.Point(65, 9);
+            this.labelType.Location = new System.Drawing.Point(62, 9);
             this.labelType.Name = "labelType";
             this.labelType.Size = new System.Drawing.Size(31, 13);
             this.labelType.TabIndex = 0;
@@ -105,7 +108,7 @@
             // labelSmallBlind
             // 
             this.labelSmallBlind.AutoSize = true;
-            this.labelSmallBlind.Location = new System.Drawing.Point(190, 364);
+            this.labelSmallBlind.Location = new System.Drawing.Point(321, 141);
             this.labelSmallBlind.Name = "labelSmallBlind";
             this.labelSmallBlind.Size = new System.Drawing.Size(57, 13);
             this.labelSmallBlind.TabIndex = 4;
@@ -113,7 +116,7 @@
             // 
             // numericUpDownSmallBlind
             // 
-            this.numericUpDownSmallBlind.Location = new System.Drawing.Point(193, 380);
+            this.numericUpDownSmallBlind.Location = new System.Drawing.Point(324, 157);
             this.numericUpDownSmallBlind.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -125,7 +128,7 @@
             0,
             0});
             this.numericUpDownSmallBlind.Name = "numericUpDownSmallBlind";
-            this.numericUpDownSmallBlind.Size = new System.Drawing.Size(54, 20);
+            this.numericUpDownSmallBlind.Size = new System.Drawing.Size(70, 20);
             this.numericUpDownSmallBlind.TabIndex = 5;
             this.numericUpDownSmallBlind.Value = new decimal(new int[] {
             10,
@@ -135,7 +138,7 @@
             // 
             // numericUpDownBigBlind
             // 
-            this.numericUpDownBigBlind.Location = new System.Drawing.Point(264, 380);
+            this.numericUpDownBigBlind.Location = new System.Drawing.Point(324, 205);
             this.numericUpDownBigBlind.Maximum = new decimal(new int[] {
             2000,
             0,
@@ -147,7 +150,7 @@
             0,
             0});
             this.numericUpDownBigBlind.Name = "numericUpDownBigBlind";
-            this.numericUpDownBigBlind.Size = new System.Drawing.Size(54, 20);
+            this.numericUpDownBigBlind.Size = new System.Drawing.Size(70, 20);
             this.numericUpDownBigBlind.TabIndex = 7;
             this.numericUpDownBigBlind.Value = new decimal(new int[] {
             20,
@@ -158,7 +161,7 @@
             // labelBigBlind
             // 
             this.labelBigBlind.AutoSize = true;
-            this.labelBigBlind.Location = new System.Drawing.Point(261, 364);
+            this.labelBigBlind.Location = new System.Drawing.Point(321, 189);
             this.labelBigBlind.Name = "labelBigBlind";
             this.labelBigBlind.Size = new System.Drawing.Size(47, 13);
             this.labelBigBlind.TabIndex = 6;
@@ -166,9 +169,9 @@
             // 
             // buttonAddPlayer
             // 
-            this.buttonAddPlayer.Location = new System.Drawing.Point(12, 377);
+            this.buttonAddPlayer.Location = new System.Drawing.Point(325, 247);
             this.buttonAddPlayer.Name = "buttonAddPlayer";
-            this.buttonAddPlayer.Size = new System.Drawing.Size(75, 23);
+            this.buttonAddPlayer.Size = new System.Drawing.Size(69, 35);
             this.buttonAddPlayer.TabIndex = 8;
             this.buttonAddPlayer.Text = "Add player";
             this.buttonAddPlayer.UseVisualStyleBackColor = true;
@@ -176,9 +179,9 @@
             // 
             // buttonStart
             // 
-            this.buttonStart.Location = new System.Drawing.Point(324, 377);
+            this.buttonStart.Location = new System.Drawing.Point(325, 329);
             this.buttonStart.Name = "buttonStart";
-            this.buttonStart.Size = new System.Drawing.Size(75, 23);
+            this.buttonStart.Size = new System.Drawing.Size(70, 23);
             this.buttonStart.TabIndex = 9;
             this.buttonStart.Text = "Start";
             this.buttonStart.UseVisualStyleBackColor = true;
@@ -186,19 +189,67 @@
             // 
             // buttonRemovePlayer
             // 
-            this.buttonRemovePlayer.Location = new System.Drawing.Point(93, 377);
+            this.buttonRemovePlayer.Location = new System.Drawing.Point(324, 288);
             this.buttonRemovePlayer.Name = "buttonRemovePlayer";
-            this.buttonRemovePlayer.Size = new System.Drawing.Size(91, 23);
+            this.buttonRemovePlayer.Size = new System.Drawing.Size(70, 35);
             this.buttonRemovePlayer.TabIndex = 10;
             this.buttonRemovePlayer.Text = "Remove player";
             this.buttonRemovePlayer.UseVisualStyleBackColor = true;
             this.buttonRemovePlayer.Click += new System.EventHandler(this.buttonRemovePlayer_Click);
             // 
+            // checkBoxPerformance
+            // 
+            this.checkBoxPerformance.AutoSize = true;
+            this.checkBoxPerformance.Location = new System.Drawing.Point(324, 21);
+            this.checkBoxPerformance.MaximumSize = new System.Drawing.Size(90, 0);
+            this.checkBoxPerformance.MinimumSize = new System.Drawing.Size(0, 30);
+            this.checkBoxPerformance.Name = "checkBoxPerformance";
+            this.checkBoxPerformance.Size = new System.Drawing.Size(90, 30);
+            this.checkBoxPerformance.TabIndex = 11;
+            this.checkBoxPerformance.Text = "Performance mode";
+            this.checkBoxPerformance.UseVisualStyleBackColor = true;
+            this.checkBoxPerformance.CheckedChanged += new System.EventHandler(this.checkBoxPerformance_CheckedChanged);
+            // 
+            // numericNumOfGames
+            // 
+            this.numericNumOfGames.Enabled = false;
+            this.numericNumOfGames.Location = new System.Drawing.Point(324, 77);
+            this.numericNumOfGames.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numericNumOfGames.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericNumOfGames.Name = "numericNumOfGames";
+            this.numericNumOfGames.Size = new System.Drawing.Size(70, 20);
+            this.numericNumOfGames.TabIndex = 12;
+            this.numericNumOfGames.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // labelNumOfGames
+            // 
+            this.labelNumOfGames.AutoSize = true;
+            this.labelNumOfGames.Location = new System.Drawing.Point(321, 60);
+            this.labelNumOfGames.Name = "labelNumOfGames";
+            this.labelNumOfGames.Size = new System.Drawing.Size(75, 13);
+            this.labelNumOfGames.TabIndex = 13;
+            this.labelNumOfGames.Text = "Num of games";
+            // 
             // FormMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(412, 412);
+            this.ClientSize = new System.Drawing.Size(414, 368);
+            this.Controls.Add(this.labelNumOfGames);
+            this.Controls.Add(this.numericNumOfGames);
+            this.Controls.Add(this.checkBoxPerformance);
             this.Controls.Add(this.buttonRemovePlayer);
             this.Controls.Add(this.buttonStart);
             this.Controls.Add(this.buttonAddPlayer);
@@ -214,6 +265,7 @@
             this.tableLayoutPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSmallBlind)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBigBlind)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericNumOfGames)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -232,5 +284,8 @@
         private System.Windows.Forms.Button buttonAddPlayer;
         private System.Windows.Forms.Button buttonStart;
         private System.Windows.Forms.Button buttonRemovePlayer;
+        private System.Windows.Forms.CheckBox checkBoxPerformance;
+        private System.Windows.Forms.NumericUpDown numericNumOfGames;
+        private System.Windows.Forms.Label labelNumOfGames;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PokerAPI.Enums;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,43 +22,54 @@ using System.Threading.Tasks;
 
 namespace PokerAPI.Cards
 {
-    public class CactusSneezeEvaluator : IRankingEvaluator
+    public class CactusSenzeeEvaluator : IRankingEvaluator
     {
+        private Dictionary<string, int> bitCards = new Dictionary<string, int>(52);
+
+        public CactusSenzeeEvaluator()
+        {
+            foreach (CardRank cardRank in Enum.GetValues(typeof(CardRank)))
+            {
+                foreach (CardSuit cardSuit in Enum.GetValues(typeof(CardSuit)))
+                {
+                    BitArray bits0 = new BitArray(16);
+                    BitArray bits1rank;
+                    BitArray bits1suit = new BitArray(4);
+                    BitArray bits1;
+                    BitArray bits2;
+
+                    ushort prime = primes[cardRank.GetHashCode()];
+                    int rank = cardRank.GetHashCode();
+                    int suit = cardSuit.GetHashCode();
+
+                    bits2 = new BitArray(BitConverter.GetBytes(prime));
+                    bits2.Length = 8;
+                    bits2 = bitsReverse(bits2);
+
+                    bits1rank = new BitArray(BitConverter.GetBytes(rank));
+                    bits1rank.Length = 4;
+                    bits1rank = bitsReverse(bits1rank);
+
+                    bits1suit.Set(suit, true);
+                    bits1 = append(bits1suit, bits1rank);
+
+                    bits0.Set(rank, true);
+                    bits0 = bitsReverse(bits0);
+
+                    bits0 = append(bits0, bits1);
+                    bits0 = append(bits0, bits2);
+
+                    bitCards.Add("" + cardRank + cardSuit, getIntFromBitArray(bitsReverse(bits0)));
+                }
+            }
+        }
+
         public int EvaluateRanking(IList<ICard> cards)
         {
             int[] c = new int[cards.Count];
 
             for (int i = 0; i < cards.Count; ++i)
-            {
-                BitArray bits0 = new BitArray(16);
-                BitArray bits1rank;
-                BitArray bits1suit = new BitArray(4);
-                BitArray bits1;
-                BitArray bits2;
-
-                ushort prime = primes[cards[i].Rank.GetHashCode()];
-                int rank = cards[i].Rank.GetHashCode();
-                int suit = cards[i].Suit.GetHashCode();
-
-                bits2 = new BitArray(BitConverter.GetBytes(prime));
-                bits2.Length = 8;
-                bits2 = bitsReverse(bits2);
-
-                bits1rank = new BitArray(BitConverter.GetBytes(rank));
-                bits1rank.Length = 4;
-                bits1rank = bitsReverse(bits1rank);
-
-                bits1suit.Set(suit, true);
-                bits1 = append(bits1suit, bits1rank);
-
-                bits0.Set(rank, true);
-                bits0 = bitsReverse(bits0);
-
-                bits0 = append(bits0, bits1);
-                bits0 = append(bits0, bits2);
-
-                c[i] = getIntFromBitArray(bitsReverse(bits0));
-            }
+                c[i] = bitCards["" + cards[i].Rank + cards[i].Suit];
 
             int[, ] combinations = getAllFiveHandCombinations(c);
 

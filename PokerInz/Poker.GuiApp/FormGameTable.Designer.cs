@@ -135,7 +135,6 @@
             this.cardRiver = new System.Windows.Forms.PictureBox();
             this.labelPot = new System.Windows.Forms.Label();
             this.pot = new System.Windows.Forms.Label();
-            this.buttonStart = new System.Windows.Forms.Button();
             this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
             this.labelLog = new System.Windows.Forms.Label();
             this.groupBoxP0.SuspendLayout();
@@ -1228,16 +1227,6 @@
             this.pot.TabIndex = 19;
             this.pot.Text = "[pot]";
             // 
-            // buttonStart
-            // 
-            this.buttonStart.Location = new System.Drawing.Point(12, 406);
-            this.buttonStart.Name = "buttonStart";
-            this.buttonStart.Size = new System.Drawing.Size(75, 23);
-            this.buttonStart.TabIndex = 20;
-            this.buttonStart.Text = "Start";
-            this.buttonStart.UseVisualStyleBackColor = true;
-            this.buttonStart.Click += new System.EventHandler(this.buttonStart_Click);
-            // 
             // richTextBoxLog
             // 
             this.richTextBoxLog.BackColor = System.Drawing.SystemColors.Window;
@@ -1258,15 +1247,14 @@
             this.labelLog.TabIndex = 22;
             this.labelLog.Text = "Log";
             // 
-            // Form1
+            // FormGameTable
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1036, 441);
+            this.ClientSize = new System.Drawing.Size(1036, 404);
             this.Controls.Add(this.labelLog);
             this.Controls.Add(this.richTextBoxLog);
-            this.Controls.Add(this.buttonStart);
             this.Controls.Add(this.pot);
             this.Controls.Add(this.labelPot);
             this.Controls.Add(this.cardRiver);
@@ -1284,8 +1272,9 @@
             this.Controls.Add(this.groupBoxP2);
             this.Controls.Add(this.groupBoxP1);
             this.Controls.Add(this.groupBoxP0);
-            this.Name = "Form1";
+            this.Name = "FormGameTable";
             this.Text = "PokerApp";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormGameTable_FormClosing);
             this.groupBoxP0.ResumeLayout(false);
             this.groupBoxP0.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.card2P0)).EndInit();
@@ -1435,7 +1424,6 @@
         private System.Windows.Forms.PictureBox cardRiver;
         private System.Windows.Forms.Label labelPot;
         private System.Windows.Forms.Label pot;
-        private System.Windows.Forms.Button buttonStart;
         private System.Windows.Forms.Label statusP0;
         private System.Windows.Forms.Label statusP1;
         private System.Windows.Forms.Label statusP2;

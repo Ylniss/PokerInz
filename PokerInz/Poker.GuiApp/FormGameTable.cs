@@ -2,89 +2,93 @@
 using PokerAPI.Cards;
 using PokerAPI.Enums;
 using PokerAPI.Game;
-using PokerAPI.Ai;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Poker.GuiApp.Properties;
-using System.Threading;
 
 namespace Poker.GuiApp
 {
     public partial class FormGameTable : Form
     {
-        private Dictionary<ICard, Image> cardImages = new Dictionary<ICard, Image>();
+        private IDictionary<ICard, Image> cardImages = new Dictionary<ICard, Image>();
         private List<IPlayer> players;
 
         private Game game;
 
-        private Dictionary<int, Control[]> playerControls = new Dictionary<int, Control[]>();
+        private IDictionary<int, Control[]> playerControls = new Dictionary<int, Control[]>();
 
-        public FormGameTable()
+        private IDictionary<IPlayer, int> PlayerPerformanceScores = new Dictionary<IPlayer, int>();
+
+        private GameSettings gameSettings;
+
+        public FormGameTable(List<IPlayer> players, GameSettings gameSettings)
         {
             InitializeComponent();
-            DoubleBuffered = true;
+            DoubleBuffered = true; 
 
-            initializePlayerControls();
-
-            setAllCardBacks();
-            setCardsDictionary();
-
-            players = new List<IPlayer>
-            {
-                new RandomAi("bagn000", 0, 1000),
-                new RandomAi("sdff111", 1, 1000),
-                new RandomAi("zrd222", 2, 1000),
-                new RandomAi("pepe333", 3, 1000),
-            };
-
-            game = new TexasHoldem(players, BettingRule.NoLimit, 10, 20);
-
-            game.GameEvent += new Game.GameHandler(UpdateGui);
-        }
-
-        public FormGameTable(List<IPlayer> players, int smallBlind, int bigBlind)
-        {
-            InitializeComponent();
-            DoubleBuffered = true;
-
+            this.gameSettings = gameSettings;
             this.players = players;
-            
+
             initializePlayerControls();
 
             setAllCardBacks();
             setCardsDictionary();
 
-            game = new TexasHoldem(players, BettingRule.NoLimit, smallBlind, bigBlind);
+            game = new TexasHoldem(players, BettingRule.NoLimit, gameSettings.SmallBlind, gameSettings.BigBlind, PlayerPerformanceScores);
 
             game.GameEvent += new Game.GameHandler(UpdateGui);
-        }
 
-        private void buttonStart_Click(object sender, EventArgs e)
-        {
-            while (!game.IsGameOver)
+            Show();
+
+            for (int i = 0; i < gameSettings.NumberOfGames; ++i)
             {
-                game.Licitation();
-
-                foreach (var hand in game.PlayerHandScores)
+                
+                if (i != 0)
                 {
-                    richTextBoxLog.Text += $"{hand.Key.Name}'s ranking: {hand.Value} ({game.GetHandRanking(hand.Value)})\n";
+                    game.BringBackAndResetLostPlayers(gameSettings);
                 }
+
+                while (!game.IsGameOver)
+                {
+                    game.Licitation();
+
+                    if (!gameSettings.Performance)
+                    {
+                        foreach (var hand in game.PlayerHandScores)
+                        {
+                            richTextBoxLog.Text += $"{hand.Key.Name}'s ranking: {hand.Value} ({game.GetHandRanking(hand.Value)})\n";
+                        }
+                        Application.DoEvents();
+                    }
+                }
+
+                UpdateGui(game);
+
+                //richTextBoxLog.Text += $"Game {i + 1}/{gameSettings.NumberOfGames} ({((float)(i + 1) / (float)gameSettings.NumberOfGames * 100f):0.00}%)\n";
+                //richTextBoxLog.Text += "\nName  \t\t\tScore\n";
+                //foreach (var player in game.LostPlayers)
+                //{
+                //    richTextBoxLog.Text += player.Name + "  \t\t" + game.LostPlayers.IndexOf(player) + "\n";
+                //}
+                //richTextBoxLog.Text += "\n";
                 Application.DoEvents();
             }
 
-            UpdateGui(game);
+            richTextBoxLog.Text += "- - - - - - - - SUMMARY - - - - - - - -";
+            richTextBoxLog.Text += "\nName     \tScore   \tWin[%]\n";
+            foreach (var player in PlayerPerformanceScores.OrderByDescending(x => x.Value).Select(x => x.Key))
+            {
+                float winPercent = (float)game.PlayerPerformanceScores[player] / (float)((game.PlayerPerformanceScores.Count - 1) * gameSettings.NumberOfGames) * 100f;
+                richTextBoxLog.Text += $"{player.Name}  \t{game.PlayerPerformanceScores[player]}      \t{winPercent:0.00}\n";
+            }
+            Application.DoEvents();
         }
 
         public void UpdateGui(object subject)
         {
-            if (subject is Game)
+            if (subject is Game && !gameSettings.Performance)
             {
                 setGuiInformations(players);
 
@@ -131,9 +135,8 @@ namespace Poker.GuiApp
                 }
 
                 richTextBoxLog.Text += $"Pot: {game.Table.Pot}\n";
-
-            }
-            Application.DoEvents();
+                Application.DoEvents();
+            }   
         }
 
 
@@ -305,11 +308,17 @@ namespace Poker.GuiApp
             cardImages.Add(new Card(CardSuit.Diamonds, CardRank.King), resources.cards_12_03);
         }
 
+        private void FormGameTable_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            richTextBoxLog.Dispose();
+        }
+
         private void richTextBoxLog_TextChanged(object sender, EventArgs e)
         {
             // auto scroll when new data is appended
             richTextBoxLog.SelectionStart = richTextBoxLog.Text.Length;
             richTextBoxLog.ScrollToCaret();
+            richTextBoxLog.Refresh();
         }
     }
 }

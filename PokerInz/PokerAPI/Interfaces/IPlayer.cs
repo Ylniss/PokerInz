@@ -60,5 +60,10 @@ namespace PokerAPI
         /// Sets bet for big blind and small blind.
         /// </summary>
         void SetBlindBet(int blind);
+
+        /// <summary>
+        /// Resets player to initial state
+        /// </summary>
+        void Reset();
     }
 }

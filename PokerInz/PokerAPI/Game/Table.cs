@@ -18,7 +18,7 @@ namespace PokerAPI.Game
 
         private int bigBlind;
 
-        public EvaluableCards CommunityCards { get; set; } = new CommunityCards(new CactusSneezeEvaluator());
+        public EvaluableCards CommunityCards { get; set; } = new CommunityCards(new CactusSenzeeEvaluator());
 
         public int DealerPosition
         {

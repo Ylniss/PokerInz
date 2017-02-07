@@ -74,10 +74,7 @@ namespace PokerAPI.Game
         {
             get
             {
-                if (PlayerState != PlayerState.Folded && PlayerState != PlayerState.AllIn)
-                    return true;
-                else
-                    return false;
+                return PlayerState != PlayerState.Folded && PlayerState != PlayerState.AllIn;
             }
         }
 
@@ -106,5 +103,11 @@ namespace PokerAPI.Game
         }
 
         public abstract IGameAction TakeAction(ITable table);
+
+        public void Reset()
+        {
+            Bet = 0;
+            PlayerState = PlayerState.Active;
+        }
     }
 }

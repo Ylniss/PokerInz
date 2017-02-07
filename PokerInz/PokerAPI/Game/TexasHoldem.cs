@@ -10,11 +10,11 @@ namespace PokerAPI.Game
 {
     public class TexasHoldem : Game
     {
-        public TexasHoldem(IList<IPlayer> players, BettingRule bettingRule, int smallBlind, int bigBlind) : base(players, bettingRule, smallBlind, bigBlind)
+        public TexasHoldem(IList<IPlayer> players, BettingRule bettingRule, int smallBlind, int bigBlind, IDictionary<IPlayer, int> playerPerformanceScores) : base(players, bettingRule, smallBlind, bigBlind, playerPerformanceScores)
         {
         }
 
-        public TexasHoldem(IList<IPlayer> players, BettingRule bettingRule, int smallBlind, int bigBlind, Deck playingCards) : base(players, bettingRule, smallBlind, bigBlind, playingCards)
+        public TexasHoldem(IList<IPlayer> players, BettingRule bettingRule, int smallBlind, int bigBlind, IDictionary<IPlayer, int> playerPerformanceScores, Deck playingCards) : base(players, bettingRule, smallBlind, bigBlind, playerPerformanceScores, playingCards)
         {
         }
 
@@ -132,9 +132,14 @@ namespace PokerAPI.Game
 
         protected override void onDealFinish()
         {
-            IPlayer winningPlayer = getDealWinner();
+            List<IPlayer> winningPlayers = getDealWinners();
 
-            winningPlayer.Chips += Table.Pot;
+            foreach (var winningPlayer in winningPlayers)
+            {
+                int pot = Table.Pot / winningPlayers.Count;
+                winningPlayer.Chips += pot;
+            }
+
             Table.Pot = 0;
 
             foreach (IPlayer player in Players)
@@ -145,13 +150,13 @@ namespace PokerAPI.Game
             removeLostPlayers();
         }
 
-        private IPlayer getDealWinner()
+        private List<IPlayer> getDealWinners()
         {
-            IPlayer winningPlayer;
+            List<IPlayer> winningPlayers = new List<IPlayer>();
 
             if (Players.Where(x => x.PlayerState == PlayerState.Folded).Count() == Players.Count - 1) //everyone except one player folded
             {
-                winningPlayer = Players.Where(x => x.PlayerState != PlayerState.Folded).First();
+                winningPlayers.Add(Players.Where(x => x.PlayerState != PlayerState.Folded).First());
             }
             else //there are more active players, so hand ranking tells who win
             {
@@ -160,10 +165,18 @@ namespace PokerAPI.Game
                     evaluatePlayerHand(player);
                 }
 
-                winningPlayer = PlayerHandScores.OrderBy(x => x.Value).First().Key;
+                int distinct = PlayerHandScores.Distinct().Count();
+
+                if (PlayerHandScores.Count == distinct)
+                    winningPlayers.Add(PlayerHandScores.OrderBy(x => x.Value).First().Key);
+                else
+                {
+                    for(int i = 0; i < Players.Count - distinct; ++i)
+                        winningPlayers.Add(PlayerHandScores.OrderBy(x => x.Value).ElementAt(i).Key);
+                }
             }
 
-            return winningPlayer;
+            return winningPlayers;
         }
     }
 }

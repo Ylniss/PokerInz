@@ -45,7 +45,7 @@
     <Compile Include="Cards\CardsCollection.cs" />
     <Compile Include="Cards\CommunityCards.cs" />
     <Compile Include="Cards\EvaluableCards.cs" />
-    <Compile Include="Cards\RankingEvaluators\CactusSneezeEvaluator.cs" />
+    <Compile Include="Cards\RankingEvaluators\CactusSenzeeEvaluator.cs" />
     <Compile Include="Cards\StandardDeck.cs" />
     <Compile Include="Enums\ActionType.cs" />
     <Compile Include="Enums\BettingRule.cs" />
@@ -60,6 +60,7 @@
     <Compile Include="Game\GameActionBet.cs" />
     <Compile Include="Game\GameActionCheck.cs" />
     <Compile Include="Game\GameActionFold.cs" />
+    <Compile Include="Game\GameSettings.cs" />
     <Compile Include="Game\Player.cs" />
     <Compile Include="Game\Table.cs" />
     <Compile Include="Game\TexasHoldem.cs" />

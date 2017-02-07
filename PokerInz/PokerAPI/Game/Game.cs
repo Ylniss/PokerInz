@@ -18,6 +18,8 @@ namespace PokerAPI.Game
 
         public IList<IPlayer> Players { get; }
 
+        public IList<IPlayer> LostPlayers { get; } = new List<IPlayer>(10);
+
         public IList<IGameAction> GameActions { get; }
 
         public Deck PlayingCards { get; }
@@ -26,11 +28,13 @@ namespace PokerAPI.Game
 
         public IDictionary<IPlayer, int> PlayerHandScores { get; } = new Dictionary<IPlayer, int>();
 
+        public IDictionary<IPlayer, int> PlayerPerformanceScores { get; }
+
         public virtual bool IsGameOver
         {
             get
             {
-                if(Players != null)
+                if(Players != null || Players.Count == 0)
                     return Players.Where(x => x.Chips <= 0).Count() >= Players.Count - 1;
                 else
                     throw new NullReferenceException("No players in Game.");
@@ -41,11 +45,11 @@ namespace PokerAPI.Game
 
         public int SmallBlind { get; }
 
-        public Game(IList<IPlayer> players, BettingRule bettingRule, int smallBlind, int bigBlind) : this(players, bettingRule, smallBlind, bigBlind, new StandardDeck())
+        public Game(IList<IPlayer> players, BettingRule bettingRule, int smallBlind, int bigBlind, IDictionary<IPlayer, int> playerPerformanceScores) : this(players, bettingRule, smallBlind, bigBlind, playerPerformanceScores, new StandardDeck())
         {
         }
 
-        public Game(IList<IPlayer> players, BettingRule bettingRule, int smallBlind, int bigBlind, Deck playingCards)
+        public Game(IList<IPlayer> players, BettingRule bettingRule, int smallBlind, int bigBlind, IDictionary<IPlayer, int> playerPerformanceScores, Deck playingCards)
         {
             if (players.Count < 2)
                 throw new ArgumentException("More than one player is needed to play a game.");
@@ -54,6 +58,7 @@ namespace PokerAPI.Game
             BettingRule = bettingRule;
             SmallBlind = smallBlind;
             BigBlind = bigBlind;
+            PlayerPerformanceScores = playerPerformanceScores;
             PlayingCards = playingCards;
             Table = new Table(players.Count, smallBlind, bigBlind);
 
@@ -136,15 +141,47 @@ namespace PokerAPI.Game
             return GetHandRanking(PlayerHandScores[player]);
         }
 
+        public void BringBackAndResetLostPlayers(GameSettings gameSettings)
+        {
+            int tablePosition = 0;
+            foreach (var player in LostPlayers)
+            {
+                player.Chips = gameSettings.PlayersStartingCash[player];
+                player.Reset();
+                player.TablePosition = tablePosition++;
+
+                Players.Add(player);
+            }
+
+            LostPlayers.Clear();
+        }
+
         protected void removeLostPlayers()
         {
             var lostPlayers = Players.Where(x => x.Chips <= 0).ToArray();
 
             for (int i = 0; i < lostPlayers.Count(); ++i)
+            {
+                LostPlayers.Add(lostPlayers.ElementAt(i)); //list of players in order of loosing
                 Players.Remove(lostPlayers.ElementAt(i));
+            }
 
             for (int i = 0; i < Players.Count; ++i)
                 Players[i].TablePosition = i;
+
+            if (Players.Count == 1) //last player only
+            {
+                LostPlayers.Add(Players.First());
+                Players.RemoveAt(0);
+
+                foreach (var lostPlayer in LostPlayers)
+                {
+                    if(PlayerPerformanceScores.ContainsKey(lostPlayer))
+                        PlayerPerformanceScores[lostPlayer] += LostPlayers.IndexOf(lostPlayer);
+                    else
+                        PlayerPerformanceScores.Add(lostPlayer, LostPlayers.IndexOf(lostPlayer));
+                }
+            }
 
             if (TableUpdateEvent != null)
                 TableUpdateEvent(this);
@@ -196,7 +233,7 @@ namespace PokerAPI.Game
             {
                 gameAction = player.TakeAction(Table);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }
@@ -231,7 +268,6 @@ namespace PokerAPI.Game
 
         protected bool isOnePlayerActiveLeft()
         {
-            //return Players.Where(x => x.PlayerState == PlayerState.Folded).Count() == Players.Count - 1;
             return Players.Where(x => x.CanTakeAction).Count() == 1;
         }
 

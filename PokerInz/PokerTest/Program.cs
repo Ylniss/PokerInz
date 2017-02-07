@@ -22,12 +22,14 @@ namespace PokerTest
             //    new HumanConsolePlayer("pepe333", 3, 1000),
             //}, BettingRule.NoLimit, 10, 20);
 
+            IDictionary<IPlayer, int> PlayerPerformanceScores = new Dictionary<IPlayer, int>();
+
             Game game = new TexasHoldem(new List<IPlayer> {
                 new HumanConsolePlayer("bagn000", 0, 1000),
-                new RandomAi("sdfsdf111", 1, 1000),
-                new RandomAi("zrd222", 2, 1000),
-                new RandomAi("pepe333", 3, 1000),
-            }, BettingRule.NoLimit, 10, 20);
+                new RandomAi("sdfsdf111", 1, 1000, 10, 100),
+                new RandomAi("zrd222", 2, 1000, 10, 100),
+                new RandomAi("pepe333", 3, 1000, 10, 100),
+            }, BettingRule.NoLimit, 10, 20, PlayerPerformanceScores);
 
             game.GameEvent += new Game.GameHandler(UpdateGui);
 

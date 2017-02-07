@@ -12,8 +12,13 @@ namespace PokerAPI.Ai
     {
         private Random random = new Random();
 
-        public RandomAi(string name, int tablePosition, int chips) : base(name, tablePosition, chips)
+        private float minRiskFactor;
+        private float maxRiskFactor;
+
+        public RandomAi(string name, int tablePosition, int chips, float minRiskFactor, float maxRiskFactor) : base(name, tablePosition, chips)
         {
+            this.minRiskFactor = minRiskFactor;
+            this.maxRiskFactor = maxRiskFactor;
         }
 
         public override IGameAction TakeAction(ITable table)
@@ -43,16 +48,24 @@ namespace PokerAPI.Ai
 
             if (isBiggerBet)
             {
+                if (biggestBet > Chips * maxRiskFactor)
+                    choice = 2;
+
+                if (biggestBet < Chips * minRiskFactor)
+                    choice = 1;
+
                 if (choice == 0) //call
-                {
+                {  
                     gameAction = new GameActionBet(this, table, biggestBet);
                 }
-                else if (choice == 1) //raise
+                if (choice == 1) //raise
                 {
-                    int raiseBet = biggestBet + minimalBet + random.Next(Chips / 2);
+                    int raiseBet = biggestBet + minimalBet + (int)(Chips * minRiskFactor) + random.Next((int)(Chips * maxRiskFactor));
+                    if (raiseBet > Chips)
+                        raiseBet = Chips;
                     gameAction = new GameActionBet(this, table, raiseBet);
                 }
-                else if (choice == 2)
+                if (choice == 2) //fold
                 {
                     gameAction = new GameActionFold(this, table);
                 }
@@ -63,18 +76,17 @@ namespace PokerAPI.Ai
                 {
                     gameAction = new GameActionCheck(this, table);
                 }
-                else if (choice == 1) //raise
+                if (choice == 1) //raise
                 {
                     int raiseBet = 0;
                     if (biggestBet == 0)
-                        raiseBet = minimalBet + random.Next(Chips / 2);
+                        raiseBet = minimalBet + random.Next((int)(Chips * maxRiskFactor));
                     else
-                        raiseBet = biggestBet + minimalBet + random.Next(Chips / 2);
+                        raiseBet = biggestBet + minimalBet + (int)(Chips * minRiskFactor) + random.Next((int)(Chips * maxRiskFactor));
+
+                    if (raiseBet > Chips)
+                        raiseBet = Chips;
                     gameAction = new GameActionBet(this, table, raiseBet);
-                }
-                else if (choice == 2)
-                {
-                    gameAction = new GameActionFold(this, table);
                 }
             }
 
