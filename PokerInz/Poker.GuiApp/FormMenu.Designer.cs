@@ -169,9 +169,9 @@
             // 
             // buttonAddPlayer
             // 
-            this.buttonAddPlayer.Location = new System.Drawing.Point(325, 247);
+            this.buttonAddPlayer.Location = new System.Drawing.Point(324, 247);
             this.buttonAddPlayer.Name = "buttonAddPlayer";
-            this.buttonAddPlayer.Size = new System.Drawing.Size(69, 35);
+            this.buttonAddPlayer.Size = new System.Drawing.Size(70, 35);
             this.buttonAddPlayer.TabIndex = 8;
             this.buttonAddPlayer.Text = "Add player";
             this.buttonAddPlayer.UseVisualStyleBackColor = true;

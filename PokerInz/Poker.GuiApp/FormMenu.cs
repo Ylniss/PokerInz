@@ -25,6 +25,7 @@ namespace Poker.GuiApp
         private int playersCount = 0;
 
         private const int maxPlayers = 10;
+        private const int minPlayers = 2;
 
         public FormMenu()
         {
@@ -34,15 +35,16 @@ namespace Poker.GuiApp
 
             foreach (Control control in controls)
                 Controls.Add(control);
+
+            for (int i = 0; i < minPlayers; ++i)
+                addPlayer();
         }
 
         private void buttonAddPlayer_Click(object sender, EventArgs e)
         {
             if (playersCount < maxPlayers)
             {
-                ++playersCount;
-
-                addRowToPanel(tableLayoutPanel, playersCount);
+                addPlayer();
             }
             else
             {
@@ -52,9 +54,14 @@ namespace Poker.GuiApp
 
         private void buttonRemovePlayer_Click(object sender, EventArgs e)
         {
-            --playersCount;
-
-            removeRowFromPanel(tableLayoutPanel, playersCount);
+            if (playersCount > minPlayers)
+            {
+                removePlayer();
+            }
+            else
+            {
+                MessageBox.Show($"Minimum allowed number of players is {minPlayers}");
+            }
         }
 
         private void buttonStart_Click(object sender, EventArgs e)
@@ -67,16 +74,27 @@ namespace Poker.GuiApp
                 float min = 0;
                 float max = 0;
 
-                if (i == 0) { min = 0.01f; max = 0.90f; }
-                if (i == 1) { min = 0.01f; max = 0.75f; }
-                if (i == 2) { min = 0.01f; max = 0.50f; }
-                if (i == 3) { min = 0.01f; max = 0.30f; }
-                if (i == 4) { min = 0.05f; max = 0.90f; }
-                if (i == 5) { min = 0.10f; max = 0.90f; }
-                if (i == 6) { min = 0.15f; max = 0.90f; }
-                if (i == 7) { min = 0.05f; max = 0.75f; }
-                if (i == 8) { min = 0.10f; max = 0.75f; }
-                if (i == 9) { min = 0.15f; max = 0.75f; }
+                //if (i == 0) { min = 0.50f; max = 0.75f; }
+                //if (i == 1) { min = 0.01f; max = 0.05f; }
+                //if (i == 2) { min = 0.70f; max = 0.80f; }
+                //if (i == 3) { min = 0.65f; max = 0.75f; }
+                //if (i == 4) { min = 0.65f; max = 0.90f; }
+                //if (i == 5) { min = 0.50f; max = 0.95f; }
+                //if (i == 6) { min = 0.55f; max = 0.90f; }
+                //if (i == 7) { min = 0.05f; max = 0.20f; }
+                //if (i == 8) { min = 0.60f; max = 0.65f; }
+                //if (i == 9) { min = 0.50f; max = 0.70f; }
+
+                if (i == 0) { min = 0.01f; max = 0.75f; }
+                if (i == 1) { min = 0.01f; max = 0.25f; }
+                if (i == 2) { min = 0.70f; max = 0.80f; }
+                if (i == 3) { min = 0.65f; max = 0.75f; }
+                if (i == 4) { min = 0.65f; max = 0.90f; }
+                if (i == 5) { min = 0.50f; max = 0.95f; }
+                if (i == 6) { min = 0.55f; max = 0.90f; }
+                if (i == 7) { min = 0.05f; max = 0.20f; }
+                if (i == 8) { min = 0.60f; max = 0.65f; }
+                if (i == 9) { min = 0.50f; max = 0.70f; }
                 //TEST
 
                 players.Add(new RandomAi(nameTextBoxes[i].Text, i, (int)cashNumerics[i].Value, min, max));
@@ -97,6 +115,14 @@ namespace Poker.GuiApp
                 (int)numericUpDownBigBlind.Value, 
                 checkBoxPerformance.Checked,
                 numOfGames));
+        }
+
+        private void checkBoxPerformance_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxPerformance.Checked)
+                numericNumOfGames.Enabled = true;
+            else
+                numericNumOfGames.Enabled = false;
         }
 
         private void addRowToPanel(TableLayoutPanel panel, int row)
@@ -139,12 +165,16 @@ namespace Poker.GuiApp
             cashNumerics.RemoveAt(row);
         }
 
-        private void checkBoxPerformance_CheckedChanged(object sender, EventArgs e)
+        private void addPlayer()
         {
-            if (checkBoxPerformance.Checked)
-                numericNumOfGames.Enabled = true;
-            else
-                numericNumOfGames.Enabled = false;
+            ++playersCount;
+            addRowToPanel(tableLayoutPanel, playersCount);
+        }
+
+        private void removePlayer()
+        {
+            --playersCount;
+            removeRowFromPanel(tableLayoutPanel, playersCount);
         }
     }
 }

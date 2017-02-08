@@ -19,9 +19,9 @@ namespace Poker.GuiApp
 
         private IDictionary<int, Control[]> playerControls = new Dictionary<int, Control[]>();
 
-        private IDictionary<IPlayer, int> PlayerPerformanceScores = new Dictionary<IPlayer, int>();
-
         private GameSettings gameSettings;
+
+        private PlayersStats playersStats;
 
         public FormGameTable(List<IPlayer> players, GameSettings gameSettings)
         {
@@ -30,13 +30,14 @@ namespace Poker.GuiApp
 
             this.gameSettings = gameSettings;
             this.players = players;
+            playersStats = new PlayersStats(gameSettings.NumberOfGames);
 
             initializePlayerControls();
 
             setAllCardBacks();
             setCardsDictionary();
 
-            game = new TexasHoldem(players, BettingRule.NoLimit, gameSettings.SmallBlind, gameSettings.BigBlind, PlayerPerformanceScores);
+            game = new TexasHoldem(players, BettingRule.NoLimit, gameSettings.SmallBlind, gameSettings.BigBlind, playersStats);
 
             game.GameEvent += new Game.GameHandler(UpdateGui);
 
@@ -47,7 +48,7 @@ namespace Poker.GuiApp
                 
                 if (i != 0)
                 {
-                    game.BringBackAndResetLostPlayers(gameSettings);
+                    game.ResetGame(gameSettings);
                 }
 
                 while (!game.IsGameOver)
@@ -77,11 +78,19 @@ namespace Poker.GuiApp
             }
 
             richTextBoxLog.Text += "- - - - - - - - SUMMARY - - - - - - - -";
-            richTextBoxLog.Text += "\nName     \tScore   \tWin[%]\n";
-            foreach (var player in PlayerPerformanceScores.OrderByDescending(x => x.Value).Select(x => x.Key))
+            richTextBoxLog.Text += "\nName    \tScore\tScore%\tWin%\n";
+            foreach (var player in playersStats.PlayerPerformanceScores.OrderByDescending(x => x.Value).Select(x => x.Key))
             {
-                float winPercent = (float)game.PlayerPerformanceScores[player] / (float)((game.PlayerPerformanceScores.Count - 1) * gameSettings.NumberOfGames) * 100f;
-                richTextBoxLog.Text += $"{player.Name}  \t{game.PlayerPerformanceScores[player]}      \t{winPercent:0.00}\n";
+                float scorePercent = playersStats.GetScorePercent(player);
+                float winPercent = playersStats.GetWinPercent(player);
+                richTextBoxLog.Text += $"{player.Name} \t{playersStats.PlayerPerformanceScores[player]}\t{scorePercent:0.00} \t{winPercent:0.00}\n";
+            }
+            richTextBoxLog.Text += "\n";
+            foreach (var player in playersStats.PlayersWinCount.OrderByDescending(x => x.Value).Select(x => x.Key))
+            {
+                float scorePercent = playersStats.GetScorePercent(player);
+                float winPercent = playersStats.GetWinPercent(player);
+                richTextBoxLog.Text += $"{player.Name} \t{playersStats.PlayerPerformanceScores[player]}\t{scorePercent:0.00} \t{winPercent:0.00}\n";
             }
             Application.DoEvents();
         }
@@ -160,7 +169,7 @@ namespace Poker.GuiApp
                     }
                     playerControl.Value[4].Text = playersArray[playerControl.Key].Bet.ToString();
                     playerControl.Value[5].Text = playersArray[playerControl.Key].PlayerState.ToString();
-
+                    playerControl.Value[6].Text = playersArray[playerControl.Key].Blind.ToFriendlyString();
                 }
                 else
                 {
@@ -170,6 +179,7 @@ namespace Poker.GuiApp
                     (playerControl.Value[3] as PictureBox).Image = resources.cards_back;
                     playerControl.Value[4].Text = "0";
                     playerControl.Value[5].Text = "";
+                    playerControl.Value[6].Text = "";
                 }
             }
 
@@ -197,23 +207,20 @@ namespace Poker.GuiApp
                 cardRiver.Image = null;
 
             pot.Text = game.Table.Pot.ToString();
-
-            //Thread.Sleep(1000);
-
         }
 
         private void initializePlayerControls()
         {
-            playerControls[0] = new Control[6] { nameP0, cashP0, card1P0, card2P0, betP0, statusP0 };
-            playerControls[1] = new Control[6] { nameP1, cashP1, card1P1, card2P1, betP1, statusP1 };
-            playerControls[2] = new Control[6] { nameP2, cashP2, card1P2, card2P2, betP2, statusP2 };
-            playerControls[3] = new Control[6] { nameP3, cashP3, card1P3, card2P3, betP3, statusP3 };
-            playerControls[4] = new Control[6] { nameP4, cashP4, card1P4, card2P4, betP4, statusP4 };
-            playerControls[5] = new Control[6] { nameP5, cashP5, card1P5, card2P5, betP5, statusP5 };
-            playerControls[6] = new Control[6] { nameP6, cashP6, card1P6, card2P6, betP6, statusP6 };
-            playerControls[7] = new Control[6] { nameP7, cashP7, card1P7, card2P7, betP7, statusP7 };
-            playerControls[8] = new Control[6] { nameP8, cashP8, card1P8, card2P8, betP8, statusP8 };
-            playerControls[9] = new Control[6] { nameP9, cashP9, card1P9, card2P9, betP9, statusP9 };
+            playerControls[0] = new Control[7] { nameP0, cashP0, card1P0, card2P0, betP0, statusP0, blindP0 };
+            playerControls[1] = new Control[7] { nameP1, cashP1, card1P1, card2P1, betP1, statusP1, blindP1 };
+            playerControls[2] = new Control[7] { nameP2, cashP2, card1P2, card2P2, betP2, statusP2, blindP2 };
+            playerControls[3] = new Control[7] { nameP3, cashP3, card1P3, card2P3, betP3, statusP3, blindP3 };
+            playerControls[4] = new Control[7] { nameP4, cashP4, card1P4, card2P4, betP4, statusP4, blindP4 };
+            playerControls[5] = new Control[7] { nameP5, cashP5, card1P5, card2P5, betP5, statusP5, blindP5 };
+            playerControls[6] = new Control[7] { nameP6, cashP6, card1P6, card2P6, betP6, statusP6, blindP6 };
+            playerControls[7] = new Control[7] { nameP7, cashP7, card1P7, card2P7, betP7, statusP7, blindP7 };
+            playerControls[8] = new Control[7] { nameP8, cashP8, card1P8, card2P8, betP8, statusP8, blindP8 };
+            playerControls[9] = new Control[7] { nameP9, cashP9, card1P9, card2P9, betP9, statusP9, blindP9 };
         }
 
         private void setAllCardBacks()

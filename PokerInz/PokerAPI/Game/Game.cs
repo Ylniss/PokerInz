@@ -28,7 +28,7 @@ namespace PokerAPI.Game
 
         public IDictionary<IPlayer, int> PlayerHandScores { get; } = new Dictionary<IPlayer, int>();
 
-        public IDictionary<IPlayer, int> PlayerPerformanceScores { get; }
+        public PlayersStats PlayersStats;
 
         public virtual bool IsGameOver
         {
@@ -45,11 +45,11 @@ namespace PokerAPI.Game
 
         public int SmallBlind { get; }
 
-        public Game(IList<IPlayer> players, BettingRule bettingRule, int smallBlind, int bigBlind, IDictionary<IPlayer, int> playerPerformanceScores) : this(players, bettingRule, smallBlind, bigBlind, playerPerformanceScores, new StandardDeck())
+        public Game(IList<IPlayer> players, BettingRule bettingRule, int smallBlind, int bigBlind, PlayersStats playersStats) : this(players, bettingRule, smallBlind, bigBlind, playersStats, new StandardDeck())
         {
         }
 
-        public Game(IList<IPlayer> players, BettingRule bettingRule, int smallBlind, int bigBlind, IDictionary<IPlayer, int> playerPerformanceScores, Deck playingCards)
+        public Game(IList<IPlayer> players, BettingRule bettingRule, int smallBlind, int bigBlind, PlayersStats playersStats, Deck playingCards)
         {
             if (players.Count < 2)
                 throw new ArgumentException("More than one player is needed to play a game.");
@@ -58,7 +58,7 @@ namespace PokerAPI.Game
             BettingRule = bettingRule;
             SmallBlind = smallBlind;
             BigBlind = bigBlind;
-            PlayerPerformanceScores = playerPerformanceScores;
+            PlayersStats = playersStats;
             PlayingCards = playingCards;
             Table = new Table(players.Count, smallBlind, bigBlind);
 
@@ -141,7 +141,7 @@ namespace PokerAPI.Game
             return GetHandRanking(PlayerHandScores[player]);
         }
 
-        public void BringBackAndResetLostPlayers(GameSettings gameSettings)
+        public void ResetGame(GameSettings gameSettings)
         {
             int tablePosition = 0;
             foreach (var player in LostPlayers)
@@ -171,15 +171,20 @@ namespace PokerAPI.Game
 
             if (Players.Count == 1) //last player only
             {
+                if (PlayersStats.PlayersWinCount.ContainsKey(Players[0]))
+                    PlayersStats.PlayersWinCount[Players[0]] += 1;
+                else
+                    PlayersStats.PlayersWinCount.Add(Players[0], 1);
+
                 LostPlayers.Add(Players.First());
                 Players.RemoveAt(0);
 
                 foreach (var lostPlayer in LostPlayers)
                 {
-                    if(PlayerPerformanceScores.ContainsKey(lostPlayer))
-                        PlayerPerformanceScores[lostPlayer] += LostPlayers.IndexOf(lostPlayer);
+                    if(PlayersStats.PlayerPerformanceScores.ContainsKey(lostPlayer))
+                        PlayersStats.PlayerPerformanceScores[lostPlayer] += LostPlayers.IndexOf(lostPlayer);
                     else
-                        PlayerPerformanceScores.Add(lostPlayer, LostPlayers.IndexOf(lostPlayer));
+                        PlayersStats.PlayerPerformanceScores.Add(lostPlayer, LostPlayers.IndexOf(lostPlayer));
                 }
             }
 
@@ -251,11 +256,11 @@ namespace PokerAPI.Game
 
         protected bool lastPlayerCalled()
         {
-            var activePlayersBets = Players.Where(x => x.CanTakeAction).Select(x => x.Bet);
+            var activeAndAllinPlayerBets = Players.Where(x => x.CanTakeAction || x.PlayerState == PlayerState.AllIn).Select(x => x.Bet);
 
-            bool same = activePlayersBets.Distinct().Count() == 1;
+            bool same = activeAndAllinPlayerBets.Distinct().Count() == 1;
 
-            return same && activePlayersBets.First() != 0 && activePlayersBets.Count() + Players.Where(x => x.PlayerState == PlayerState.AllIn).Count() > 1;
+            return same && activeAndAllinPlayerBets.First() != 0 && activeAndAllinPlayerBets.Count() + Players.Where(x => x.PlayerState == PlayerState.AllIn).Count() > 1;
         }
 
         protected bool allActivePlayersChecked()
@@ -274,6 +279,15 @@ namespace PokerAPI.Game
         protected bool allButOnePlayerFolded()
         {
             return Players.Where(x => x.PlayerState == PlayerState.Folded).Count() == Players.Count - 1;
+        }
+
+        protected bool isBiggerBetToCall()
+        {
+            var biggestBet = Players.Where(x => x.CanTakeAction || x.PlayerState == PlayerState.AllIn).Select(x => x.Bet).Max();
+
+            var biggestActivePlayerBet = Players.Where(x => x.CanTakeAction).Select(x => x.Bet).Max();
+
+            return biggestBet > biggestActivePlayerBet;
         }
     }
 }

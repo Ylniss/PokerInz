@@ -10,11 +10,11 @@ namespace PokerAPI.Game
 {
     public class TexasHoldem : Game
     {
-        public TexasHoldem(IList<IPlayer> players, BettingRule bettingRule, int smallBlind, int bigBlind, IDictionary<IPlayer, int> playerPerformanceScores) : base(players, bettingRule, smallBlind, bigBlind, playerPerformanceScores)
+        public TexasHoldem(IList<IPlayer> players, BettingRule bettingRule, int smallBlind, int bigBlind, PlayersStats playersStats) : base(players, bettingRule, smallBlind, bigBlind, playersStats)
         {
         }
 
-        public TexasHoldem(IList<IPlayer> players, BettingRule bettingRule, int smallBlind, int bigBlind, IDictionary<IPlayer, int> playerPerformanceScores, Deck playingCards) : base(players, bettingRule, smallBlind, bigBlind, playerPerformanceScores, playingCards)
+        public TexasHoldem(IList<IPlayer> players, BettingRule bettingRule, int smallBlind, int bigBlind, PlayersStats playersStats, Deck playingCards) : base(players, bettingRule, smallBlind, bigBlind, playersStats, playingCards)
         {
         }
 
@@ -105,7 +105,7 @@ namespace PokerAPI.Game
 
                 notify();
 
-                while (nextPlayer != null && (!allPlayersTookAction() || !lastPlayerCalled()) && (!allPlayersTookAction() || !isOnePlayerActiveLeft()) && !allActivePlayersChecked() && !allButOnePlayerFolded())
+                while (nextPlayer != null && (!allPlayersTookAction() || !lastPlayerCalled()) && (!allPlayersTookAction() || !isOnePlayerActiveLeft() || isBiggerBetToCall()) && !allActivePlayersChecked() && !allButOnePlayerFolded())
                 {
                     if(nextPlayer != null && nextPlayer.CanTakeAction)
                         while (!takeAction(nextPlayer));
@@ -165,13 +165,14 @@ namespace PokerAPI.Game
                     evaluatePlayerHand(player);
                 }
 
-                int distinct = PlayerHandScores.Distinct().Count();
+                int bestScore = PlayerHandScores.OrderBy(x => x.Value).First().Value;
+                int bestCount = PlayerHandScores.Where(x => x.Value == bestScore).Count();
 
-                if (PlayerHandScores.Count == distinct)
+                if (bestCount == 1)
                     winningPlayers.Add(PlayerHandScores.OrderBy(x => x.Value).First().Key);
                 else
                 {
-                    for(int i = 0; i < Players.Count - distinct; ++i)
+                    for(int i = 0; i < bestCount; ++i)
                         winningPlayers.Add(PlayerHandScores.OrderBy(x => x.Value).ElementAt(i).Key);
                 }
             }
