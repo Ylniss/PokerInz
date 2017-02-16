@@ -74,30 +74,49 @@ namespace Poker.GuiApp
                 float min = 0;
                 float max = 0;
 
-                //if (i == 0) { min = 0.50f; max = 0.75f; }
-                //if (i == 1) { min = 0.01f; max = 0.05f; }
-                //if (i == 2) { min = 0.70f; max = 0.80f; }
-                //if (i == 3) { min = 0.65f; max = 0.75f; }
-                //if (i == 4) { min = 0.65f; max = 0.90f; }
-                //if (i == 5) { min = 0.50f; max = 0.95f; }
+                //if (i == 0) { min = 0.00f; max = 0.05f; }
+                //if (i == 1) { min = 0.05f; max = 0.20f; }
+                //if (i == 2) { min = 0.50f; max = 0.70f; }
+                //if (i == 3) { min = 0.50f; max = 0.95f; }
+                //if (i == 4) { min = 0.65f; max = 0.70f; }
+                //if (i == 5) { min = 0.65f; max = 0.90f; }
                 //if (i == 6) { min = 0.55f; max = 0.90f; }
-                //if (i == 7) { min = 0.05f; max = 0.20f; }
-                //if (i == 8) { min = 0.60f; max = 0.65f; }
-                //if (i == 9) { min = 0.50f; max = 0.70f; }
+                //if (i == 7) { min = 0.00f; max = 1.00f; }
+                //if (i == 8) { min = 0.40f; max = 0.60f; }
+                //if (i == 9) { min = 0.70f; max = 0.80f; }
 
-                if (i == 0) { min = 0.01f; max = 0.75f; }
-                if (i == 1) { min = 0.01f; max = 0.25f; }
-                if (i == 2) { min = 0.70f; max = 0.80f; }
-                if (i == 3) { min = 0.65f; max = 0.75f; }
-                if (i == 4) { min = 0.65f; max = 0.90f; }
-                if (i == 5) { min = 0.50f; max = 0.95f; }
-                if (i == 6) { min = 0.55f; max = 0.90f; }
-                if (i == 7) { min = 0.05f; max = 0.20f; }
-                if (i == 8) { min = 0.60f; max = 0.65f; }
-                if (i == 9) { min = 0.50f; max = 0.70f; }
+                //if (i == 0) { min = 0.00f; max = 0.90f; } //dane z pracy pisemnej
+                //if (i == 1) { min = 0.00f; max = 0.75f; }
+                //if (i == 2) { min = 0.00f; max = 0.50f; }
+                //if (i == 3) { min = 0.00f; max = 0.30f; }
+                //if (i == 4) { min = 0.05f; max = 0.90f; }
+                //if (i == 5) { min = 0.10f; max = 0.90f; }
+                //if (i == 6) { min = 0.15f; max = 0.90f; }
+                //if (i == 7) { min = 0.05f; max = 0.75f; }
+                //if (i == 8) { min = 0.10f; max = 0.75f; }
+                //if (i == 9) { min = 0.15f; max = 0.75f; }
+
+                if (i == 0) { min = 0.05f; max = 1.00f; }
+                if (i == 1) { min = 0.05f; max = 0.90f; }
+                if (i == 2) { min = 0.05f; max = 0.80f; }
+                if (i == 3) { min = 0.05f; max = 0.70f; }
+                if (i == 4) { min = 0.05f; max = 0.60f; }
+                if (i == 5) { min = 0.05f; max = 0.50f; }
+                if (i == 6) { min = 0.05f; max = 0.40f; }
+                if (i == 7) { min = 0.05f; max = 0.30f; }
+                if (i == 8) { min = 0.05f; max = 0.20f; }
+                if (i == 9) { min = 0.05f; max = 0.10f; }
                 //TEST
 
-                players.Add(new RandomAi(nameTextBoxes[i].Text, i, (int)cashNumerics[i].Value, min, max));
+                if (typeComboBoxes[i].Text == "Random AI")
+                {
+                    players.Add(new Player(nameTextBoxes[i].Text, i, (int)cashNumerics[i].Value, new TestAi(min, max)));
+                }
+
+                if (typeComboBoxes[i].Text == "VarRiskRand AI")
+                {
+                    players.Add(new Player(nameTextBoxes[i].Text, i, (int)cashNumerics[i].Value, new VarRiskRandAi(min, max, 3, 0.95f, 1.00f)));
+                }
             }
 
             IDictionary<IPlayer, int> startingCash = new Dictionary<IPlayer, int>();
@@ -135,6 +154,7 @@ namespace Poker.GuiApp
 
             ComboBox typeComboBox = new ComboBox();
             typeComboBox.Items.Add("Random AI");
+            typeComboBox.Items.Add("VarRiskRand AI");
             typeComboBox.SelectedIndex = 0;
             typeComboBoxes.Add(typeComboBox);
             panel.Controls.Add(typeComboBox, 1, row);

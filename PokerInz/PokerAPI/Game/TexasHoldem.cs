@@ -105,7 +105,7 @@ namespace PokerAPI.Game
 
                 notify();
 
-                while (nextPlayer != null && (!allPlayersTookAction() || !lastPlayerCalled()) && (!allPlayersTookAction() || !isOnePlayerActiveLeft() || isBiggerBetToCall()) && !allActivePlayersChecked() && !allButOnePlayerFolded())
+                while (nextPlayer != null && (!allPlayersTookAction() || isBiggerBetToCall() || !lastPlayerCalled()) && !isOnePlayerActiveLeft() && !allActivePlayersChecked() && !allButOnePlayerFolded())
                 {
                     if(nextPlayer != null && nextPlayer.CanTakeAction)
                         while (!takeAction(nextPlayer));

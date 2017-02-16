@@ -42,10 +42,15 @@
             this.checkBoxPerformance = new System.Windows.Forms.CheckBox();
             this.numericNumOfGames = new System.Windows.Forms.NumericUpDown();
             this.labelNumOfGames = new System.Windows.Forms.Label();
+            this.groupBoxSettings = new System.Windows.Forms.GroupBox();
+            this.groupBoxParams = new System.Windows.Forms.GroupBox();
+            this.comboBoxPlayerParams = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSmallBlind)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBigBlind)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericNumOfGames)).BeginInit();
+            this.groupBoxSettings.SuspendLayout();
+            this.groupBoxParams.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel
@@ -108,7 +113,7 @@
             // labelSmallBlind
             // 
             this.labelSmallBlind.AutoSize = true;
-            this.labelSmallBlind.Location = new System.Drawing.Point(321, 141);
+            this.labelSmallBlind.Location = new System.Drawing.Point(3, 121);
             this.labelSmallBlind.Name = "labelSmallBlind";
             this.labelSmallBlind.Size = new System.Drawing.Size(57, 13);
             this.labelSmallBlind.TabIndex = 4;
@@ -116,7 +121,7 @@
             // 
             // numericUpDownSmallBlind
             // 
-            this.numericUpDownSmallBlind.Location = new System.Drawing.Point(324, 157);
+            this.numericUpDownSmallBlind.Location = new System.Drawing.Point(6, 137);
             this.numericUpDownSmallBlind.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -128,7 +133,7 @@
             0,
             0});
             this.numericUpDownSmallBlind.Name = "numericUpDownSmallBlind";
-            this.numericUpDownSmallBlind.Size = new System.Drawing.Size(70, 20);
+            this.numericUpDownSmallBlind.Size = new System.Drawing.Size(90, 20);
             this.numericUpDownSmallBlind.TabIndex = 5;
             this.numericUpDownSmallBlind.Value = new decimal(new int[] {
             10,
@@ -138,7 +143,7 @@
             // 
             // numericUpDownBigBlind
             // 
-            this.numericUpDownBigBlind.Location = new System.Drawing.Point(324, 205);
+            this.numericUpDownBigBlind.Location = new System.Drawing.Point(6, 185);
             this.numericUpDownBigBlind.Maximum = new decimal(new int[] {
             2000,
             0,
@@ -150,7 +155,7 @@
             0,
             0});
             this.numericUpDownBigBlind.Name = "numericUpDownBigBlind";
-            this.numericUpDownBigBlind.Size = new System.Drawing.Size(70, 20);
+            this.numericUpDownBigBlind.Size = new System.Drawing.Size(90, 20);
             this.numericUpDownBigBlind.TabIndex = 7;
             this.numericUpDownBigBlind.Value = new decimal(new int[] {
             20,
@@ -161,7 +166,7 @@
             // labelBigBlind
             // 
             this.labelBigBlind.AutoSize = true;
-            this.labelBigBlind.Location = new System.Drawing.Point(321, 189);
+            this.labelBigBlind.Location = new System.Drawing.Point(3, 169);
             this.labelBigBlind.Name = "labelBigBlind";
             this.labelBigBlind.Size = new System.Drawing.Size(47, 13);
             this.labelBigBlind.TabIndex = 6;
@@ -169,9 +174,9 @@
             // 
             // buttonAddPlayer
             // 
-            this.buttonAddPlayer.Location = new System.Drawing.Point(324, 247);
+            this.buttonAddPlayer.Location = new System.Drawing.Point(6, 229);
             this.buttonAddPlayer.Name = "buttonAddPlayer";
-            this.buttonAddPlayer.Size = new System.Drawing.Size(70, 35);
+            this.buttonAddPlayer.Size = new System.Drawing.Size(90, 35);
             this.buttonAddPlayer.TabIndex = 8;
             this.buttonAddPlayer.Text = "Add player";
             this.buttonAddPlayer.UseVisualStyleBackColor = true;
@@ -179,9 +184,9 @@
             // 
             // buttonStart
             // 
-            this.buttonStart.Location = new System.Drawing.Point(325, 329);
+            this.buttonStart.Location = new System.Drawing.Point(6, 311);
             this.buttonStart.Name = "buttonStart";
-            this.buttonStart.Size = new System.Drawing.Size(70, 23);
+            this.buttonStart.Size = new System.Drawing.Size(90, 23);
             this.buttonStart.TabIndex = 9;
             this.buttonStart.Text = "Start";
             this.buttonStart.UseVisualStyleBackColor = true;
@@ -189,9 +194,9 @@
             // 
             // buttonRemovePlayer
             // 
-            this.buttonRemovePlayer.Location = new System.Drawing.Point(324, 288);
+            this.buttonRemovePlayer.Location = new System.Drawing.Point(6, 270);
             this.buttonRemovePlayer.Name = "buttonRemovePlayer";
-            this.buttonRemovePlayer.Size = new System.Drawing.Size(70, 35);
+            this.buttonRemovePlayer.Size = new System.Drawing.Size(90, 35);
             this.buttonRemovePlayer.TabIndex = 10;
             this.buttonRemovePlayer.Text = "Remove player";
             this.buttonRemovePlayer.UseVisualStyleBackColor = true;
@@ -200,7 +205,7 @@
             // checkBoxPerformance
             // 
             this.checkBoxPerformance.AutoSize = true;
-            this.checkBoxPerformance.Location = new System.Drawing.Point(324, 21);
+            this.checkBoxPerformance.Location = new System.Drawing.Point(6, 15);
             this.checkBoxPerformance.MaximumSize = new System.Drawing.Size(90, 0);
             this.checkBoxPerformance.MinimumSize = new System.Drawing.Size(0, 30);
             this.checkBoxPerformance.Name = "checkBoxPerformance";
@@ -213,9 +218,9 @@
             // numericNumOfGames
             // 
             this.numericNumOfGames.Enabled = false;
-            this.numericNumOfGames.Location = new System.Drawing.Point(324, 77);
+            this.numericNumOfGames.Location = new System.Drawing.Point(6, 75);
             this.numericNumOfGames.Maximum = new decimal(new int[] {
-            10000,
+            1000000,
             0,
             0,
             0});
@@ -225,7 +230,7 @@
             0,
             0});
             this.numericNumOfGames.Name = "numericNumOfGames";
-            this.numericNumOfGames.Size = new System.Drawing.Size(70, 20);
+            this.numericNumOfGames.Size = new System.Drawing.Size(90, 20);
             this.numericNumOfGames.TabIndex = 12;
             this.numericNumOfGames.Value = new decimal(new int[] {
             1,
@@ -236,27 +241,55 @@
             // labelNumOfGames
             // 
             this.labelNumOfGames.AutoSize = true;
-            this.labelNumOfGames.Location = new System.Drawing.Point(321, 60);
+            this.labelNumOfGames.Location = new System.Drawing.Point(3, 58);
             this.labelNumOfGames.Name = "labelNumOfGames";
             this.labelNumOfGames.Size = new System.Drawing.Size(75, 13);
             this.labelNumOfGames.TabIndex = 13;
             this.labelNumOfGames.Text = "Num of games";
             // 
+            // groupBoxSettings
+            // 
+            this.groupBoxSettings.Controls.Add(this.checkBoxPerformance);
+            this.groupBoxSettings.Controls.Add(this.buttonStart);
+            this.groupBoxSettings.Controls.Add(this.labelNumOfGames);
+            this.groupBoxSettings.Controls.Add(this.labelSmallBlind);
+            this.groupBoxSettings.Controls.Add(this.numericNumOfGames);
+            this.groupBoxSettings.Controls.Add(this.numericUpDownSmallBlind);
+            this.groupBoxSettings.Controls.Add(this.labelBigBlind);
+            this.groupBoxSettings.Controls.Add(this.buttonRemovePlayer);
+            this.groupBoxSettings.Controls.Add(this.numericUpDownBigBlind);
+            this.groupBoxSettings.Controls.Add(this.buttonAddPlayer);
+            this.groupBoxSettings.Location = new System.Drawing.Point(432, 12);
+            this.groupBoxSettings.Name = "groupBoxSettings";
+            this.groupBoxSettings.Size = new System.Drawing.Size(102, 344);
+            this.groupBoxSettings.TabIndex = 14;
+            this.groupBoxSettings.TabStop = false;
+            // 
+            // groupBoxParams
+            // 
+            this.groupBoxParams.Controls.Add(this.comboBoxPlayerParams);
+            this.groupBoxParams.Location = new System.Drawing.Point(324, 12);
+            this.groupBoxParams.Name = "groupBoxParams";
+            this.groupBoxParams.Size = new System.Drawing.Size(102, 344);
+            this.groupBoxParams.TabIndex = 15;
+            this.groupBoxParams.TabStop = false;
+            this.groupBoxParams.Text = "Parameters";
+            // 
+            // comboBoxPlayerParams
+            // 
+            this.comboBoxPlayerParams.FormattingEnabled = true;
+            this.comboBoxPlayerParams.Location = new System.Drawing.Point(7, 20);
+            this.comboBoxPlayerParams.Name = "comboBoxPlayerParams";
+            this.comboBoxPlayerParams.Size = new System.Drawing.Size(89, 21);
+            this.comboBoxPlayerParams.TabIndex = 0;
+            // 
             // FormMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(414, 368);
-            this.Controls.Add(this.labelNumOfGames);
-            this.Controls.Add(this.numericNumOfGames);
-            this.Controls.Add(this.checkBoxPerformance);
-            this.Controls.Add(this.buttonRemovePlayer);
-            this.Controls.Add(this.buttonStart);
-            this.Controls.Add(this.buttonAddPlayer);
-            this.Controls.Add(this.numericUpDownBigBlind);
-            this.Controls.Add(this.labelBigBlind);
-            this.Controls.Add(this.numericUpDownSmallBlind);
-            this.Controls.Add(this.labelSmallBlind);
+            this.ClientSize = new System.Drawing.Size(547, 368);
+            this.Controls.Add(this.groupBoxParams);
+            this.Controls.Add(this.groupBoxSettings);
             this.Controls.Add(this.tableLayoutPanel);
             this.MaximizeBox = false;
             this.Name = "FormMenu";
@@ -266,8 +299,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSmallBlind)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBigBlind)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericNumOfGames)).EndInit();
+            this.groupBoxSettings.ResumeLayout(false);
+            this.groupBoxSettings.PerformLayout();
+            this.groupBoxParams.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -287,5 +322,8 @@
         private System.Windows.Forms.CheckBox checkBoxPerformance;
         private System.Windows.Forms.NumericUpDown numericNumOfGames;
         private System.Windows.Forms.Label labelNumOfGames;
+        private System.Windows.Forms.GroupBox groupBoxSettings;
+        private System.Windows.Forms.GroupBox groupBoxParams;
+        private System.Windows.Forms.ComboBox comboBoxPlayerParams;
     }
 }

@@ -318,6 +318,7 @@ namespace Poker.GuiApp
         private void FormGameTable_FormClosing(object sender, FormClosingEventArgs e)
         {
             richTextBoxLog.Dispose();
+            Dispose();
         }
 
         private void richTextBoxLog_TextChanged(object sender, EventArgs e)

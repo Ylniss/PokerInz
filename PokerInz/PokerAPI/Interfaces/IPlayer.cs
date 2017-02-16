@@ -1,4 +1,5 @@
 ﻿using PokerAPI.Enums;
+using PokerAPI.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

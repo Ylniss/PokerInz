@@ -55,7 +55,9 @@ namespace PokerAPI.Game
             }
         }
 
-        public IDictionary<string, int> PlayerBets { get; set; } = new Dictionary<string, int>();
+        public IDictionary<string, int> PlayerBets { get; } = new Dictionary<string, int>();
+
+        public IDictionary<string, int> PlayerChips { get; } = new Dictionary<string, int>();
 
         public int Pot { get; set; }
 
@@ -75,6 +77,14 @@ namespace PokerAPI.Game
             }
         }
 
+        public int PlayersCount
+        {
+            get
+            {
+                return playersCount;
+            }
+        }
+
         public Table(int playersCount, int smallBlind, int bigBlind)
         {
             dealerPosition = playersCount;
@@ -83,12 +93,13 @@ namespace PokerAPI.Game
             this.bigBlind = bigBlind;
         }
 
-        public void UpdateBet(object subject)
+        public void UpdateBetAndChips(object subject)
         {
             if (subject is Player)
             {
                 var player = subject as Player;
                 PlayerBets[player.Name] = player.Bet;
+                PlayerChips[player.Name] = player.Chips + player.Bet;
             }
         }
 

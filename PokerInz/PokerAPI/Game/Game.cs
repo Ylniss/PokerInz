@@ -65,7 +65,7 @@ namespace PokerAPI.Game
             TableUpdateEvent += new GameHandler(Table.UpdatePlayersCount);
 
             foreach(Player player in Players)
-                player.OnBetChange += new Player.BetHandler(Table.UpdateBet);
+                player.UpdateBetAndChips += new Player.BetHandler(Table.UpdateBetAndChips);
         }
 
         public IPlayer GetNextPlayer(IPlayer player)
@@ -238,7 +238,7 @@ namespace PokerAPI.Game
             {
                 gameAction = player.TakeAction(Table);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return false;
             }
@@ -256,7 +256,10 @@ namespace PokerAPI.Game
 
         protected bool lastPlayerCalled()
         {
-            var activeAndAllinPlayerBets = Players.Where(x => x.CanTakeAction || x.PlayerState == PlayerState.AllIn).Select(x => x.Bet);
+            var activeAndAllinPlayerBets = Players.Where(x => x.CanTakeAction).Select(x => x.Bet);
+
+            if (activeAndAllinPlayerBets.Count() == 0)
+                return true;
 
             bool same = activeAndAllinPlayerBets.Distinct().Count() == 1;
 
@@ -265,7 +268,7 @@ namespace PokerAPI.Game
 
         protected bool allActivePlayersChecked()
         {
-            int activePlayersCount = Players.Where(x => x.PlayerState != PlayerState.Folded).Count();
+            int activePlayersCount = Players.Where(x => x.CanTakeAction).Count();
             int checkedPlayersCount = Players.Where(x => x.PlayerState == PlayerState.Checked).Count();
 
             return activePlayersCount == checkedPlayersCount;
@@ -283,6 +286,9 @@ namespace PokerAPI.Game
 
         protected bool isBiggerBetToCall()
         {
+            if (Players.Where(x => x.CanTakeAction).Count() == 0)
+                return false;
+
             var biggestBet = Players.Where(x => x.CanTakeAction || x.PlayerState == PlayerState.AllIn).Select(x => x.Bet).Max();
 
             var biggestActivePlayerBet = Players.Where(x => x.CanTakeAction).Select(x => x.Bet).Max();

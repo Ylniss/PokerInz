@@ -40,7 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ai\RandomAi.cs" />
+    <Compile Include="Ai\TestAi.cs" />
+    <Compile Include="Ai\VarRiskRandAi.cs" />
     <Compile Include="Cards\Card.cs" />
     <Compile Include="Cards\CardsCollection.cs" />
     <Compile Include="Cards\CommunityCards.cs" />
@@ -55,13 +56,16 @@
     <Compile Include="Enums\GameStage.cs" />
     <Compile Include="Enums\HandRanking.cs" />
     <Compile Include="Enums\PlayerState.cs" />
+    <Compile Include="Game\ActionInfo.cs" />
     <Compile Include="Game\Game.cs" />
     <Compile Include="Game\GameAction.cs" />
     <Compile Include="Game\GameActionBet.cs" />
     <Compile Include="Game\GameActionCheck.cs" />
     <Compile Include="Game\GameActionFold.cs" />
     <Compile Include="Game\GameSettings.cs" />
+    <Compile Include="Game\Parameter.cs" />
     <Compile Include="Game\Player.cs" />
+    <Compile Include="Game\PlayerAi.cs" />
     <Compile Include="Game\PlayersStats.cs" />
     <Compile Include="Game\Table.cs" />
     <Compile Include="Game\TexasHoldem.cs" />
@@ -71,6 +75,7 @@
     <Compile Include="Interfaces\IGame.cs" />
     <Compile Include="Interfaces\IGameAction.cs" />
     <Compile Include="Interfaces\IPlayer.cs" />
+    <Compile Include="Interfaces\IPlayerAi.cs" />
     <Compile Include="Interfaces\IRankingEvaluator.cs" />
     <Compile Include="Interfaces\IShuffable.cs" />
     <Compile Include="Interfaces\IShuffler.cs" />
