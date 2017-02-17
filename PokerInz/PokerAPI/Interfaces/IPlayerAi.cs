@@ -12,5 +12,7 @@ namespace PokerAPI.Interfaces
         IList<Parameter> Parameters { get; }
 
         int TakeAction(ITable table, ActionInfo actionInfo);
+
+        void UpdateParams();
     }
 }

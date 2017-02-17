@@ -9,7 +9,7 @@ namespace PokerAPI.Game
 {
     public abstract class PlayerAi : IPlayerAi
     {
-        private IList<Parameter> parameters = new List<Parameter>();
+        protected IList<Parameter> parameters = new List<Parameter>();
 
         public IList<ICard> HoleCards;
         public int Chips;
@@ -24,7 +24,7 @@ namespace PokerAPI.Game
             }
         }
 
-        public IList<Parameter> Parameters //todo: czy to potrzebne?
+        public IList<Parameter> Parameters
         {
             get
             {
@@ -32,11 +32,14 @@ namespace PokerAPI.Game
             }
         }
 
-        public PlayerAi(IList<Parameter> parameters)
+        public int TakeAction(ITable table, ActionInfo actionInfo)
         {
-            this.parameters = parameters;
+            UpdateParams();
+            return MakeDecision(table, actionInfo);
         }
 
-        public abstract int TakeAction(ITable table, ActionInfo actionInfo);
+        public abstract int MakeDecision(ITable table, ActionInfo actionInfo);
+
+        public abstract void UpdateParams();
     }
 }

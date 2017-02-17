@@ -8,14 +8,14 @@ namespace PokerAPI.Game
 {
     public class Parameter
     {
-        public string Name { get; }
+        public string Name;
 
-        public float Value { get; }
-        public float ValueIncrease { get; }
+        public float Value;
+        public float ValueIncrease;
 
-        public float MinValue { get; }
-        public float MaxValue { get; }
-
+        public float MinValue;
+        public float MaxValue;
+            
         public Parameter(string name, float value, float valueIncrease, float minValue, float maxValue)
         {
             Name = name;

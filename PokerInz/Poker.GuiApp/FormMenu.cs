@@ -1,6 +1,7 @@
 ﻿using PokerAPI;
 using PokerAPI.Ai;
 using PokerAPI.Game;
+using PokerAPI.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,12 +16,16 @@ namespace Poker.GuiApp
 {
     public partial class FormMenu : Form
     {
-        private List<Control> controls = new List<Control>();
+        private IList<Control> controls = new List<Control>();
 
-        private List<Label> labelsNum = new List<Label>(10);
-        private List<ComboBox> typeComboBoxes = new List<ComboBox>(10);
-        private List<TextBox> nameTextBoxes = new List<TextBox>(10);
-        private List<NumericUpDown> cashNumerics = new List<NumericUpDown>(10);
+        private IList<Label> labelsNum = new List<Label>(10);
+        private IList<ComboBox> typeComboBoxes = new List<ComboBox>(10);
+        private IList<TextBox> nameTextBoxes = new List<TextBox>(10);
+        private IList<NumericUpDown> cashNumerics = new List<NumericUpDown>(10);
+
+        private List<NumericUpDown>[] paramsNumerics = new List<NumericUpDown>[10];
+
+        IList<PlayerAi> playersAi = new List<PlayerAi>(10);
 
         private int playersCount = 0;
 
@@ -32,6 +37,7 @@ namespace Poker.GuiApp
             InitializeComponent();
 
             controls.Add(tableLayoutPanel);
+            controls.Add(flowLayoutPanelParams);
 
             foreach (Control control in controls)
                 Controls.Add(control);
@@ -70,53 +76,7 @@ namespace Poker.GuiApp
 
             for (int i = 0; i < playersCount; ++i)
             {
-                //TEST
-                float min = 0;
-                float max = 0;
-
-                //if (i == 0) { min = 0.00f; max = 0.05f; }
-                //if (i == 1) { min = 0.05f; max = 0.20f; }
-                //if (i == 2) { min = 0.50f; max = 0.70f; }
-                //if (i == 3) { min = 0.50f; max = 0.95f; }
-                //if (i == 4) { min = 0.65f; max = 0.70f; }
-                //if (i == 5) { min = 0.65f; max = 0.90f; }
-                //if (i == 6) { min = 0.55f; max = 0.90f; }
-                //if (i == 7) { min = 0.00f; max = 1.00f; }
-                //if (i == 8) { min = 0.40f; max = 0.60f; }
-                //if (i == 9) { min = 0.70f; max = 0.80f; }
-
-                //if (i == 0) { min = 0.00f; max = 0.90f; } //dane z pracy pisemnej
-                //if (i == 1) { min = 0.00f; max = 0.75f; }
-                //if (i == 2) { min = 0.00f; max = 0.50f; }
-                //if (i == 3) { min = 0.00f; max = 0.30f; }
-                //if (i == 4) { min = 0.05f; max = 0.90f; }
-                //if (i == 5) { min = 0.10f; max = 0.90f; }
-                //if (i == 6) { min = 0.15f; max = 0.90f; }
-                //if (i == 7) { min = 0.05f; max = 0.75f; }
-                //if (i == 8) { min = 0.10f; max = 0.75f; }
-                //if (i == 9) { min = 0.15f; max = 0.75f; }
-
-                if (i == 0) { min = 0.05f; max = 1.00f; }
-                if (i == 1) { min = 0.05f; max = 0.90f; }
-                if (i == 2) { min = 0.05f; max = 0.80f; }
-                if (i == 3) { min = 0.05f; max = 0.70f; }
-                if (i == 4) { min = 0.05f; max = 0.60f; }
-                if (i == 5) { min = 0.05f; max = 0.50f; }
-                if (i == 6) { min = 0.05f; max = 0.40f; }
-                if (i == 7) { min = 0.05f; max = 0.30f; }
-                if (i == 8) { min = 0.05f; max = 0.20f; }
-                if (i == 9) { min = 0.05f; max = 0.10f; }
-                //TEST
-
-                if (typeComboBoxes[i].Text == "Random AI")
-                {
-                    players.Add(new Player(nameTextBoxes[i].Text, i, (int)cashNumerics[i].Value, new TestAi(min, max)));
-                }
-
-                if (typeComboBoxes[i].Text == "VarRiskRand AI")
-                {
-                    players.Add(new Player(nameTextBoxes[i].Text, i, (int)cashNumerics[i].Value, new VarRiskRandAi(min, max, 3, 0.95f, 1.00f)));
-                }
+                players.Add(new Player(nameTextBoxes[i].Text, i, (int)cashNumerics[i].Value, playersAi[i]));
             }
 
             IDictionary<IPlayer, int> startingCash = new Dictionary<IPlayer, int>();
@@ -156,6 +116,8 @@ namespace Poker.GuiApp
             typeComboBox.Items.Add("Random AI");
             typeComboBox.Items.Add("VarRiskRand AI");
             typeComboBox.SelectedIndex = 0;
+            typeComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            typeComboBox.SelectedIndexChanged += TypeComboBox_SelectedIndexChanged;
             typeComboBoxes.Add(typeComboBox);
             panel.Controls.Add(typeComboBox, 1, row);
 
@@ -189,12 +151,91 @@ namespace Poker.GuiApp
         {
             ++playersCount;
             addRowToPanel(tableLayoutPanel, playersCount);
+
+            comboBoxPlayerParams.Items.Add(playersCount);
+
+            playersAi.Add(new TestAi());
+
+            paramsNumerics[playersCount - 1] = new List<NumericUpDown>();
         }
 
         private void removePlayer()
         {
             --playersCount;
             removeRowFromPanel(tableLayoutPanel, playersCount);
+
+            comboBoxPlayerParams.Items.RemoveAt(playersCount);
+
+            playersAi.RemoveAt(playersCount);
+
+            paramsNumerics[playersCount] = new List<NumericUpDown>();
+        }
+
+        private void comboBoxPlayerParams_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int index = comboBoxPlayerParams.SelectedIndex;
+
+            //paramsNumerics.Clear();
+            flowLayoutPanelParams.Controls.Clear();
+
+            var ai = playersAi[index];
+            List<NumericUpDown> numerics = new List<NumericUpDown>();
+
+            foreach (var parameter in ai.Parameters)
+            {
+                Label labelParam = new Label();
+                labelParam.Text = parameter.Name;
+
+                flowLayoutPanelParams.Controls.Add(labelParam);
+
+                string incString = parameter.ValueIncrease.ToString();
+                int decimalPlaces = incString.Substring(incString.LastIndexOf(',') + 1).Count();
+
+                NumericUpDown numeric = new NumericUpDown();
+                numeric.Value = (decimal)parameter.Value;
+                numeric.DecimalPlaces = decimalPlaces;
+                numeric.Increment = (decimal)parameter.ValueIncrease;
+                numeric.Minimum = (decimal)parameter.MinValue;
+                numeric.Maximum = (decimal)parameter.MaxValue;
+                numeric.Size = new Size(90, 20);
+                numeric.ValueChanged += Numeric_ValueChanged;
+
+                numerics.Add(numeric);
+
+                flowLayoutPanelParams.Controls.Add(numeric);
+            }
+
+            paramsNumerics[index] = numerics;
+        }
+
+        private void Numeric_ValueChanged(object sender, EventArgs e)
+        {
+            if (sender is NumericUpDown)
+            {
+                NumericUpDown currentNumeric = sender as NumericUpDown;
+
+                int paramIndex = paramsNumerics.Where(x => x.Contains(currentNumeric)).First().IndexOf(currentNumeric);
+                int playerIndex = paramsNumerics.ToList().IndexOf(paramsNumerics.Where(x => x.Contains(currentNumeric)).First());
+
+                playersAi[playerIndex].Parameters[paramIndex].Value = (float)currentNumeric.Value;
+            }
+        }
+
+        private void TypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (sender is ComboBox)
+            {
+                ComboBox currentComboBox = sender as ComboBox;
+
+                int index = typeComboBoxes.IndexOf(currentComboBox);
+
+                playersAi.RemoveAt(index);
+
+                if (currentComboBox.Text == "Random AI")
+                    playersAi.Insert(index, new TestAi());
+                else if (currentComboBox.Text == "VarRiskRand AI")
+                    playersAi.Insert(index, new VarRiskRandAi());
+            }
         }
     }
 }

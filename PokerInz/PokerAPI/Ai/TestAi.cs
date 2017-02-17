@@ -15,13 +15,13 @@ namespace PokerAPI.Ai
         private float minRiskFactor;
         private float maxRiskFactor;
 
-        public TestAi(IList<Parameter> parameters) : base(parameters)
+        public TestAi()
         {
-            minRiskFactor = parameters.Where(x => x.Name == "minRiskFactor").Select(x => x.Value).First();
-            maxRiskFactor = parameters.Where(x => x.Name == "maxRiskFactor").Select(x => x.Value).First();
+            parameters.Add(new Parameter("minRiskFactor", 0.00f, 0.01f, 0.00f, 1.00f));
+            parameters.Add(new Parameter("maxRiskFactor", 1.00f, 0.01f, 0.00f, 1.00f));
         }
 
-        public override int TakeAction(ITable table, ActionInfo actionInfo)
+        public override int MakeDecision(ITable table, ActionInfo actionInfo)
         {
             int minBet = (int)((ChipsAndBet) * minRiskFactor);
             int maxBet = (int)((ChipsAndBet) * maxRiskFactor); //min and max raise counted for this AI
@@ -103,5 +103,10 @@ namespace PokerAPI.Ai
             return raiseBet;
         }
 
+        public override void UpdateParams()
+        {
+            minRiskFactor = parameters[0].Value;
+            maxRiskFactor = parameters[1].Value;
+        }
     }
 }

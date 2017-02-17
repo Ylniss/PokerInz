@@ -13,20 +13,20 @@ namespace PokerAPI.Ai
 
         private float minRiskFactor;
         private float maxRiskFactor;
-        private int playersCountToGrowRisk;
+        private float playersCountToGrowRisk;
         private float updatedMinRisk;
         private float updatedMaxRisk;
 
-        public VarRiskRandAi(float minRiskFactor, float maxRiskFactor, int playersCountToGrowRisk, float updatedMinRisk, float updatedMaxRisk)
+        public VarRiskRandAi()
         {
-            this.minRiskFactor = minRiskFactor;
-            this.maxRiskFactor = maxRiskFactor;
-            this.playersCountToGrowRisk = playersCountToGrowRisk;
-            this.updatedMinRisk = updatedMinRisk;
-            this.updatedMaxRisk = updatedMaxRisk;
+            parameters.Add(new Parameter("minRiskFactor", 0.00f, 0.01f, 0.00f, 1.00f));
+            parameters.Add(new Parameter("maxRiskFactor", 1.00f, 0.01f, 0.00f, 1.00f));
+            parameters.Add(new Parameter("playersCountToGrowRisk", 2.00f, 1.00f, 2.00f, 10.00f));
+            parameters.Add(new Parameter("updatedMinRisk", 0.50f, 0.01f, 0.00f, 1.00f));
+            parameters.Add(new Parameter("updatedMaxRisk", 1.00f, 0.01f, 0.00f, 1.00f));
         }
 
-        public override int TakeAction(ITable table, ActionInfo actionInfo)
+        public override int MakeDecision(ITable table, ActionInfo actionInfo)
         {
             if (playersCountToGrowRisk >= table.PlayersCount)
             {
@@ -114,5 +114,13 @@ namespace PokerAPI.Ai
             return raiseBet;
         }
 
+        public override void UpdateParams()
+        {
+            minRiskFactor = parameters[0].Value;
+            maxRiskFactor = parameters[1].Value;
+            playersCountToGrowRisk = parameters[2].Value;
+            updatedMinRisk = parameters[3].Value;
+            updatedMaxRisk = parameters[4].Value;
+        }
     }
 }

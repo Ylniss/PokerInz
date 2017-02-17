@@ -43,14 +43,13 @@
             this.numericNumOfGames = new System.Windows.Forms.NumericUpDown();
             this.labelNumOfGames = new System.Windows.Forms.Label();
             this.groupBoxSettings = new System.Windows.Forms.GroupBox();
-            this.groupBoxParams = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanelParams = new System.Windows.Forms.FlowLayoutPanel();
             this.comboBoxPlayerParams = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSmallBlind)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBigBlind)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericNumOfGames)).BeginInit();
             this.groupBoxSettings.SuspendLayout();
-            this.groupBoxParams.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel
@@ -265,30 +264,31 @@
             this.groupBoxSettings.TabIndex = 14;
             this.groupBoxSettings.TabStop = false;
             // 
-            // groupBoxParams
+            // flowLayoutPanelParams
             // 
-            this.groupBoxParams.Controls.Add(this.comboBoxPlayerParams);
-            this.groupBoxParams.Location = new System.Drawing.Point(324, 12);
-            this.groupBoxParams.Name = "groupBoxParams";
-            this.groupBoxParams.Size = new System.Drawing.Size(102, 344);
-            this.groupBoxParams.TabIndex = 15;
-            this.groupBoxParams.TabStop = false;
-            this.groupBoxParams.Text = "Parameters";
+            this.flowLayoutPanelParams.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanelParams.Location = new System.Drawing.Point(324, 48);
+            this.flowLayoutPanelParams.Name = "flowLayoutPanelParams";
+            this.flowLayoutPanelParams.Size = new System.Drawing.Size(102, 308);
+            this.flowLayoutPanelParams.TabIndex = 1;
             // 
             // comboBoxPlayerParams
             // 
+            this.comboBoxPlayerParams.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxPlayerParams.FormattingEnabled = true;
-            this.comboBoxPlayerParams.Location = new System.Drawing.Point(7, 20);
+            this.comboBoxPlayerParams.Location = new System.Drawing.Point(324, 21);
             this.comboBoxPlayerParams.Name = "comboBoxPlayerParams";
-            this.comboBoxPlayerParams.Size = new System.Drawing.Size(89, 21);
+            this.comboBoxPlayerParams.Size = new System.Drawing.Size(55, 21);
             this.comboBoxPlayerParams.TabIndex = 0;
+            this.comboBoxPlayerParams.SelectedIndexChanged += new System.EventHandler(this.comboBoxPlayerParams_SelectedIndexChanged);
             // 
             // FormMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(547, 368);
-            this.Controls.Add(this.groupBoxParams);
+            this.ClientSize = new System.Drawing.Size(545, 365);
+            this.Controls.Add(this.flowLayoutPanelParams);
+            this.Controls.Add(this.comboBoxPlayerParams);
             this.Controls.Add(this.groupBoxSettings);
             this.Controls.Add(this.tableLayoutPanel);
             this.MaximizeBox = false;
@@ -301,7 +301,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericNumOfGames)).EndInit();
             this.groupBoxSettings.ResumeLayout(false);
             this.groupBoxSettings.PerformLayout();
-            this.groupBoxParams.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -323,7 +322,7 @@
         private System.Windows.Forms.NumericUpDown numericNumOfGames;
         private System.Windows.Forms.Label labelNumOfGames;
         private System.Windows.Forms.GroupBox groupBoxSettings;
-        private System.Windows.Forms.GroupBox groupBoxParams;
         private System.Windows.Forms.ComboBox comboBoxPlayerParams;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelParams;
     }
 }
