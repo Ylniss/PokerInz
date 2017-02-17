@@ -28,7 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormGameTable));
             this.groupBoxP0 = new System.Windows.Forms.GroupBox();
+            this.blindP0 = new System.Windows.Forms.Label();
             this.statusP0 = new System.Windows.Forms.Label();
             this.betP0 = new System.Windows.Forms.Label();
             this.labelBetP0 = new System.Windows.Forms.Label();
@@ -39,6 +41,7 @@
             this.labelCashP0 = new System.Windows.Forms.Label();
             this.labelNameP0 = new System.Windows.Forms.Label();
             this.groupBoxP1 = new System.Windows.Forms.GroupBox();
+            this.blindP1 = new System.Windows.Forms.Label();
             this.statusP1 = new System.Windows.Forms.Label();
             this.betP1 = new System.Windows.Forms.Label();
             this.labelBetP1 = new System.Windows.Forms.Label();
@@ -49,6 +52,7 @@
             this.labelCashP1 = new System.Windows.Forms.Label();
             this.labelNameP1 = new System.Windows.Forms.Label();
             this.groupBoxP2 = new System.Windows.Forms.GroupBox();
+            this.blindP2 = new System.Windows.Forms.Label();
             this.statusP2 = new System.Windows.Forms.Label();
             this.betP2 = new System.Windows.Forms.Label();
             this.labelBetP2 = new System.Windows.Forms.Label();
@@ -59,6 +63,7 @@
             this.labelCashP2 = new System.Windows.Forms.Label();
             this.labelNameP2 = new System.Windows.Forms.Label();
             this.groupBoxP3 = new System.Windows.Forms.GroupBox();
+            this.blindP3 = new System.Windows.Forms.Label();
             this.statusP3 = new System.Windows.Forms.Label();
             this.betP3 = new System.Windows.Forms.Label();
             this.labelBetP3 = new System.Windows.Forms.Label();
@@ -69,6 +74,7 @@
             this.labelCashP3 = new System.Windows.Forms.Label();
             this.labelNameP3 = new System.Windows.Forms.Label();
             this.groupBoxP4 = new System.Windows.Forms.GroupBox();
+            this.blindP4 = new System.Windows.Forms.Label();
             this.statusP4 = new System.Windows.Forms.Label();
             this.betP4 = new System.Windows.Forms.Label();
             this.labelBetP4 = new System.Windows.Forms.Label();
@@ -79,6 +85,7 @@
             this.labelCashP4 = new System.Windows.Forms.Label();
             this.labelNameP4 = new System.Windows.Forms.Label();
             this.groupBoxP5 = new System.Windows.Forms.GroupBox();
+            this.blindP5 = new System.Windows.Forms.Label();
             this.statusP5 = new System.Windows.Forms.Label();
             this.betP5 = new System.Windows.Forms.Label();
             this.labelBetP5 = new System.Windows.Forms.Label();
@@ -89,6 +96,7 @@
             this.labelCashP5 = new System.Windows.Forms.Label();
             this.labelNameP5 = new System.Windows.Forms.Label();
             this.groupBoxP6 = new System.Windows.Forms.GroupBox();
+            this.blindP6 = new System.Windows.Forms.Label();
             this.statusP6 = new System.Windows.Forms.Label();
             this.betP6 = new System.Windows.Forms.Label();
             this.labelBetP6 = new System.Windows.Forms.Label();
@@ -99,6 +107,7 @@
             this.labelCashP6 = new System.Windows.Forms.Label();
             this.labelNameP6 = new System.Windows.Forms.Label();
             this.groupBoxP7 = new System.Windows.Forms.GroupBox();
+            this.blindP7 = new System.Windows.Forms.Label();
             this.statusP7 = new System.Windows.Forms.Label();
             this.betP7 = new System.Windows.Forms.Label();
             this.labelBetP7 = new System.Windows.Forms.Label();
@@ -109,6 +118,7 @@
             this.labelCashP7 = new System.Windows.Forms.Label();
             this.labelNameP7 = new System.Windows.Forms.Label();
             this.groupBoxP8 = new System.Windows.Forms.GroupBox();
+            this.blindP8 = new System.Windows.Forms.Label();
             this.statusP8 = new System.Windows.Forms.Label();
             this.betP8 = new System.Windows.Forms.Label();
             this.labelBetP8 = new System.Windows.Forms.Label();
@@ -119,6 +129,7 @@
             this.labelCashP8 = new System.Windows.Forms.Label();
             this.labelNameP8 = new System.Windows.Forms.Label();
             this.groupBoxP9 = new System.Windows.Forms.GroupBox();
+            this.blindP9 = new System.Windows.Forms.Label();
             this.statusP9 = new System.Windows.Forms.Label();
             this.betP9 = new System.Windows.Forms.Label();
             this.labelBetP9 = new System.Windows.Forms.Label();
@@ -137,16 +148,6 @@
             this.pot = new System.Windows.Forms.Label();
             this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
             this.labelLog = new System.Windows.Forms.Label();
-            this.blindP0 = new System.Windows.Forms.Label();
-            this.blindP1 = new System.Windows.Forms.Label();
-            this.blindP2 = new System.Windows.Forms.Label();
-            this.blindP3 = new System.Windows.Forms.Label();
-            this.blindP4 = new System.Windows.Forms.Label();
-            this.blindP9 = new System.Windows.Forms.Label();
-            this.blindP8 = new System.Windows.Forms.Label();
-            this.blindP7 = new System.Windows.Forms.Label();
-            this.blindP6 = new System.Windows.Forms.Label();
-            this.blindP5 = new System.Windows.Forms.Label();
             this.groupBoxP0.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.card2P0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.card1P0)).BeginInit();
@@ -202,6 +203,15 @@
             this.groupBoxP0.Size = new System.Drawing.Size(180, 120);
             this.groupBoxP0.TabIndex = 0;
             this.groupBoxP0.TabStop = false;
+            // 
+            // blindP0
+            // 
+            this.blindP0.AutoSize = true;
+            this.blindP0.Location = new System.Drawing.Point(126, 43);
+            this.blindP0.Name = "blindP0";
+            this.blindP0.Size = new System.Drawing.Size(48, 13);
+            this.blindP0.TabIndex = 9;
+            this.blindP0.Text = "[blindP0]";
             // 
             // statusP0
             // 
@@ -303,6 +313,15 @@
             this.groupBoxP1.TabIndex = 8;
             this.groupBoxP1.TabStop = false;
             // 
+            // blindP1
+            // 
+            this.blindP1.AutoSize = true;
+            this.blindP1.Location = new System.Drawing.Point(126, 43);
+            this.blindP1.Name = "blindP1";
+            this.blindP1.Size = new System.Drawing.Size(48, 13);
+            this.blindP1.TabIndex = 10;
+            this.blindP1.Text = "[blindP1]";
+            // 
             // statusP1
             // 
             this.statusP1.AutoSize = true;
@@ -402,6 +421,15 @@
             this.groupBoxP2.Size = new System.Drawing.Size(180, 120);
             this.groupBoxP2.TabIndex = 9;
             this.groupBoxP2.TabStop = false;
+            // 
+            // blindP2
+            // 
+            this.blindP2.AutoSize = true;
+            this.blindP2.Location = new System.Drawing.Point(126, 43);
+            this.blindP2.Name = "blindP2";
+            this.blindP2.Size = new System.Drawing.Size(48, 13);
+            this.blindP2.TabIndex = 11;
+            this.blindP2.Text = "[blindP2]";
             // 
             // statusP2
             // 
@@ -503,6 +531,15 @@
             this.groupBoxP3.TabIndex = 10;
             this.groupBoxP3.TabStop = false;
             // 
+            // blindP3
+            // 
+            this.blindP3.AutoSize = true;
+            this.blindP3.Location = new System.Drawing.Point(126, 43);
+            this.blindP3.Name = "blindP3";
+            this.blindP3.Size = new System.Drawing.Size(48, 13);
+            this.blindP3.TabIndex = 12;
+            this.blindP3.Text = "[blindP3]";
+            // 
             // statusP3
             // 
             this.statusP3.AutoSize = true;
@@ -602,6 +639,15 @@
             this.groupBoxP4.Size = new System.Drawing.Size(180, 120);
             this.groupBoxP4.TabIndex = 8;
             this.groupBoxP4.TabStop = false;
+            // 
+            // blindP4
+            // 
+            this.blindP4.AutoSize = true;
+            this.blindP4.Location = new System.Drawing.Point(126, 43);
+            this.blindP4.Name = "blindP4";
+            this.blindP4.Size = new System.Drawing.Size(48, 13);
+            this.blindP4.TabIndex = 13;
+            this.blindP4.Text = "[blindP4]";
             // 
             // statusP4
             // 
@@ -703,6 +749,15 @@
             this.groupBoxP5.TabIndex = 9;
             this.groupBoxP5.TabStop = false;
             // 
+            // blindP5
+            // 
+            this.blindP5.AutoSize = true;
+            this.blindP5.Location = new System.Drawing.Point(126, 43);
+            this.blindP5.Name = "blindP5";
+            this.blindP5.Size = new System.Drawing.Size(48, 13);
+            this.blindP5.TabIndex = 16;
+            this.blindP5.Text = "[blindP5]";
+            // 
             // statusP5
             // 
             this.statusP5.AutoSize = true;
@@ -802,6 +857,15 @@
             this.groupBoxP6.Size = new System.Drawing.Size(180, 120);
             this.groupBoxP6.TabIndex = 10;
             this.groupBoxP6.TabStop = false;
+            // 
+            // blindP6
+            // 
+            this.blindP6.AutoSize = true;
+            this.blindP6.Location = new System.Drawing.Point(126, 43);
+            this.blindP6.Name = "blindP6";
+            this.blindP6.Size = new System.Drawing.Size(48, 13);
+            this.blindP6.TabIndex = 15;
+            this.blindP6.Text = "[blindP6]";
             // 
             // statusP6
             // 
@@ -903,6 +967,15 @@
             this.groupBoxP7.TabIndex = 11;
             this.groupBoxP7.TabStop = false;
             // 
+            // blindP7
+            // 
+            this.blindP7.AutoSize = true;
+            this.blindP7.Location = new System.Drawing.Point(126, 43);
+            this.blindP7.Name = "blindP7";
+            this.blindP7.Size = new System.Drawing.Size(48, 13);
+            this.blindP7.TabIndex = 14;
+            this.blindP7.Text = "[blindP7]";
+            // 
             // statusP7
             // 
             this.statusP7.AutoSize = true;
@@ -1003,6 +1076,15 @@
             this.groupBoxP8.TabIndex = 12;
             this.groupBoxP8.TabStop = false;
             // 
+            // blindP8
+            // 
+            this.blindP8.AutoSize = true;
+            this.blindP8.Location = new System.Drawing.Point(126, 43);
+            this.blindP8.Name = "blindP8";
+            this.blindP8.Size = new System.Drawing.Size(48, 13);
+            this.blindP8.TabIndex = 10;
+            this.blindP8.Text = "[blindP8]";
+            // 
             // statusP8
             // 
             this.statusP8.AutoSize = true;
@@ -1102,6 +1184,15 @@
             this.groupBoxP9.Size = new System.Drawing.Size(180, 120);
             this.groupBoxP9.TabIndex = 13;
             this.groupBoxP9.TabStop = false;
+            // 
+            // blindP9
+            // 
+            this.blindP9.AutoSize = true;
+            this.blindP9.Location = new System.Drawing.Point(126, 43);
+            this.blindP9.Name = "blindP9";
+            this.blindP9.Size = new System.Drawing.Size(48, 13);
+            this.blindP9.TabIndex = 14;
+            this.blindP9.Text = "[blindP9]";
             // 
             // statusP9
             // 
@@ -1267,96 +1358,6 @@
             this.labelLog.TabIndex = 22;
             this.labelLog.Text = "Log";
             // 
-            // blindP0
-            // 
-            this.blindP0.AutoSize = true;
-            this.blindP0.Location = new System.Drawing.Point(126, 43);
-            this.blindP0.Name = "blindP0";
-            this.blindP0.Size = new System.Drawing.Size(48, 13);
-            this.blindP0.TabIndex = 9;
-            this.blindP0.Text = "[blindP0]";
-            // 
-            // blindP1
-            // 
-            this.blindP1.AutoSize = true;
-            this.blindP1.Location = new System.Drawing.Point(126, 43);
-            this.blindP1.Name = "blindP1";
-            this.blindP1.Size = new System.Drawing.Size(48, 13);
-            this.blindP1.TabIndex = 10;
-            this.blindP1.Text = "[blindP1]";
-            // 
-            // blindP2
-            // 
-            this.blindP2.AutoSize = true;
-            this.blindP2.Location = new System.Drawing.Point(126, 43);
-            this.blindP2.Name = "blindP2";
-            this.blindP2.Size = new System.Drawing.Size(48, 13);
-            this.blindP2.TabIndex = 11;
-            this.blindP2.Text = "[blindP2]";
-            // 
-            // blindP3
-            // 
-            this.blindP3.AutoSize = true;
-            this.blindP3.Location = new System.Drawing.Point(126, 43);
-            this.blindP3.Name = "blindP3";
-            this.blindP3.Size = new System.Drawing.Size(48, 13);
-            this.blindP3.TabIndex = 12;
-            this.blindP3.Text = "[blindP3]";
-            // 
-            // blindP4
-            // 
-            this.blindP4.AutoSize = true;
-            this.blindP4.Location = new System.Drawing.Point(126, 43);
-            this.blindP4.Name = "blindP4";
-            this.blindP4.Size = new System.Drawing.Size(48, 13);
-            this.blindP4.TabIndex = 13;
-            this.blindP4.Text = "[blindP4]";
-            // 
-            // blindP9
-            // 
-            this.blindP9.AutoSize = true;
-            this.blindP9.Location = new System.Drawing.Point(126, 43);
-            this.blindP9.Name = "blindP9";
-            this.blindP9.Size = new System.Drawing.Size(48, 13);
-            this.blindP9.TabIndex = 14;
-            this.blindP9.Text = "[blindP9]";
-            // 
-            // blindP8
-            // 
-            this.blindP8.AutoSize = true;
-            this.blindP8.Location = new System.Drawing.Point(126, 43);
-            this.blindP8.Name = "blindP8";
-            this.blindP8.Size = new System.Drawing.Size(48, 13);
-            this.blindP8.TabIndex = 10;
-            this.blindP8.Text = "[blindP8]";
-            // 
-            // blindP7
-            // 
-            this.blindP7.AutoSize = true;
-            this.blindP7.Location = new System.Drawing.Point(126, 43);
-            this.blindP7.Name = "blindP7";
-            this.blindP7.Size = new System.Drawing.Size(48, 13);
-            this.blindP7.TabIndex = 14;
-            this.blindP7.Text = "[blindP7]";
-            // 
-            // blindP6
-            // 
-            this.blindP6.AutoSize = true;
-            this.blindP6.Location = new System.Drawing.Point(126, 43);
-            this.blindP6.Name = "blindP6";
-            this.blindP6.Size = new System.Drawing.Size(48, 13);
-            this.blindP6.TabIndex = 15;
-            this.blindP6.Text = "[blindP6]";
-            // 
-            // blindP5
-            // 
-            this.blindP5.AutoSize = true;
-            this.blindP5.Location = new System.Drawing.Point(126, 43);
-            this.blindP5.Name = "blindP5";
-            this.blindP5.Size = new System.Drawing.Size(48, 13);
-            this.blindP5.TabIndex = 16;
-            this.blindP5.Text = "[blindP5]";
-            // 
             // FormGameTable
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1382,6 +1383,9 @@
             this.Controls.Add(this.groupBoxP2);
             this.Controls.Add(this.groupBoxP1);
             this.Controls.Add(this.groupBoxP0);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "FormGameTable";
             this.Text = "PokerApp";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormGameTable_FormClosing);

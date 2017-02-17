@@ -44,6 +44,8 @@ namespace Poker.GuiApp
 
             for (int i = 0; i < minPlayers; ++i)
                 addPlayer();
+
+            comboBoxPlayerParams.SelectedIndex = 0;
         }
 
         private void buttonAddPlayer_Click(object sender, EventArgs e)
@@ -174,38 +176,41 @@ namespace Poker.GuiApp
         private void comboBoxPlayerParams_SelectedIndexChanged(object sender, EventArgs e)
         {
             int index = comboBoxPlayerParams.SelectedIndex;
-
-            //paramsNumerics.Clear();
             flowLayoutPanelParams.Controls.Clear();
 
-            var ai = playersAi[index];
-            List<NumericUpDown> numerics = new List<NumericUpDown>();
-
-            foreach (var parameter in ai.Parameters)
+            if (index >= 0)
             {
-                Label labelParam = new Label();
-                labelParam.Text = parameter.Name;
+                var ai = playersAi[index];
+                List<NumericUpDown> numerics = new List<NumericUpDown>();
 
-                flowLayoutPanelParams.Controls.Add(labelParam);
+                foreach (var parameter in ai.Parameters)
+                {
+                    Label labelParam = new Label();
+                    labelParam.Text = parameter.Name;
+                    labelParam.Margin = new Padding(0);
 
-                string incString = parameter.ValueIncrease.ToString();
-                int decimalPlaces = incString.Substring(incString.LastIndexOf(',') + 1).Count();
+                    flowLayoutPanelParams.Controls.Add(labelParam);
 
-                NumericUpDown numeric = new NumericUpDown();
-                numeric.Value = (decimal)parameter.Value;
-                numeric.DecimalPlaces = decimalPlaces;
-                numeric.Increment = (decimal)parameter.ValueIncrease;
-                numeric.Minimum = (decimal)parameter.MinValue;
-                numeric.Maximum = (decimal)parameter.MaxValue;
-                numeric.Size = new Size(90, 20);
-                numeric.ValueChanged += Numeric_ValueChanged;
+                    string incString = parameter.ValueIncrease.ToString();
+                    int decimalPlaces = incString.Substring(incString.LastIndexOf(',') + 1).Count();
 
-                numerics.Add(numeric);
+                    NumericUpDown numeric = new NumericUpDown();
+                    numeric.Value = (decimal)parameter.Value;
+                    numeric.DecimalPlaces = decimalPlaces;
+                    numeric.Increment = (decimal)parameter.ValueIncrease;
+                    numeric.Minimum = (decimal)parameter.MinValue;
+                    numeric.Maximum = (decimal)parameter.MaxValue;
+                    numeric.Size = new Size(90, 5);
+                    numeric.Margin = new Padding(0, 0, 0, 15);
+                    numeric.ValueChanged += Numeric_ValueChanged;
 
-                flowLayoutPanelParams.Controls.Add(numeric);
+                    numerics.Add(numeric);
+
+                    flowLayoutPanelParams.Controls.Add(numeric);
+                }
+
+                paramsNumerics[index] = numerics;
             }
-
-            paramsNumerics[index] = numerics;
         }
 
         private void Numeric_ValueChanged(object sender, EventArgs e)
@@ -235,6 +240,10 @@ namespace Poker.GuiApp
                     playersAi.Insert(index, new TestAi());
                 else if (currentComboBox.Text == "VarRiskRand AI")
                     playersAi.Insert(index, new VarRiskRandAi());
+         
+                comboBoxPlayerParams.SelectedIndex = -1;
+                comboBoxPlayerParams.SelectedIndex = index;
+
             }
         }
     }

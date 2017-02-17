@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMenu));
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.labelCash = new System.Windows.Forms.Label();
             this.labelName = new System.Windows.Forms.Label();
@@ -45,6 +46,7 @@
             this.groupBoxSettings = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanelParams = new System.Windows.Forms.FlowLayoutPanel();
             this.comboBoxPlayerParams = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSmallBlind)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBigBlind)).BeginInit();
@@ -266,6 +268,7 @@
             // 
             // flowLayoutPanelParams
             // 
+            this.flowLayoutPanelParams.AutoScroll = true;
             this.flowLayoutPanelParams.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanelParams.Location = new System.Drawing.Point(324, 48);
             this.flowLayoutPanelParams.Name = "flowLayoutPanelParams";
@@ -276,21 +279,33 @@
             // 
             this.comboBoxPlayerParams.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxPlayerParams.FormattingEnabled = true;
-            this.comboBoxPlayerParams.Location = new System.Drawing.Point(324, 21);
+            this.comboBoxPlayerParams.Location = new System.Drawing.Point(366, 21);
             this.comboBoxPlayerParams.Name = "comboBoxPlayerParams";
-            this.comboBoxPlayerParams.Size = new System.Drawing.Size(55, 21);
+            this.comboBoxPlayerParams.Size = new System.Drawing.Size(60, 21);
             this.comboBoxPlayerParams.TabIndex = 0;
             this.comboBoxPlayerParams.SelectedIndexChanged += new System.EventHandler(this.comboBoxPlayerParams_SelectedIndexChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(324, 24);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(36, 13);
+            this.label1.TabIndex = 15;
+            this.label1.Text = "Player";
             // 
             // FormMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(545, 365);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.flowLayoutPanelParams);
             this.Controls.Add(this.comboBoxPlayerParams);
             this.Controls.Add(this.groupBoxSettings);
             this.Controls.Add(this.tableLayoutPanel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FormMenu";
             this.Text = "PokerAI Settings";
@@ -302,6 +317,7 @@
             this.groupBoxSettings.ResumeLayout(false);
             this.groupBoxSettings.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -324,5 +340,6 @@
         private System.Windows.Forms.GroupBox groupBoxSettings;
         private System.Windows.Forms.ComboBox comboBoxPlayerParams;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelParams;
+        private System.Windows.Forms.Label label1;
     }
 }
