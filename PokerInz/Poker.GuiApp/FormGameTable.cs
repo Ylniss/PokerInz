@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Poker.GuiApp
@@ -23,14 +25,27 @@ namespace Poker.GuiApp
 
         private PlayersStats playersStats;
 
+        private Task gameLoopTask;
+
+        CancellationTokenSource tokenSource = new CancellationTokenSource();
+        private CancellationToken cancellationToken;
+        private readonly SynchronizationContext synchronizationContext;
+
         public FormGameTable(List<IPlayer> players, GameSettings gameSettings)
         {
             InitializeComponent();
+
+            synchronizationContext = SynchronizationContext.Current;
+            cancellationToken = tokenSource.Token;
+
             DoubleBuffered = true; 
 
             this.gameSettings = gameSettings;
             this.players = players;
             playersStats = new PlayersStats(gameSettings.NumberOfGames);
+
+            if (gameSettings.Performance)
+                progressBarPerformance.Visible = true;
 
             initializePlayerControls();
 
@@ -43,112 +58,139 @@ namespace Poker.GuiApp
 
             Show();
 
-            for (int i = 0; i < gameSettings.NumberOfGames; ++i)
+            gameLoop(new Progress<int>(percent => progressBarPerformance.Value = percent)); 
+        }
+
+        private async void gameLoop(IProgress<int> progress)
+        {
+            gameLoopTask = Task.Run(() => 
             {
-                
-                if (i != 0)
+                for (int i = 0; i < gameSettings.NumberOfGames; ++i)
                 {
-                    game.ResetGame(gameSettings);
-                }
-
-                while (!game.IsGameOver)
-                {
-                    game.Licitation();
-
-                    if (!gameSettings.Performance)
+                    if (i != 0)
                     {
-                        foreach (var hand in game.PlayerHandScores)
-                        {
-                            richTextBoxLog.Text += $"{hand.Key.Name}'s ranking: {hand.Value} ({game.GetHandRanking(hand.Value)})\n";
-                        }
-                        Application.DoEvents();
+                        game.ResetGame(gameSettings);
                     }
+
+                    while (!game.IsGameOver)
+                    {
+                        game.Licitation();
+
+                        if (!gameSettings.Performance)
+                        {
+                            updateUiLogHandRanking();
+                        }
+
+                        if (cancellationToken.IsCancellationRequested)
+                            return;
+                    }
+
+                    UpdateGui(game);
+
+                    if (progress != null)
+                        progress.Report(i * 100 / gameSettings.NumberOfGames);
                 }
 
-                UpdateGui(game);
+                updateUiLogSummary();
+            });
 
-                //richTextBoxLog.Text += $"Game {i + 1}/{gameSettings.NumberOfGames} ({((float)(i + 1) / (float)gameSettings.NumberOfGames * 100f):0.00}%)\n";
-                //richTextBoxLog.Text += "\nName  \t\t\tScore\n";
-                //foreach (var player in game.LostPlayers)
-                //{
-                //    richTextBoxLog.Text += player.Name + "  \t\t" + game.LostPlayers.IndexOf(player) + "\n";
-                //}
-                //richTextBoxLog.Text += "\n";
-                Application.DoEvents();
-            }
-
-            richTextBoxLog.Text += "- - - - - - - - SUMMARY - - - - - - - -";
-            richTextBoxLog.Text += "\nName    \tScore\tScore%\tWin%\n";
-            foreach (var player in playersStats.PlayerPerformanceScores.OrderByDescending(x => x.Value).Select(x => x.Key))
-            {
-                float scorePercent = playersStats.GetScorePercent(player);
-                float winPercent = playersStats.GetWinPercent(player);
-                richTextBoxLog.Text += $"{player.Name} \t{playersStats.PlayerPerformanceScores[player]}\t{scorePercent:0.00} \t{winPercent:0.00}\n";
-            }
-            richTextBoxLog.Text += "\n";
-            foreach (var player in playersStats.PlayersWinCount.OrderByDescending(x => x.Value).Select(x => x.Key))
-            {
-                float scorePercent = playersStats.GetScorePercent(player);
-                float winPercent = playersStats.GetWinPercent(player);
-                richTextBoxLog.Text += $"{player.Name} \t{playersStats.PlayerPerformanceScores[player]}\t{scorePercent:0.00} \t{winPercent:0.00}\n";
-            }
-            Application.DoEvents();
+            await gameLoopTask;
         }
 
         public void UpdateGui(object subject)
         {
-            if (subject is Game && !gameSettings.Performance)
+            if (cancellationToken.IsCancellationRequested)
+                return;
+
+            synchronizationContext.Send(new SendOrPostCallback(o => 
             {
-                setGuiInformations(players);
-
-                Game game = subject as Game;
-                string communityCardsMessage = "Community cards: ";
-                foreach (ICard card in game.Table.CommunityCards)
-                    communityCardsMessage += $"{card.ToString()}, ";
-
-                if (communityCardsMessage.Length > 2) //remove last comma
-                    communityCardsMessage = communityCardsMessage.Remove(communityCardsMessage.Length - 2);
-
-                richTextBoxLog.Text += communityCardsMessage + '\n';
-                richTextBoxLog.Text += "Name\tHand\tChips\tBet\tState\n";
-                foreach (IPlayer player in game.Players)
+                if (subject is Game && !gameSettings.Performance)
                 {
-                    string betsMessage;
-                    string playerName;
-                    string holeCards = "";
+                    BeginInvoke((MethodInvoker)delegate { setGuiInformations(players); });
+                    
+                    Game game = subject as Game;
+                    string communityCardsMessage = "Community cards: ";
+                    foreach (ICard card in game.Table.CommunityCards)
+                        communityCardsMessage += $"{card.ToString()}, ";
 
-                    if (player.HoleCards.Any())
-                        holeCards = $"{player.HoleCards[0].ToString()} {player.HoleCards[1].ToString()}";
+                    if (communityCardsMessage.Length > 2) //remove last comma
+                        communityCardsMessage = communityCardsMessage.Remove(communityCardsMessage.Length - 2);
 
-                    if (player.Name.Length < 8)
-                        playerName = player.Name;
-                    else //it takes too much space in log, so it is shortened
-                        playerName = player.Name.Substring(0, 7);
+                    richTextBoxLog.Text += communityCardsMessage + '\n';
+                    richTextBoxLog.Text += "Name\tHand\tChips\tBet\tState\n";
+                    foreach (IPlayer player in game.Players)
+                    {
+                        string betsMessage;
+                        string playerName;
+                        string holeCards = "";
 
-                    betsMessage = $"{playerName}\t{holeCards}\t{player.Chips}\t{player.Bet}\t";
+                        if (player.HoleCards.Any())
+                            holeCards = $"{player.HoleCards[0].ToString()} {player.HoleCards[1].ToString()}";
 
-                    if (player.PlayerState == PlayerState.Active)
-                        betsMessage += "Active";
-                    else if (player.PlayerState == PlayerState.Called)
-                        betsMessage += "Call";
-                    else if (player.PlayerState == PlayerState.Raised)
-                        betsMessage += "Raise";
-                    else if (player.PlayerState == PlayerState.Folded)
-                        betsMessage += "Fold";
-                    else if (player.PlayerState == PlayerState.Checked)
-                        betsMessage += "Check";
-                    else
-                        betsMessage += "All-in";
+                        if (player.Name.Length < 8)
+                            playerName = player.Name;
+                        else //it takes too much space in log, so it is shortened
+                            playerName = player.Name.Substring(0, 7);
 
-                    richTextBoxLog.Text += betsMessage + '\n';
+                        betsMessage = $"{playerName}\t{holeCards}\t{player.Chips}\t{player.Bet}\t";
+
+                        if (player.PlayerState == PlayerState.Active)
+                            betsMessage += "Active";
+                        else if (player.PlayerState == PlayerState.Called)
+                            betsMessage += "Call";
+                        else if (player.PlayerState == PlayerState.Raised)
+                            betsMessage += "Raise";
+                        else if (player.PlayerState == PlayerState.Folded)
+                            betsMessage += "Fold";
+                        else if (player.PlayerState == PlayerState.Checked)
+                            betsMessage += "Check";
+                        else
+                            betsMessage += "All-in";
+
+                        richTextBoxLog.Text += betsMessage + '\n';
+                    }
+
+                    richTextBoxLog.Text += $"Pot: {game.Table.Pot}\n";
+                    Application.DoEvents();
                 }
-
-                richTextBoxLog.Text += $"Pot: {game.Table.Pot}\n";
-                Application.DoEvents();
-            }   
+            }), subject);
+          
         }
 
+        private void updateUiLogSummary()
+        {
+            synchronizationContext.Send(new SendOrPostCallback(o =>
+            {
+                richTextBoxLog.Text += "- - - - - - - - SUMMARY - - - - - - - -";
+                richTextBoxLog.Text += "\nName    \tScore\tScore%\tWin%\n";
+                foreach (var player in playersStats.PlayerPerformanceScores.OrderByDescending(x => x.Value).Select(x => x.Key))
+                {
+                    float scorePercent = playersStats.GetScorePercent(player);
+                    float winPercent = playersStats.GetWinPercent(player);
+                    richTextBoxLog.Text += $"{player.Name} \t{playersStats.PlayerPerformanceScores[player]}\t{scorePercent:0.00} \t{winPercent:0.00}\n";
+                }
+                richTextBoxLog.Text += "\n";
+                foreach (var player in playersStats.PlayersWinCount.OrderByDescending(x => x.Value).Select(x => x.Key))
+                {
+                    float scorePercent = playersStats.GetScorePercent(player);
+                    float winPercent = playersStats.GetWinPercent(player);
+                    richTextBoxLog.Text += $"{player.Name} \t{playersStats.PlayerPerformanceScores[player]}\t{scorePercent:0.00} \t{winPercent:0.00}\n";
+                }
 
+                progressBarPerformance.Visible = false;
+            }), null);
+        }
+
+        private void updateUiLogHandRanking()
+        {
+            synchronizationContext.Send(new SendOrPostCallback(o =>
+            {
+                foreach (var hand in game.PlayerHandScores)
+                {
+                    richTextBoxLog.Text += $"{hand.Key.Name}'s ranking: {hand.Value} ({game.GetHandRanking(hand.Value)})\n";
+                }
+            }), null);
+        }
 
         private void setGuiInformations(List<IPlayer> players)
         {
@@ -316,7 +358,8 @@ namespace Poker.GuiApp
         }
 
         private void FormGameTable_FormClosing(object sender, FormClosingEventArgs e)
-        {
+        {       
+            tokenSource.Cancel();
             richTextBoxLog.Dispose();
             Dispose();
         }
@@ -328,5 +371,6 @@ namespace Poker.GuiApp
             richTextBoxLog.ScrollToCaret();
             richTextBoxLog.Refresh();
         }
+
     }
 }

@@ -98,6 +98,8 @@ namespace Poker.GuiApp
                 numOfGames));
         }
 
+        
+
         private void checkBoxPerformance_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBoxPerformance.Checked)

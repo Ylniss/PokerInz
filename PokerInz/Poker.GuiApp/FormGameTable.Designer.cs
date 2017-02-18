@@ -148,6 +148,7 @@
             this.pot = new System.Windows.Forms.Label();
             this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
             this.labelLog = new System.Windows.Forms.Label();
+            this.progressBarPerformance = new System.Windows.Forms.ProgressBar();
             this.groupBoxP0.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.card2P0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.card1P0)).BeginInit();
@@ -1358,12 +1359,23 @@
             this.labelLog.TabIndex = 22;
             this.labelLog.Text = "Log";
             // 
+            // progressBarPerformance
+            // 
+            this.progressBarPerformance.Location = new System.Drawing.Point(198, 189);
+            this.progressBarPerformance.MarqueeAnimationSpeed = 10;
+            this.progressBarPerformance.Name = "progressBarPerformance";
+            this.progressBarPerformance.Size = new System.Drawing.Size(366, 23);
+            this.progressBarPerformance.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.progressBarPerformance.TabIndex = 23;
+            this.progressBarPerformance.Visible = false;
+            // 
             // FormGameTable
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1036, 404);
+            this.Controls.Add(this.progressBarPerformance);
             this.Controls.Add(this.labelLog);
             this.Controls.Add(this.richTextBoxLog);
             this.Controls.Add(this.pot);
@@ -1560,6 +1572,7 @@
         private System.Windows.Forms.Label blindP7;
         private System.Windows.Forms.Label blindP8;
         private System.Windows.Forms.Label blindP9;
+        private System.Windows.Forms.ProgressBar progressBarPerformance;
     }
 }
 
